@@ -1,0 +1,20 @@
+﻿  Arkanoid_classic.cpp
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Arkanoid_classic.cpp(51,20): warning C4244: инициализация: преобразование "sf::Int32" в "float", возможна потеря данных
+  Border.cpp
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(27,35): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(27,29): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(33,38): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(33,32): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(39,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(39,30): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(45,39): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(45,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(51,34): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(51,28): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(57,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Border.cpp(57,30): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  GameObject.cpp
+F:\My_project\С++\Arkanoid\Arkanoid_classic\GameObject.cpp(64,31): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\GameObject.cpp(64,23): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+  Создание кода...
+  Arkanoid_classic.vcxproj -> F:\My_project\С++\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe
