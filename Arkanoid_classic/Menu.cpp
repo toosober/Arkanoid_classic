@@ -37,8 +37,85 @@ Menu::Menu()
 }
 
 // «апуск стартового меню
-void Menu::CreateStartMenu(RenderWindow& window, Platform& platform, Balls& ball, Border& board)
+void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platform, Balls& ball, Border& board)
 {
+
+    Texture texture;
+    texture.loadFromImage(image);
+
+    Sprite blueBonus;
+    blueBonus.setTexture(texture);
+    blueBonus.setTextureRect(IntRect(456, 449, 27, 30));
+    blueBonus.setPosition(100, 200);
+
+    Sprite PrintPlatformLarge;
+    PrintPlatformLarge.setTexture(texture);
+    PrintPlatformLarge.setTextureRect(IntRect(148, 302, 128, 31));
+    PrintPlatformLarge.setPosition(190, 200);
+
+    Sprite  PrintPlatformSmall;
+    PrintPlatformSmall.setTexture(texture);
+    PrintPlatformSmall.setTextureRect(IntRect(0, 302, 58, 31));
+    PrintPlatformSmall.setPosition(378, 200);
+
+    Sprite PrintBall;
+    PrintBall.setTexture(texture);
+    PrintBall.setTextureRect(IntRect(64, 128, 16, 16));
+    PrintBall.setPosition(190, 353);
+
+    Sprite greenBonus;
+    greenBonus.setTexture(texture);
+    greenBonus.setTextureRect(IntRect(487, 449, 27, 30));
+    greenBonus.setPosition(100, 250);
+
+    Sprite pinkBonus;
+    pinkBonus.setTexture(texture);
+    pinkBonus.setTextureRect(IntRect(518, 449, 27, 30));
+    pinkBonus.setPosition(100, 300);
+
+    Sprite purpleBonus;
+    purpleBonus.setTexture(texture);
+    purpleBonus.setTextureRect(IntRect(552, 449, 27, 30)); 
+    purpleBonus.setPosition(100, 350);
+
+    Sprite redBonus;
+    redBonus.setTexture(texture);
+    redBonus.setTextureRect(IntRect(456, 482, 27, 30));
+    redBonus.setPosition(100, 400);
+
+    Sprite yellowBonus;
+    yellowBonus.setTexture(texture);
+    yellowBonus.setTextureRect(IntRect(487, 482, 27, 30));
+    yellowBonus.setPosition(100, 450);
+
+    Text text_equal("=", font, 25);
+    text_equal.setColor(Color::Red);
+
+    Text text_or("or", font, 25);
+    text_or.setColor(Color::Red);
+    text_or.setPosition(338, 200);
+
+    Text text_laserOnBoard("Laser on board", font, 25);
+    text_laserOnBoard.setColor(Color::Red);
+    text_laserOnBoard.setPosition(190, 396);
+
+    Text text_platformCatchBall("Platform catch ball", font, 25);
+    text_platformCatchBall.setColor(Color::Red);
+    text_platformCatchBall.setPosition(190, 246);
+
+    Text text_slowOrFastBall("Slow or Fast ball", font, 25);
+    text_slowOrFastBall.setColor(Color::Red);
+    text_slowOrFastBall.setPosition(190, 296);
+
+    Text text_extraLife("Extra Life", font, 25);
+    text_extraLife.setColor(Color::Red);
+    text_extraLife.setPosition(190, 446);
+
+    Text text_multiply("X 3", font, 25);
+    text_multiply.setColor(Color::Red);
+    text_multiply.setPosition(216, 344);
+    
+
     //устанавливаем начальные позиции дл€ элементов
     platform.setPosition(-25, 550);
     ball.setPosition(800, 534);
@@ -106,6 +183,29 @@ void Menu::CreateStartMenu(RenderWindow& window, Platform& platform, Balls& ball
         text_lives.setString("Lives");
 
         text_level.setString("Round");
+
+        for (int i = 0; i < 6; i++)
+        {
+            text_equal.setPosition(150, 196 + i * 50);
+            window.draw(text_equal);
+        }
+
+
+        window.draw(text_multiply);
+        window.draw(PrintBall);
+        window.draw(text_slowOrFastBall);
+        window.draw(text_platformCatchBall);
+        window.draw(text_laserOnBoard);
+        window.draw(text_or);
+        window.draw(PrintPlatformSmall);
+        window.draw(PrintPlatformLarge);
+        window.draw(text_extraLife);
+        window.draw(greenBonus);
+        window.draw(blueBonus);
+        window.draw(pinkBonus);
+        window.draw(purpleBonus);
+        window.draw(redBonus);
+        window.draw(yellowBonus);
 
         window.draw(platform);
         window.draw(ball);

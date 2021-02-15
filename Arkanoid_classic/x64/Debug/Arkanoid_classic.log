@@ -1,15 +1,8 @@
-﻿  Arkanoid_classic.cpp
+﻿  Menu.cpp
 F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.h(6,32): warning C4081: требуется "newline"; обнаружен ";"
-F:\My_project\С++\Arkanoid\Arkanoid_classic\Arkanoid_classic.cpp(32,37): warning C4305: аргумент: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-  Menu.cpp
-F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.h(6,32): warning C4081: требуется "newline"; обнаружен ";"
-F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(61,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
-F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(86,32): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(91,28): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(96,41): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-  Создание кода...
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(138,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(163,32): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(168,28): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(173,41): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.cpp(189,45): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
   Arkanoid_classic.vcxproj -> F:\My_project\С++\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe

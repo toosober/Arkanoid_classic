@@ -44,6 +44,6 @@ public:
 	void Setlevel(int x) { level += x; }
 	const unsigned& Getlevel() const { return level; }
 
-	void CreateStartMenu(RenderWindow& window, Platform& platform, Balls& ball, Border& board);
+	void CreateStartMenu(Image& image, RenderWindow& window, Platform& platform, Balls& ball, Border& board);
 	void CreateMenu();
 };

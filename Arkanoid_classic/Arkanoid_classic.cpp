@@ -33,7 +33,7 @@ int main()
 
     Menu::GetInstance();
 
-    Menu::GetInstance().CreateStartMenu(window, platform, ball, board);
+    Menu::GetInstance().CreateStartMenu(image, window, platform, ball, board);
 
     Levels lvs(image);
     lvs.StartGame(window, platform, ball, board);
