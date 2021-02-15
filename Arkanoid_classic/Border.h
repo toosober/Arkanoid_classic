@@ -1,36 +1,50 @@
 #pragma once
+
 #include "GameObject.h"
-class Border
+
+class Border : public GameObject
 {
 private:
-	sf::Sprite _verticalWall;
-	sf::Sprite _horizontalWall;
-	sf::Sprite _leftTopCorner;
-	sf::Sprite _leftBottomCorner;
-	sf::Sprite _rightTopCorner;
-	sf::Sprite _rightBottomCorner;
-	sf::Sprite _map;
+	//тайлы границ (углы и стены)
+	Sprite _verticalWall;
+	Sprite _horizontalWall;
+	Sprite _leftTopCorner;
+	Sprite _leftBottomCorner;
+	Sprite _rightTopCorner;
+	Sprite _rightBottomCorner;
 
-	GameObject* gmbj;
+	//Переменные отвечающие за количество тайликов
+   //На данный момент тайлы вырезаны кустарным способом и поэтому отличаются по своему размеру
+   //Поэтому карту нельзя создать автоматически приходится немного подгадывать с размером тайлов
+	//Будет время это нужно исправть
+	int horizontalSize = 26;
+	int verticalSize = 22;
+	int horizontalSizeMenu = horizontalSize + 9;
+	int verticalSizeMenu = verticalSize - 2;
+
 
 public:
 	//конструторы
-	Border(GameObject* gmbj);
+	Border(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
+	Border(const Border&) = delete;
 
 	~Border() {}
 
 	//переопределенные операторы
-	Border operator=(const GameObject& gmbj) const {}
-	Border operator+(const GameObject& gmbj) const {}
+	Border operator=(const GameObject& gmbj) const = delete;
+	Border operator+(const GameObject& gmbj) const = delete;
 
-	//Методы
-	sf::Sprite GetLeftTopCorner(int posX, int posY);
-	sf::Sprite GetLeftBottomCorner(int posX, int posY);
-	sf::Sprite GetRightTopCorner(int posX, int posY);
-	sf::Sprite GetRightBottomCorner(int posX, int posY);
-	sf::Sprite GetVerticalWall(int posX, int posY);
-	sf::Sprite GetHorizontalWall(int posX, int posY);
+	//Методы получения картинок стенок карты
+	Sprite GetLeftTopCorner(int posX, int posY);
+	Sprite GetLeftBottomCorner(int posX, int posY);
+	Sprite GetRightTopCorner(int posX, int posY);
+	Sprite GetRightBottomCorner(int posX, int posY);
+	Sprite GetVerticalWall(int posX, int posY);
+	Sprite GetHorizontalWall(int posX, int posY);
 
-	void GetImage();
+	void CreateMap(RenderWindow& window);
+	void CreateMenu(RenderWindow& window);
+
+
 };
 

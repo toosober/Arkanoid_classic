@@ -145,10 +145,14 @@
     <ClCompile Include="Arkanoid_classic.cpp" />
     <ClCompile Include="Border.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Levels.cpp" />
+    <ClCompile Include="Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Border.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Levels.h" />
+    <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
