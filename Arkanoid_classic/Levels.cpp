@@ -87,9 +87,9 @@ int Levels::StartGame(RenderWindow& window, Platform& platform, Balls& ball, Bor
             //Двигаемся влево, пока координата х не станет меньше 25,
             //Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
             platform.move(0.5 * time, 0);
-            if (platform.getPosition().x > 645)
+            if (platform.getPosition().x > 715)
             {
-                platform.setPosition(645, 550);
+                platform.setPosition(715, 550);
             }
         }
 
@@ -100,7 +100,7 @@ int Levels::StartGame(RenderWindow& window, Platform& platform, Balls& ball, Bor
         }
         else
         {   //Если игра не началась, шарик привязан к платформе
-            ball.setPosition(platform.getPosition().x + 56, 534);
+            ball.setPosition(platform.getPosition().x + 37, 534);
         }
 
         if (Menu::GetInstance().GetCountlives() <= 0)

@@ -168,10 +168,10 @@ void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platfor
         else
             platform.setPosition(320, 550);
 
-        if (ball.getPosition().x > platform.getPosition().x + 56)
+        if (ball.getPosition().x > platform.getPosition().x + 37)
             ball.move(time * -0.5, 0);
         else
-            ball.setPosition(platform.getPosition().x + 56, platform.getPosition().y - 16);
+            ball.setPosition(platform.getPosition().x + 37, platform.getPosition().y - 16);
 
         if (text_startgame.getPosition().y <= 80)
             text_startgame.move(0, time * 0.2);

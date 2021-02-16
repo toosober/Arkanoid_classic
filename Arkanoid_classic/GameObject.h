@@ -44,10 +44,15 @@ public:
 //----------------------------------------------Platform--------------------------------------------------
 class Platform : public GameObject
 {
+	enum Type { smallPlatform, mediumPlatform, largePlatform };
+	unsigned typePlatform = mediumPlatform;
 public:
 	Platform(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
 	~Platform() {}
 
+	void ResetTypePlatform() { typePlatform = mediumPlatform; }
+	void SetPlatform(bool choicePlatform);
+	unsigned GetPlatformType() { return typePlatform; }
 };
 
 //------------------------------------------------Balls--------------------------------------------------
@@ -60,6 +65,26 @@ private:
 	bool initialization = true;  //инициализация направления при запуске шарика с платформы (начало игры)
 	bool change_angle = true;    //используется для изменения угла в методе Move
 	unsigned score_ratio = 1;
+
+	float speed_vector_x = 0; //вектор движения по x
+	float speed_vector_y = 0; //вектор движения по y
+
+
+
+	float ball_center_x = 0;    // центр шарика по х
+	float ball_center_y = 0;    // центр шарика по y
+	float ball_right_x = 0;     // правый край по х
+	float ball_left_x = 0;      // левый край по х
+
+	float platform_left_x = 0;  // левый край платформы по х
+	float platform_right_x = 0;	// правый край платформы по х
+	float platform_top_y = 0;   // верх платформы
+
+
+	
+	void CollisionLargePlatform(Platform* platform);
+	void CollisionSmallAndMediumPlatform(Platform* platform);
+	
 	
 
 
@@ -83,6 +108,8 @@ public:
 	void SetIsMove(bool isMove) { this->isMove = isMove; }
 	bool GetIsMove() { return this->isMove; }
 
+	
+
 
 
 };
@@ -91,23 +118,31 @@ public:
 class Bonus : public GameObject
 {
 private:
-	enum bonusType { blue, green, pink, purple, red, yellow };
+	enum Type { blue, green, orange, pink, purple, red, yellow, no_color };
+
+	unsigned bonusType;
 
 public:
-	Bonus(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
+	Bonus(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, unsigned bonusType = no_color, int speedX = 0, int speedY = 0);
 	~Bonus() {}
+
+	static void CollisionAndMove(std::list<Bonus*>& bonus, std::list<Bonus*>::iterator bns, Platform& platform, float time);
+	
 };
 
 //------------------------------------------------Block--------------------------------------------------
 class Block : public GameObject
 {
 private:
-	int lives = 0;
+	enum type {blue, green, orange, pink, purple, red, yellow, no_color};
 
+	int lives = 0;
 	bool bonus = false;
 
+	unsigned blockType;
+
 public:
-	Block(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, bool bonus = false, int speedX = 0, int speedY = 0);
+	Block(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, unsigned blockType = no_color, bool bonus = false, int speedX = 0, int speedY = 0);
 	Block(const Block&) = delete;
 	~Block() { }
 

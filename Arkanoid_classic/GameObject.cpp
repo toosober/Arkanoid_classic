@@ -42,6 +42,34 @@ Platform::Platform(Image& image, float coordX, float coordY, float width, float 
     this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
 }
 
+void Platform::SetPlatform(bool choicePlatformType)
+{
+    if (this->typePlatform == largePlatform)
+    {
+        this->typePlatform = mediumPlatform;
+        this->setTextureRect(sf::IntRect(58, 302, 90, 31));
+    }
+    else if (this->typePlatform == smallPlatform)
+    {
+        this->typePlatform = mediumPlatform;
+        this->setTextureRect(sf::IntRect(58, 302, 90, 31));
+    }
+    else if (this->typePlatform == mediumPlatform)
+    {
+        if (choicePlatformType == true)
+        {
+            this->typePlatform = largePlatform;
+            this->setTextureRect(sf::IntRect(148, 302, 128, 31));
+        }            
+        else
+        {
+            this->typePlatform = smallPlatform;
+            this->setTextureRect(sf::IntRect(0, 302, 58, 31));
+        }
+            
+    }
+}
+
 //------------------------------------// Balls //------------------------------------//
 
 
@@ -63,14 +91,12 @@ void Balls::Move(double unit_circle_x, double unit_circle_y, float time, Platfor
         angle_unit_circle_y = unit_circle_y;
     }
 
-    float speed_vector_x = speedX * time * angle_unit_circle_x; //вектор движения по x
-    float speed_vector_y = speedY * time * angle_unit_circle_y; //вектор движения по y
+    speed_vector_x = speedX * time * angle_unit_circle_x; //вектор движения по x
+    speed_vector_y = speedY * time * angle_unit_circle_y; //вектор движения по y
 
 
     this->move(speed_vector_x, speed_vector_y); //вызываем стандартную функцию move от класса Sprite
     
-
-
     //после сдвига проверяем куда мы попали?
 
     //проверяем пересечение с левой стенкой карты
@@ -96,21 +122,117 @@ void Balls::Move(double unit_circle_x, double unit_circle_y, float time, Platfor
     }
 
 
-    //Далее сложный блок, взаимодействия с платформой. В платформу можно врезаться сверху, с левого бока и с правого бока
-    //Для увеличения сложности верхняя часть платформы разделена на 7 областей, при попадании в которые шарик ведет себя по разному
+    //Далее сложный блок, взаимодействия с платформой. 
+    //Платформа может находится в трех состояниях (маленькая платформа, средняя, большая платформа
+    //Физика отражения у маленькой платформы и у средней - одинаковая
+    //У большой платформы верхняя часть платформы разделена на 7 областей, при попадании в которые шарик ведет себя по разному
+    //поэтому необходимо проверять с какой платформой столкнулись
+    //и вызывать соответствующую функцию обработки
+    //В платформу можно врезаться сверху, с левого бока и с правого бока
+    
 
-    float ball_center_x = this->GetRect().left + (this->GetRect().width / 2);       // центр шарика по х
-    float ball_center_y = this->GetRect().top + (this->GetRect().height / 2);       // центр шарика по y
-    float ball_right_x = this->GetRect().left + this->GetRect().width;              // правый край по х
-    float ball_left_x = this->GetRect().left;                                       // левый край по х
+    ball_center_x = this->GetRect().left + (this->GetRect().width / 2);       // центр шарика по х
+    ball_center_y = this->GetRect().top + (this->GetRect().height / 2);       // центр шарика по y
+    ball_right_x = this->GetRect().left + this->GetRect().width;              // правый край по х
+    ball_left_x = this->GetRect().left;                                       // левый край по х
 
-    float platform_left_x = platform->GetRect().left;                               // левый край платформы по х
-    float platform_right_x = platform->GetRect().left + platform->GetRect().width;  // правый край платформы по х
-    float platform_top_y = platform->GetRect().top;                                 // верх платформы
+    platform_left_x = platform->GetRect().left;                               // левый край платформы по х
+    platform_right_x = platform->GetRect().left + platform->GetRect().width;  // правый край платформы по х
+    platform_top_y = platform->GetRect().top;                                 // верх платформы
 
+    if (platform->GetPlatformType() == 2)
+        CollisionLargePlatform(platform);
+    else
+        CollisionSmallAndMediumPlatform(platform);
 
+    //если шарик упал
+    if (this->getPosition().y > 700)
+    {
+        Menu::GetInstance().SetCountlives(-1);
+        if (Menu::GetInstance().GetCountlives() > 0)
+            this->setPosition(platform->getPosition().x + 56, platform->getPosition().y - 16);
+        this->SetIsMove(false);
+        this->initialization = true;
+        this->score_ratio = 1;
+    }
+    
+}
 
+void Balls::CollisionSmallAndMediumPlatform(Platform* platform)
+{
+    if (this->GetRect().intersects(platform->GetRect())) //Если пересеклись с платформой, то обнуляем коэффициент бонуса за выбитые блоки и проверяем где?
+    {
+        this->score_ratio = 1;
+        std::cout << "---------------------------------------------------" << std::endl;
+        //Если центр шарика по координате х находится с левого края в диапазоне платформы от нулевого до 8 пикселя?
+        if (ball_center_x - platform_left_x >= 0 && ball_center_x - platform_left_x < 8)
+        {
+            if (speed_vector_x < 0.001 && speed_vector_x > -0.001) //Если по х практически не смещаемся и попадаем в левый край, то должны улететь влево
+            {
+                angle_unit_circle_x = -0.9;
+                angle_unit_circle_y = sqrt(1 - pow(angle_unit_circle_x, 2));
+            }
+            else if (speed_vector_x > 0) //иначе если летим слева направо и ударяемся в левый угол, то должны отразиться обратно
+            {
+                angle_unit_circle_x = -angle_unit_circle_x; //отражаемся по х
+                angle_unit_circle_y = -angle_unit_circle_y; //отражаемся по y
+            }
+            else if ((speed_vector_x < 0)) //иначе если летим справа налево у ударяемся о левый угол, то должны изменить вектор движения
+            {
+                angle_unit_circle_x = -0.9;
+                angle_unit_circle_y = sqrt(1 - pow(angle_unit_circle_x, 2));
+            }
+        }
+        else if (platform_right_x - ball_center_x >= 0 && platform_right_x - ball_center_x < 8)
+        {
+            if (speed_vector_x < 0.001 && speed_vector_x > -0.001) //Если по х практически не смещаемся и попадаем в правый край, то должны улететь вправо
+            {
+                angle_unit_circle_x = 0.9;
+                angle_unit_circle_y = sqrt(1 - pow(angle_unit_circle_x, 2));
+            }
+            else if (speed_vector_x < 0) //иначе если летим справа налево и ударяемся в правый угол, то должны отразиться обратно
+            {
+                angle_unit_circle_x = -angle_unit_circle_x; //отражаемся по х
+                angle_unit_circle_y = -angle_unit_circle_y; //отражаемся по y
+            }
+            else if ((speed_vector_x > 0)) //иначе если летим слева направо у ударяемся о правый угол, то должны изменить вектор движения
+            {
+                angle_unit_circle_x = 0.9;
+                angle_unit_circle_y = sqrt(1 - pow(angle_unit_circle_x, 2));
+            }
+        }
+        else if (ball_center_x - platform_left_x > 0 && ball_center_x - platform_right_x < 0)
+        {
+            this->setPosition(this->getPosition().x, platform_top_y - this->GetRect().height); //если пересекли платформу, то выталкиваем шарик из платформы
+            angle_unit_circle_y = -angle_unit_circle_y; //и просто меняем направление движения
+        }
 
+        //Теперь обрабатываем попадание в левую и правую стенку платформы
+
+        //Если правая стенка ширка пересекла левую стенку платформы, а левая стенка шарика не пересекла левую стенку платформы
+        //При этом центр шарика по y опустился ниже верхнего уровня платформы:
+        if (ball_right_x >= platform_left_x && ball_left_x < platform_left_x && ball_center_y > platform_top_y)
+        {
+
+            //выталкиваем шарик из платформы
+            this->setPosition(platform_left_x - this->GetRect().width, this->getPosition().y);
+
+            angle_unit_circle_x = -1 * abs(angle_unit_circle_x); //толкаем шарик в противоположном от платформы направлении
+        }
+        //если левая стенка шарика находится внутри платформы, а правая стенка шарика снаружи платформы
+        //при этом центр шарика по y опустился ниже верхнего уровня платформы
+        else if (ball_left_x <= platform_right_x && ball_right_x > platform_right_x && ball_center_y > platform_top_y)
+        {
+
+            this->setPosition(platform_right_x, this->getPosition().y);
+
+            angle_unit_circle_x = abs(angle_unit_circle_x); //толкаем шарик в противоположном от платформы направлении
+        }
+    }
+}
+
+void Balls::CollisionLargePlatform(Platform* platform)
+{
     if (this->GetRect().intersects(platform->GetRect())) //Если пересеклись с платформой, то обнуляем коэффициент бонуса за выбитые блоки и проверяем где?
     {
         this->score_ratio = 1;
@@ -281,18 +403,6 @@ void Balls::Move(double unit_circle_x, double unit_circle_y, float time, Platfor
         }
     }
 
-
-    //если шарик упал
-    if (this->getPosition().y > 700)
-    {
-        Menu::GetInstance().SetCountlives(-1);
-        if (Menu::GetInstance().GetCountlives() > 0)
-            this->setPosition(platform->getPosition().x + 56, platform->getPosition().y - 16);
-        this->SetIsMove(false);
-        this->initialization = true;
-        this->score_ratio = 1;
-    }
-    
 }
 
 
@@ -332,19 +442,54 @@ void Balls::ChangeVector(int x)
 
 //------------------------------------// Bonus //------------------------------------//
 
-Bonus::Bonus(Image& image, float coordX, float coordY, float width, float height, int speedX, int speedY)
+Bonus::Bonus(Image& image, float coordX, float coordY, float width, float height, unsigned bonusType, int speedX, int speedY)
     : GameObject(image, coordX, coordY, width, height, speedX, speedY)
 {
+    this->bonusType = bonusType;
     this->setTexture(texture);
     this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
 }
 
+void Bonus::CollisionAndMove(std::list<Bonus*>& bonuses, std::list<Bonus*>::iterator bns, Platform& platform, float time)
+{
+    for (bns = bonuses.begin(); bns != bonuses.end();)
+    {
+        (*bns)->move(0, (0.1 * time));
+
+        if ((*bns)->GetRect().intersects(platform.GetRect()))
+        {
+            switch ((*bns)->bonusType)
+            {
+            case blue:
+                break;
+            case green:
+                break;
+            case pink:
+                break;
+            case purple:
+                break;
+            case red:
+                break;
+            case yellow:
+                break;
+            default:
+                break;
+            }
+
+            bns = bonuses.erase(bns);
+        }
+
+        else
+            bns++;
+    }
+}
+
 //------------------------------------// Block //------------------------------------//
 
-Block::Block(Image& image, float coordX, float coordY, float width, float height, bool bonus, int speedX, int speedY)
+Block::Block(Image& image, float coordX, float coordY, float width, float height, unsigned blockType, bool bonus, int speedX, int speedY)
     : GameObject(image, coordX, coordY, width, height, speedX, speedY)
 {
-
+    this->blockType = blockType;
     this->setTexture(texture);
     this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
 }
@@ -369,7 +514,7 @@ bool Block::Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blk
             ball.IncreaseValue_ScoreRatio();
 
             if ((*blks)->bonus)
-                bonuses.push_back(new Bonus((*blks)->img, 594, 374, 54, 22));
+                bonuses.push_back(new Bonus((*blks)->img, 594, 374, 54, 22, (*blks)->blockType));
 
             
             
