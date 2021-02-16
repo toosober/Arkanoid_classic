@@ -1,10 +1,16 @@
 #include "Levels.h"
+#include "Menu.h"
 
-#pragma warning(disable : 4996); //ругается на устаревшую строку text.setColor(Color::Yellow)
+
 
 
 int Levels::StartGame(RenderWindow& window, Platform& platform, Balls& ball, Border& board)
 {
+    Menu::GetInstance().PlayerInit();
+    platform.setPosition(320, 550);
+    ball.setPosition(376, 534);
+    ball.SetSpeed(Vector2f(0.1, -0.1));
+
     bool startGame = true;
     //Инициализация случайного числа при помощи Вихря Мерсенна, нужен для того, чтобы при запуске шарика в начале игры
     //он полетел по случайной траектории
@@ -97,19 +103,31 @@ int Levels::StartGame(RenderWindow& window, Platform& platform, Balls& ball, Bor
             ball.setPosition(platform.getPosition().x + 56, 534);
         }
 
+        if (Menu::GetInstance().GetCountlives() <= 0)
+        {
+            Menu::GetInstance().SetScoreRecord();
+            Menu::GetInstance().CreateStopGame(window, platform, blocks, board);
+            level = 1;
+            change_level = true;
+            return 0;
+        }
+
         if (change_level) //если булева пременная = true необходимо собрать новый уровень
         {
             level = InitLevel(level);
+            Menu::GetInstance().Setlevel(level);
             change_level = false;
         }
 
 
-        change_level = Block::Collision(blocks, blks, ball);
+        change_level = Block::Collision(blocks, blks, ball, bonuses, bns);
 
         window.clear();
 
         board.CreateMap(window);
         board.CreateMenu(window);
+
+        Menu::GetInstance().CreateMenu(window);
 
         for (blks = blocks.begin(); blks != blocks.end(); blks++)
             window.draw(**blks);
@@ -147,7 +165,7 @@ int Levels::CreateLevel1()
     int positionX;
     int positionY;
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         positionY = i;
         for (int j = 0; j < 13; j++)
@@ -157,8 +175,16 @@ int Levels::CreateLevel1()
             blks = blocks.end(); //итератор устанавливаем на адрес стоящий за последним элементом листа
             blks--; //смещаемся на последний элемент.
             (*blks)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-
         }
+    }
+    positionY++;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        blocks.push_back(new Block(image, 594, 374, 54, 22, true));
+        blks = blocks.end(); //итератор устанавливаем на адрес стоящий за последним элементом листа
+        blks--; //смещаемся на последний элемент.
+        (*blks)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
     }
 
     return 2;

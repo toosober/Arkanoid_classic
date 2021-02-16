@@ -12,12 +12,16 @@ Menu::Menu()
     text_startgame.setColor(Color::Red);
     text_startgame.setStyle(Text::Bold);
 
-
+    text_stopgame.setFont(font);
+    text_stopgame.setCharacterSize(55);
+    text_stopgame.setColor(Color::Red);
+    text_stopgame.setStyle(Text::Bold);
+    
     text_score.setFont(font);
     text_score.setCharacterSize(35);
     text_score.setColor(Color::Yellow);
     text_score.setStyle(Text::Bold);
-
+    text_score.setPosition(850, 40);
 
     text_level.setFont(font);
     text_level.setCharacterSize(35);
@@ -28,11 +32,13 @@ Menu::Menu()
     text_lives.setCharacterSize(35);
     text_lives.setColor(Color::Yellow);
     text_lives.setStyle(Text::Bold);
+    text_lives.setPosition(850, 120);
 
     text_game_over.setFont(font);
     text_game_over.setCharacterSize(35);
     text_game_over.setColor(Color::Yellow);
-    text_game_over.setStyle(Text::Bold);
+    text_game_over.setStyle(Text::Bold);    
+    text_level.setPosition(850, 200);
 
 }
 
@@ -103,7 +109,7 @@ void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platfor
     text_platformCatchBall.setColor(Color::Red);
     text_platformCatchBall.setPosition(190, 246);
 
-    Text text_slowOrFastBall("Slow or Fast ball", font, 25);
+    Text text_slowOrFastBall("Slow or Fast ball speed", font, 25);
     text_slowOrFastBall.setColor(Color::Red);
     text_slowOrFastBall.setPosition(190, 296);
 
@@ -122,9 +128,7 @@ void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platfor
     text_startgame.setString("PRESS ENTER TO START");
     text_startgame.setPosition(120, 0);
 
-    text_score.setPosition(850, 40);
-    text_lives.setPosition(850, 120);
-    text_level.setPosition(850, 200);
+    
 
     auto& score = Menu::GetInstance().GetCountScore();
     auto& lives = Menu::GetInstance().GetCountlives();
@@ -213,6 +217,106 @@ void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platfor
         window.draw(text_lives);
         window.draw(text_level);
         window.draw(text_startgame);
+
+        window.display();
+    }
+}
+
+void Menu::CreateMenu(RenderWindow& window)
+{
+    std::ostringstream playerScore;
+    std::ostringstream playerLives;
+    std::ostringstream gameLevel;
+
+    playerScore << score;
+    playerLives << lives;
+    gameLevel << level;
+
+    text_score.setString("Score: " + playerScore.str());
+    text_lives.setString("Lives: " + playerLives.str());
+    text_level.setString("Level: " + gameLevel.str());
+
+    window.draw(text_score);
+    window.draw(text_lives);
+    window.draw(text_level);
+}
+
+void Menu::CreateStopGame(RenderWindow& window, Platform& platform, std::list<Block*>& blocks, Border& board)
+{
+    std::ostringstream Record;
+    Record << scoreRecord;
+    text_stopgame.setString("Game Over\n\nYour Record is: " + Record.str() + "\n\n" +
+        "Press Enter to try again");
+    text_stopgame.setPosition(100, -50);
+
+    
+    std::list<Block*>::iterator blks;
+
+    
+    Clock clock;
+
+    bool isMenu = true;
+    while (isMenu)
+    {
+        float time = clock.getElapsedTime().asMicroseconds();
+        clock.restart();
+        time = time / 1000;
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            //выключаем игру если нажата клавиша Esc или крестик в правом верхнем углу
+            if (event.type == sf::Event::Closed ||
+                Keyboard::isKeyPressed(Keyboard::Escape))
+            {
+                window.close();
+                isMenu = false;
+            }
+
+            //реализуем событие однократного нажатия клавиши Enter
+            if (event.type == sf::Event::KeyReleased)
+            {
+                if (event.key.code == Keyboard::Enter)
+                {
+                    isMenu = false;
+                }
+            }
+        }
+
+        if (platform.getPosition().x < 1300)
+            platform.move(time * 1.5, 0);
+        else
+            platform.setPosition(1300, 550);
+
+        for (blks = blocks.begin(); blks != blocks.end(); blks++)
+        {
+            if ((*blks)->getPosition().x > -50)
+                (*blks)->move(time * -1.5, 0);
+            else
+                (*blks)->setPosition(-50, 25);
+        }
+
+        if (text_stopgame.getPosition().y < 100)
+            text_stopgame.move(0, time * 0.5);
+        else
+            text_stopgame.setPosition(text_stopgame.getPosition().x, 100);
+        
+        text_score.setString("Score");
+        text_lives.setString("Lives");
+        text_level.setString("Round");
+
+        window.clear();
+
+        board.CreateMap(window);
+        board.CreateMenu(window);
+
+        for (blks = blocks.begin(); blks != blocks.end(); blks++)
+            window.draw(**blks);
+
+        window.draw(platform);        
+        window.draw(text_score);
+        window.draw(text_lives);
+        window.draw(text_level);
+        window.draw(text_stopgame);
 
         window.display();
     }

@@ -1,11 +1,12 @@
 
 #include "GameObject.h"
+#include "Menu.h"
 
 
 //------------------------------------// GameObject //------------------------------------//
 
-GameObject::GameObject(Image& image, float coordX, float coordY, float width, float height, int speedX, int speedY)
-{
+GameObject::GameObject(Image& image, float coordX, float coordY, float width, float height, int speedX, int speedY) : img(image)
+{   
     texture.loadFromImage(image);
     this->coordX = coordX;
     this->coordY = coordY;
@@ -67,15 +68,7 @@ void Balls::Move(double unit_circle_x, double unit_circle_y, float time, Platfor
 
 
     this->move(speed_vector_x, speed_vector_y); //вызываем стандартную функцию move от класса Sprite
-    if (counter == 1000)
-    {
-        std::cout << "speed_vector_x = " << speed_vector_x << std::endl;
-        std::cout << "speed vector_y = " << speed_vector_y << std::endl;
-        std::cout << "speedX = " << speedX << std::endl;
-        std::cout << "speedY = " << speedY << std::endl;
-        counter = 0;
-    }
-    counter++;
+    
 
 
     //после сдвига провер€ем куда мы попали?
@@ -118,8 +111,10 @@ void Balls::Move(double unit_circle_x, double unit_circle_y, float time, Platfor
 
 
 
-    if (this->GetRect().intersects(platform->GetRect())) //≈сли пересеклись с платформой, то провер€ем где?
+    if (this->GetRect().intersects(platform->GetRect())) //≈сли пересеклись с платформой, то обнул€ем коэффициент бонуса за выбитые блоки и провер€ем где?
     {
+        this->score_ratio = 1;
+        std::cout << "---------------------------------------------------" << std::endl;
         //≈сли центр шарика по координате х находитс€ с левого кра€ в диапазоне платформы от нулевого до 8 пиксел€?
         if (ball_center_x - platform_left_x >= 0 && ball_center_x - platform_left_x < 8)
         {
@@ -290,13 +285,14 @@ void Balls::Move(double unit_circle_x, double unit_circle_y, float time, Platfor
     //если шарик упал
     if (this->getPosition().y > 700)
     {
-        this->setPosition(platform->getPosition().x + 56, platform->getPosition().y - 16);
+        Menu::GetInstance().SetCountlives(-1);
+        if (Menu::GetInstance().GetCountlives() > 0)
+            this->setPosition(platform->getPosition().x + 56, platform->getPosition().y - 16);
         this->SetIsMove(false);
         this->initialization = true;
+        this->score_ratio = 1;
     }
-
-
-
+    
 }
 
 
@@ -334,10 +330,18 @@ void Balls::ChangeVector(int x)
 }
 
 
+//------------------------------------// Bonus //------------------------------------//
+
+Bonus::Bonus(Image& image, float coordX, float coordY, float width, float height, int speedX, int speedY)
+    : GameObject(image, coordX, coordY, width, height, speedX, speedY)
+{
+    this->setTexture(texture);
+    this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
+}
 
 //------------------------------------// Block //------------------------------------//
 
-Block::Block(Image& image, float coordX, float coordY, float width, float height, int speedX, int speedY)
+Block::Block(Image& image, float coordX, float coordY, float width, float height, bool bonus, int speedX, int speedY)
     : GameObject(image, coordX, coordY, width, height, speedX, speedY)
 {
 
@@ -345,7 +349,7 @@ Block::Block(Image& image, float coordX, float coordY, float width, float height
     this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
 }
 
-bool Block::Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blks, Balls& ball)
+bool Block::Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blks, Balls& ball, std::list<Bonus*>& bonuses, std::list<Bonus*>::iterator bns)
 {
     float ball_left_x = ball.GetRect().left;                                        // левый край шарика
     float ball_right_x = ball.GetRect().left + ball.GetRect().width;                // правый край ширка
@@ -357,8 +361,18 @@ bool Block::Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blk
     //обрабатываем пересечене с блоками
     for (blks = blocks.begin(); blks != blocks.end();)
     {
-        if ((*blks)->GetRect().intersects(ball.GetRect())) //≈сли шарик пересек блок, провер€ем с какой стороны
+        //≈сли шарик пересек блок, провер€ем бонусный ли это шарик и с какой стороны произошло столкновение, а также подсчитываем очки
+        if ((*blks)->GetRect().intersects(ball.GetRect())) 
         {
+            Menu::GetInstance().SetCountScore(10*ball.GetScoreRatio());
+            std::cout << "ball.GetScoreRatio(): " << ball.GetScoreRatio() << std::endl;
+            ball.IncreaseValue_ScoreRatio();
+
+            if ((*blks)->bonus)
+                bonuses.push_back(new Bonus((*blks)->img, 594, 374, 54, 22));
+
+            
+            
             if (ball_top_y <= (*blks)->GetRect().top + (*blks)->GetRect().height // если шарик соприкоснулс€ с блоком снизу
                 && ball_bottom_y > (*blks)->GetRect().top + (*blks)->GetRect().height
                 && ball_center_x >= (*blks)->GetRect().left
@@ -412,3 +426,6 @@ bool Block::Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blk
 
     return false;
 }
+
+
+

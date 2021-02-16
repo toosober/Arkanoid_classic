@@ -8,18 +8,14 @@
 #include <list>
 #include  <random> //Для задания случайного направления полета шарика при первом его запуске с платформы
 
-
-
-
-
 using std::string;
 using namespace sf;
 
-
+//---------------------------------------------Game Object--------------------------------------------------
 class GameObject : public Sprite
 {
 protected:
-
+	Image& img;
 	Texture texture;
 	bool isMove;
 
@@ -45,17 +41,16 @@ public:
 	void SetSpeed(Vector2f speed);
 };
 
+//----------------------------------------------Platform--------------------------------------------------
 class Platform : public GameObject
 {
-private:
-
-
 public:
 	Platform(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
 	~Platform() {}
 
 };
 
+//------------------------------------------------Balls--------------------------------------------------
 class Balls : public GameObject
 {
 private:
@@ -64,7 +59,9 @@ private:
 	double angle_unit_circle_y = 0.0;  //направление полета шарика по y
 	bool initialization = true;  //инициализация направления при запуске шарика с платформы (начало игры)
 	bool change_angle = true;    //используется для изменения угла в методе Move
-	int counter = 0;
+	unsigned score_ratio = 1;
+	
+
 
 public:
 	Balls(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
@@ -79,6 +76,10 @@ public:
 	void SetSpeedFast(int x);  //тестовые функции
 	void SetSpeedSlow(int x);  //тестовые функции
 
+
+	void IncreaseValue_ScoreRatio() { this->score_ratio += 1; }
+	unsigned GetScoreRatio() { return score_ratio; }
+
 	void SetIsMove(bool isMove) { this->isMove = isMove; }
 	bool GetIsMove() { return this->isMove; }
 
@@ -86,19 +87,34 @@ public:
 
 };
 
+//------------------------------------------------Bonus--------------------------------------------------
+class Bonus : public GameObject
+{
+private:
+	enum bonusType { blue, green, pink, purple, red, yellow };
+
+public:
+	Bonus(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
+	~Bonus() {}
+};
+
+//------------------------------------------------Block--------------------------------------------------
 class Block : public GameObject
 {
 private:
 	int lives = 0;
 
+	bool bonus = false;
+
 public:
-	Block(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
+	Block(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, bool bonus = false, int speedX = 0, int speedY = 0);
 	Block(const Block&) = delete;
 	~Block() { }
 
 
-	static bool Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blks, Balls& ball);
+	static bool Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blks, Balls& ball, std::list<Bonus*>& bonuses, std::list<Bonus*>::iterator bns);
 
 
 };
+
 

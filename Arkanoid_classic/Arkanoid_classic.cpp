@@ -24,21 +24,20 @@ int main()
     Border board(image); //Класс хранящий нужные спрайты границ и свойства доступа к ним
 
     Platform platform(image, 148, 302, 128, 31);
-    platform.setPosition(320, 550);
+    
 
     //Инициализируем объект класса шарики и присваиваем ему начальную позицию на платформе
     Balls ball(image, 64, 128, 16, 16);
-    ball.setPosition(376, 534);
-    ball.SetSpeed(Vector2f(0.1, -0.1));
+    
 
     Menu::GetInstance();
 
     Menu::GetInstance().CreateStartMenu(image, window, platform, ball, board);
 
     Levels lvs(image);
-    lvs.StartGame(window, platform, ball, board);
 
-
+    while(window.isOpen())
+        lvs.StartGame(window, platform, ball, board);
 
 
     return 0;

@@ -10,6 +10,7 @@ class Menu //наивный одиночка
 private:
 	Menu();
 
+	unsigned scoreRecord = 0;
 	unsigned score = 0;
 	int lives = 0;
 	unsigned level = 1;
@@ -23,6 +24,7 @@ private:
 	Text text_level;
 	Text text_lives;
 	Text text_game_over;
+	Text text_stopgame;
 
 
 public:
@@ -41,9 +43,18 @@ public:
 	void SetCountlives(int x) { lives += x; }
 	const int& GetCountlives() const { return lives; }
 
+	void SetScoreRecord() { if(score > scoreRecord) scoreRecord = score; }
+	const unsigned GetScoreRecord() { return scoreRecord; }
+
+
+
 	void Setlevel(int x) { level += x; }
 	const unsigned& Getlevel() const { return level; }
 
 	void CreateStartMenu(Image& image, RenderWindow& window, Platform& platform, Balls& ball, Border& board);
-	void CreateMenu();
+	void CreateMenu(RenderWindow& window);
+	void CreateStopGame(RenderWindow& window, Platform& platform, std::list<Block*>& blocks, Border& board);
+	void PlayerInit() { score = 0; lives = 3; level = 1; }
+
+	
 };
