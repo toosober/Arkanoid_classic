@@ -71,17 +71,17 @@ void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platfor
 
     Sprite greenBonus;
     greenBonus.setTexture(texture);
-    greenBonus.setTextureRect(IntRect(487, 449, 27, 30));
+    greenBonus.setTextureRect(IntRect(488, 449, 27, 30));
     greenBonus.setPosition(100, 250);
 
     Sprite pinkBonus;
     pinkBonus.setTexture(texture);
-    pinkBonus.setTextureRect(IntRect(518, 449, 27, 30));
+    pinkBonus.setTextureRect(IntRect(520, 449, 27, 30));
     pinkBonus.setPosition(100, 300);
 
     Sprite purpleBonus;
     purpleBonus.setTexture(texture);
-    purpleBonus.setTextureRect(IntRect(552, 449, 27, 30)); 
+    purpleBonus.setTextureRect(IntRect(553, 449, 27, 30)); 
     purpleBonus.setPosition(100, 350);
 
     Sprite redBonus;
@@ -91,7 +91,7 @@ void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platfor
 
     Sprite yellowBonus;
     yellowBonus.setTexture(texture);
-    yellowBonus.setTextureRect(IntRect(487, 482, 27, 30));
+    yellowBonus.setTextureRect(IntRect(488, 481, 27, 30));
     yellowBonus.setPosition(100, 450);
 
     Text text_equal("=", font, 25);

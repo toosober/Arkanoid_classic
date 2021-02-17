@@ -46,13 +46,19 @@ class Platform : public GameObject
 {
 	enum Type { smallPlatform, mediumPlatform, largePlatform };
 	unsigned typePlatform = mediumPlatform;
+
+	unsigned rightBorder = 684; //Правая граница у средней платформы, 765 у большой и 715 у маленькой, это нужно для того, чтобы при столкновении правым бортом о границу
+	//карты платформа не уезжала дальше. Костыль, временное решение.
+
 public:
 	Platform(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
 	~Platform() {}
 
-	void ResetTypePlatform() { typePlatform = mediumPlatform; }
+	void ResetTypePlatform();
 	void SetPlatform(bool choicePlatform);
 	unsigned GetPlatformType() { return typePlatform; }
+
+	unsigned GetRightBorder() { return rightBorder; }
 };
 
 //------------------------------------------------Balls--------------------------------------------------
@@ -76,9 +82,13 @@ private:
 	float ball_right_x = 0;     // правый край по х
 	float ball_left_x = 0;      // левый край по х
 
-	float platform_left_x = 0;  // левый край платформы по х
-	float platform_right_x = 0;	// правый край платформы по х
+	float platform_left_x = 0;  // левый край платформы по х это здесь хранить неправильно! исправить
+	float platform_right_x = 0;	// правый край платформы по х это здесь хранить неправильно! исправить
 	float platform_top_y = 0;   // верх платформы
+
+	bool greenBonus = false; //поймали ли пурпурный бонус, надобно убрать это в бонус
+	
+	int ballPositionOnPlatform = 37; //позиция шарика относительно платформы по х
 
 
 	
@@ -108,6 +118,13 @@ public:
 	void SetIsMove(bool isMove) { this->isMove = isMove; }
 	bool GetIsMove() { return this->isMove; }
 
+	void SetGreenBonus() { greenBonus = true; }
+	void ResetGreenBonus() { greenBonus = false; }
+	void SetBallPositionOnPlatform(int x) { ballPositionOnPlatform = x; }
+	void ResetBallPositionOnPlatform() { ballPositionOnPlatform = 37; }
+	int GetBallPositionOnPlatform() { return ballPositionOnPlatform; }
+
+
 	
 
 
@@ -123,10 +140,10 @@ private:
 	unsigned bonusType;
 
 public:
-	Bonus(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, unsigned bonusType = no_color, int speedX = 0, int speedY = 0);
+	Bonus(Image& image, unsigned bonusType = no_color, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
 	~Bonus() {}
 
-	static void CollisionAndMove(std::list<Bonus*>& bonus, std::list<Bonus*>::iterator bns, Platform& platform, float time);
+	static void CollisionAndMove(std::list<Bonus*>& bonus, std::list<Bonus*>::iterator bns, Platform& platform, Balls& ball, float time);
 	
 };
 
@@ -142,7 +159,7 @@ private:
 	unsigned blockType;
 
 public:
-	Block(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, unsigned blockType = no_color, bool bonus = false, int speedX = 0, int speedY = 0);
+	Block(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, bool bonus = false, unsigned blockType = no_color,  int speedX = 0, int speedY = 0);
 	Block(const Block&) = delete;
 	~Block() { }
 

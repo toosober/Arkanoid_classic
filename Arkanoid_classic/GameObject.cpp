@@ -1,6 +1,7 @@
 
 #include "GameObject.h"
 #include "Menu.h"
+#include <random>
 
 
 //------------------------------------// GameObject //------------------------------------//
@@ -44,30 +45,51 @@ Platform::Platform(Image& image, float coordX, float coordY, float width, float 
 
 void Platform::SetPlatform(bool choicePlatformType)
 {
-    if (this->typePlatform == largePlatform)
+    if (this->typePlatform == largePlatform || this->typePlatform == smallPlatform)
     {
         this->typePlatform = mediumPlatform;
-        this->setTextureRect(sf::IntRect(58, 302, 90, 31));
-    }
-    else if (this->typePlatform == smallPlatform)
-    {
-        this->typePlatform = mediumPlatform;
-        this->setTextureRect(sf::IntRect(58, 302, 90, 31));
+        this->coordX = 58;
+        this->coordY = 302;
+        this->width = 90;
+        this->height = 31;
+        this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
+        this->rightBorder = 684;
     }
     else if (this->typePlatform == mediumPlatform)
     {
         if (choicePlatformType == true)
         {
+            this->coordX = 148;
+            this->coordY = 302;
+            this->width = 128;
+            this->height = 31;
             this->typePlatform = largePlatform;
-            this->setTextureRect(sf::IntRect(148, 302, 128, 31));
+            this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
+            this->rightBorder = 645;
         }            
         else
         {
+            this->coordX = 0;
+            this->coordY = 302;
+            this->width = 58;
+            this->height = 31;
             this->typePlatform = smallPlatform;
-            this->setTextureRect(sf::IntRect(0, 302, 58, 31));
+            this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
+            this->rightBorder = 715;
         }
             
     }
+}
+
+void Platform::ResetTypePlatform()
+{
+    this->typePlatform = mediumPlatform;
+    this->coordX = 58;
+    this->coordY = 302;
+    this->width = 90;
+    this->height = 31;
+    this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
+    this->rightBorder = 684;
 }
 
 //------------------------------------// Balls //------------------------------------//
@@ -150,7 +172,13 @@ void Balls::Move(double unit_circle_x, double unit_circle_y, float time, Platfor
     {
         Menu::GetInstance().SetCountlives(-1);
         if (Menu::GetInstance().GetCountlives() > 0)
+        {
+            platform->ResetTypePlatform();
             this->setPosition(platform->getPosition().x + 56, platform->getPosition().y - 16);
+        }
+
+        this->ResetBallPositionOnPlatform();
+        this->ResetGreenBonus();
         this->SetIsMove(false);
         this->initialization = true;
         this->score_ratio = 1;
@@ -163,9 +191,15 @@ void Balls::CollisionSmallAndMediumPlatform(Platform* platform)
     if (this->GetRect().intersects(platform->GetRect())) //≈сли пересеклись с платформой, то обнул€ем коэффициент бонуса за выбитые блоки и провер€ем где?
     {
         this->score_ratio = 1;
-        std::cout << "---------------------------------------------------" << std::endl;
+        if (greenBonus)
+        {
+            initialization = true;
+            SetIsMove(false);
+            this->SetBallPositionOnPlatform(this->GetRect().left - platform->GetRect().left);
+
+        }
         //≈сли центр шарика по координате х находитс€ с левого кра€ в диапазоне платформы от нулевого до 8 пиксел€?
-        if (ball_center_x - platform_left_x >= 0 && ball_center_x - platform_left_x < 8)
+        else if (ball_center_x - platform_left_x >= 0 && ball_center_x - platform_left_x < 8)
         {
             if (speed_vector_x < 0.001 && speed_vector_x > -0.001) //≈сли по х практически не смещаемс€ и попадаем в левый край, то должны улететь влево
             {
@@ -204,7 +238,25 @@ void Balls::CollisionSmallAndMediumPlatform(Platform* platform)
         else if (ball_center_x - platform_left_x > 0 && ball_center_x - platform_right_x < 0)
         {
             this->setPosition(this->getPosition().x, platform_top_y - this->GetRect().height); //если пересекли платформу, то выталкиваем шарик из платформы
-            angle_unit_circle_y = -angle_unit_circle_y; //и просто мен€ем направление движени€
+            //≈сли по х практически не смещаемс€ и попадаем в центральную часть платформы, то должны улететь либо вправо, либо влево в зависимости от
+            //состо€ни€ переменной change_angel
+            if (speed_vector_x < 0.001 && speed_vector_x > -0.001)
+            {
+                if (change_angle)
+                {
+                    angle_unit_circle_x = 0.5;
+                    change_angle = false;
+                }
+                else
+                {
+                    angle_unit_circle_x = -0.5;
+                    change_angle = true;
+                }
+                angle_unit_circle_y = sqrt(1 - pow(angle_unit_circle_x, 2));
+            }
+
+            else
+                angle_unit_circle_y = -angle_unit_circle_y; //просто мен€ем направление движени€
         }
 
         //“еперь обрабатываем попадание в левую и правую стенку платформы
@@ -225,7 +277,6 @@ void Balls::CollisionSmallAndMediumPlatform(Platform* platform)
         {
 
             this->setPosition(platform_right_x, this->getPosition().y);
-
             angle_unit_circle_x = abs(angle_unit_circle_x); //толкаем шарик в противоположном от платформы направлении
         }
     }
@@ -236,7 +287,14 @@ void Balls::CollisionLargePlatform(Platform* platform)
     if (this->GetRect().intersects(platform->GetRect())) //≈сли пересеклись с платформой, то обнул€ем коэффициент бонуса за выбитые блоки и провер€ем где?
     {
         this->score_ratio = 1;
-        std::cout << "---------------------------------------------------" << std::endl;
+        
+        if (greenBonus)
+        {   
+            initialization = true;
+            SetIsMove(false);
+            this->SetBallPositionOnPlatform(this->GetRect().left - platform->GetRect().left);
+        }
+
         //≈сли центр шарика по координате х находитс€ с левого кра€ в диапазоне платформы от нулевого до 8 пиксел€?
         if (ball_center_x - platform_left_x >= 0 && ball_center_x - platform_left_x < 8)
         {
@@ -311,7 +369,12 @@ void Balls::CollisionLargePlatform(Platform* platform)
                     change_angle = false;
                 }
                 else
+                {
                     angle_unit_circle_x = -0.5;
+                    change_angle = true;
+                }
+                    
+                
 
                 angle_unit_circle_y = sqrt(1 - pow(angle_unit_circle_x, 2));
             }
@@ -442,16 +505,50 @@ void Balls::ChangeVector(int x)
 
 //------------------------------------// Bonus //------------------------------------//
 
-Bonus::Bonus(Image& image, float coordX, float coordY, float width, float height, unsigned bonusType, int speedX, int speedY)
+Bonus::Bonus(Image& image, unsigned bonusType, float coordX, float coordY, float width, float height, int speedX, int speedY)
     : GameObject(image, coordX, coordY, width, height, speedX, speedY)
 {
     this->bonusType = bonusType;
     this->setTexture(texture);
-    this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
+    this->width = 27;
+    this->height = 30;
+    switch (bonusType)
+    {
+    case blue:
+        this->coordX = 456;
+        this->coordY = 449;
+        break;
+    case green:
+        this->coordX = 488;
+        this->coordY = 449;
+        break;
+    case pink:
+        this->coordX = 520;
+        this->coordY = 449;
+        break;
+    case purple:
+        this->coordX = 553;
+        this->coordY = 449;
+        break;
+    case red:
+        this->coordX = 456;
+        this->coordY = 482;
+        break;
+    case yellow:
+        this->coordX = 488;
+        this->coordY = 481;
+        break;
+        
+    }
+
+    this->setTextureRect(sf::IntRect(this->coordX, this->coordY, this->width, this->height));
+    
 }
 
-void Bonus::CollisionAndMove(std::list<Bonus*>& bonuses, std::list<Bonus*>::iterator bns, Platform& platform, float time)
+void Bonus::CollisionAndMove(std::list<Bonus*>& bonuses, std::list<Bonus*>::iterator bns, Platform& platform, Balls& ball, float time)
 {
+    std::random_device rd;
+    std::mt19937 mersenne(rd());
     for (bns = bonuses.begin(); bns != bonuses.end();)
     {
         (*bns)->move(0, (0.1 * time));
@@ -461,16 +558,20 @@ void Bonus::CollisionAndMove(std::list<Bonus*>& bonuses, std::list<Bonus*>::iter
             switch ((*bns)->bonusType)
             {
             case blue:
+                platform.SetPlatform(mersenne() % 2);
                 break;
             case green:
+                ball.SetGreenBonus();
                 break;
             case pink:
                 break;
             case purple:
+                
                 break;
             case red:
                 break;
             case yellow:
+                Menu::GetInstance().SetCountlives(1);
                 break;
             default:
                 break;
@@ -480,15 +581,21 @@ void Bonus::CollisionAndMove(std::list<Bonus*>& bonuses, std::list<Bonus*>::iter
         }
 
         else
+        {   
             bns++;
+        }
+
+            
     }
 }
 
 //------------------------------------// Block //------------------------------------//
 
-Block::Block(Image& image, float coordX, float coordY, float width, float height, unsigned blockType, bool bonus, int speedX, int speedY)
+Block::Block(Image& image, float coordX, float coordY, float width, float height, bool bonus, unsigned blockType, int speedX, int speedY)
     : GameObject(image, coordX, coordY, width, height, speedX, speedY)
 {
+    
+    this->bonus = bonus;
     this->blockType = blockType;
     this->setTexture(texture);
     this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
@@ -506,17 +613,24 @@ bool Block::Collision(std::list<Block*>& blocks, std::list<Block*>::iterator blk
     //обрабатываем пересечене с блоками
     for (blks = blocks.begin(); blks != blocks.end();)
     {
+        
         //≈сли шарик пересек блок, провер€ем бонусный ли это шарик и с какой стороны произошло столкновение, а также подсчитываем очки
         if ((*blks)->GetRect().intersects(ball.GetRect())) 
         {
+            
             Menu::GetInstance().SetCountScore(10*ball.GetScoreRatio());
             std::cout << "ball.GetScoreRatio(): " << ball.GetScoreRatio() << std::endl;
             ball.IncreaseValue_ScoreRatio();
 
             if ((*blks)->bonus)
-                bonuses.push_back(new Bonus((*blks)->img, 594, 374, 54, 22, (*blks)->blockType));
+            {
+                bonuses.push_back(new Bonus((*blks)->img, (*blks)->blockType));
+                bns = bonuses.end();
+                bns--;
+                (*bns)->setPosition((*blks)->GetRect().left + ((*blks)->GetRect().width / 2), (*blks)->GetRect().top);
+            }
+               
 
-            
             
             if (ball_top_y <= (*blks)->GetRect().top + (*blks)->GetRect().height // если шарик соприкоснулс€ с блоком снизу
                 && ball_bottom_y > (*blks)->GetRect().top + (*blks)->GetRect().height
