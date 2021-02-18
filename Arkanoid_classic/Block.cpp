@@ -1,11 +1,9 @@
 #include "Block.h"
 
-Block::Block(Image& image, float coordX, float coordY, float width, float height, bool bonus, unsigned blockType, int speedX, int speedY)
-    : GameObject(image, coordX, coordY, width, height, speedX, speedY)
+Block::Block(bool bonus, unsigned blockType)
 {
-
-    this->bonus = bonus;
-    this->blockType = blockType;
+    _bonus = bonus;
+    _blockType = blockType;
     this->setTexture(texture);
     this->setTextureRect(sf::IntRect(coordX, coordY, width, height));
 }

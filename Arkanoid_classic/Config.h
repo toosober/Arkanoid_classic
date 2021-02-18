@@ -3,10 +3,11 @@
 #include <string>
 
 const std::string IMGPATH = "Images/Sprites_Arkanoid.png";
+const std::string FONTPATH = "Fonts/Neucha/Neucha-Regular.ttf";
 
 
 
-//Границы меню
+// Границы меню
 const int BORDER_RIGHT = 750;
 const int BORDER_LEFT = 25;
 const int BORDER_TOP = 25;
@@ -18,26 +19,26 @@ const int BORDER_BOTTOM = 700;
 
 //------------------------------------------------Платформа
 
-//Большая платформа
+// Большая платформа
 const int LARGE_PLATFORM_LEFT = 148;
 const int LARGE_PLATFORM_TOP = 302;
 const int LARGE_PLATFORM_WIDTH = 128;
 const int LARGE_PLATFORM_HEIGHT = 31;
 
-//Средняя платформа
+// Средняя платформа
 const int MEDIUM_PLATFORM_LEFT = 58;
 const int MEDIUM_PLATFORM_TOP = 302;
 const int MEDIUM_PLATFORM_WIDTH = 90;
 const int MEDIUM_PLATFORM_HEIGHT = 31;
 
-//Маленькая платформа
+// Маленькая платформа
 const int SMALL_PLATFORM_LEFT = 0;
 const int SMALL_PLATFORM_TOP = 302;
 const int SMALL_PLATFORM_WIDTH = 58;
 const int SMALL_PLATFORM_HEIGHT = 31;
 
 //-------------------------------------------------------------------Шарик
-//Шарик
+// Шарик
 const int BLUE_BALL_LEFT = 64;
 const int BLUE_BALL_TOP = 128;
 const int BLUE_BALL_WIDTH = 16;
@@ -48,23 +49,23 @@ const int BLUE_BALL_HEIGHT = 16;
 const int BLOCK_WIDTH = 54;
 const int BLOCK_HEIGHT = 22;
 
-//Желтый блок
+// Желтый блок
 const int BLUE_BLOCK_LEFT = 648;
 const int BLUE_BLOCK_TOP = 22;
 
-//Бонусный желтый блок
+// Бонусный желтый блок
 const int BLUE_BONUS_BLOCK_LEFT = 594;
 const int BLUE_BONUS_BLOCK_TOP = 374;
 
-//Зеленый блок
+// Зеленый блок
 const int GREEN_BLOCK_LEFT = 378;
 const int GREEN_BLOCK_TOP = 22;
 
-//Бонусный зеленый блок
+// Бонусный зеленый блок
 const int GREEN_BONUS_BLOCK_LEFT = 648;
 const int GREEN_BONUS_BLOCK_TOP = 308;
 
-//Розовый блок
+// Розовый блок
 const int PINK_BLOCK_LEFT = 486;
 const int PINK_BLOCK_TOP = 22;
 
@@ -72,11 +73,11 @@ const int PINK_BLOCK_TOP = 22;
 const int PINK_BONUS_BLOCK_LEFT = 648;
 const int PINK_BONUS_BLOCK_TOP = 330;
 
-//Фиолетовый блок
+// Фиолетовый блок
 const int PURPLE_BLOCK_LEFT = 540;
 const int PURPLE_BLOCK_TOP = 22;
 
-//Бонусный фиолетовый блок
+// Бонусный фиолетовый блок
 const int PURPLE_BONUS_BLOCK_LEFT = 594;
 const int PURPLE_BONUS_BLOCK_TOP = 352;
 
@@ -84,29 +85,84 @@ const int PURPLE_BONUS_BLOCK_TOP = 352;
 const int RED_BLOCK_LEFT = 594;
 const int RED_BLOCK_TOP = 22;
 
-//Бонусный красный блок
+// Бонусный красный блок
 const int RED_BONUS_BLOCK_LEFT = 648;
 const int RED_BONUS_BLOCK_TOP = 352;
 
-//Голубой блок
+// Голубой блок
 const int BLUE_BLOCK_LEFT = 324;
 const int BLUE_BLOCK_TOP = 22;
 
-//Бонусный голубой блок
+// Бонусный голубой блок
 const int BLUE_BONUS_BLOCK_LEFT = 594;
 const int BLUE_BONUS_BLOCK_TOP = 308;
 
-//Оранженвый блок
+// Оранженвый блок
 const int ORANGE_BLOCK_LEFT = 432;
 const int ORANGE_BLOCK_TOP = 22;
 
 //----------------------------------------------------------------------------Бонусы
+const int BLUE_BONUS_WIDTH = 27;
+const int BLUE_BONUS_HEIGHT = 30;
+
+// Голубой бонус
+const int BLUE_BONUS_LEFT = 456;
+const int BLUE_BONUS_HEIGHT = 449;
+
+// Зеленый бонус
+const int GREEN_BONUS_LEFT = 488;
+const int GREEN_BONUS_HEIGHT = 449;
+
+// Розовый бонус
+const int PINK_BONUS_LEFT = 520;
+const int PINK_BONUS_HEIGHT = 449;
+
+// Фиолетовый бонус
+const int PURPLE_BONUS_LEFT = 553;
+const int PURPLE_BONUS_HEIGHT = 449;
+
+// Красный бонус
+const int RED_BONUS_LEFT = 456;
+const int RED_BONUS_HEIGHT = 482;
+
+// Желтый бонус
+const int YELLOW_BONUS_LEFT = 488;
+const int YELLOW_BONUS_HEIGHT = 481;
+
+//----------------------------------------------------------------------------Спрайты границ
+
+const int CORNER_WIDTH = 31;
+const int CORNER_HEIGHT = 31;
+const int CORNER_LEFT = 1;
+const int CORNER_TOP = 2;
+const int CORNER_RIGHT = 32;
+const int CORNER_BOTTOM = 33;
+
+const int WALL_WIDTH = 22;
+const int WALL_HEIGHT = 22;
+const int WALL_LEFT = 65;
+const int WALL_TOP = 33;
+//-----------------------------------------------------------------------------Конец элементов спрайтов
+
 
 //-----------------------------------------------------------------------------Границы карты и меню
 
-//границы карты
+
+// Количество тайликов для прорисовки карты 
+// Границы карты
 const int WIDTH_MAP = 26;
 const int HEIGHT_MAP = 22;
-//границы меню
+// Границы меню
 const int WIDTH_MENU = 35;
 const int HEIGHT_MENU = 20;
+
+
+//------------------------------------------------------------------------------Стартовые позиции
+
+//платформа
+const sf::Vector2f PLATFORM_START_POSITION = Vector2f(320.f, 550.f);
+
+//Шарик стартовая позиция
+const sf::Vector2f BALL_START_POSITION = Vector2f(376.f, 534.f);
+//Шарик относительно платформы
+const sf::Vector2f BALL_RELATIVE_PLATFORM = Vector2f(56.f, -16.f);

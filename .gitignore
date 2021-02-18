@@ -36,3 +36,5 @@
 
 *.suo
 *.db
+
+Arkanoid_classic/.vs/*

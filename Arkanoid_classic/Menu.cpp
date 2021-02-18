@@ -1,10 +1,10 @@
 #include "Menu.h"
-#include "Border.h"
+
 
 
 Menu::Menu()
 {
-    if (font.loadFromFile("Fonts/Neucha/Neucha-Regular.ttf") == NULL)
+    if (font.loadFromFile(FONTPATH) == NULL)
         std::cout << "Font Error" << std::endl;
 
     text_startgame.setFont(font);
@@ -43,9 +43,10 @@ Menu::Menu()
 }
 
 // Запуск стартового меню
-void Menu::CreateStartMenu(Image& image, RenderWindow& window, Platform& platform, Balls& ball, Border& board)
+void Menu::CreateStartMenu(RenderWindow& window)
 {
-
+    Image image;
+    image.loadFromFile(IMGPATH);
     Texture texture;
     texture.loadFromImage(image);
 
@@ -241,7 +242,7 @@ void Menu::CreateMenu(RenderWindow& window)
     window.draw(text_level);
 }
 
-void Menu::CreateStopGame(RenderWindow& window, Platform& platform, std::list<Block*>& blocks, Border& board)
+void Menu::CreateStopGame(RenderWindow& window, CreatorPlatform& creatorPlatform, std::list<Block*>& blocks, Border& board)
 {
     std::ostringstream Record;
     Record << scoreRecord;

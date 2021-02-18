@@ -2,9 +2,11 @@
 
 #include "GameObject.h"
 
-class Border : public GameObject
+class Border
 {
 private:
+	Image image;
+	Texture texture;
 	//тайлы границ (углы и стены)
 	Sprite _verticalWall;
 	Sprite _horizontalWall;
@@ -13,16 +15,13 @@ private:
 	Sprite _rightTopCorner;
 	Sprite _rightBottomCorner;
 
-	//Переменные отвечающие за количество тайликов
-   //На данный момент тайлы вырезаны кустарным способом и поэтому отличаются по своему размеру
-   //Поэтому карту нельзя создать автоматически приходится немного подгадывать с размером тайлов
-	//Будет время это нужно исправть
+	
 	
 
 
 public:
 	//конструторы
-	Border(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
+	Border();
 	Border(const Border&) = delete;
 
 	~Border() {}

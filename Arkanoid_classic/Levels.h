@@ -13,9 +13,10 @@ class Levels
     std::list<Block*> blocks;
     std::list<Block*>::iterator blks;
 
-    std::list<Bonus*> bonuses;
-    std::list<Bonus*>::iterator bns;
+   /* std::list<Bonus*> bonuses;
+    std::list<Bonus*>::iterator bns;*/
 
+    void GameInit();
     int InitLevel(int lvl);
     int CreateLevel1();
     int CreateLevel2();
@@ -30,10 +31,10 @@ class Levels
 
 
 public:
-    Levels(Image& img) { image = img; level = 1; change_level = true; }
+    Levels() { level = 1; change_level = true; }
     ~Levels() {}
 
-    int StartGame(RenderWindow& window, Platform& platform, Balls& ball, Border& board);
+    int StartGame(RenderWindow& window);
     void SetChangeLevel(bool change) { change_level = change; }
 
 };

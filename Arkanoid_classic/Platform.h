@@ -25,7 +25,7 @@ public:
 
 	
 	// Методы для всех наследников
-	void Move(const int& speed, const float& time);
+	void Move(const float speed, const float time);
 	void CollisionWithBonus(Bonus& bonus);
 
 
@@ -89,6 +89,9 @@ public:
 	Vector2f SomeCollisionWithBall(Vector2f angleFlyBall, Ball& ball);
 
 	FloatRect SomeGetRect();
+	void SomeSetPosition(Vector2f position);
+	Vector2f SomeGetPosition();
+	void SomeMove(const float speed, const float time);
 };
 
 class CreatorSmallPlatform : public CreatorPlatform

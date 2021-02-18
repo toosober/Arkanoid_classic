@@ -9,6 +9,8 @@ int main()
     RenderWindow window(VideoMode(1100, 600), "Arkanoid");
     window.setVerticalSyncEnabled(0);
 
+    
+
     Menu::GetInstance().CreateStartMenu(window);
 
     Levels lvs;
@@ -16,8 +18,6 @@ int main()
     while(window.isOpen())
         lvs.StartGame(window);
 
-
-    delete lvs;
     return 0;
 }
 

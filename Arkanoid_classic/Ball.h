@@ -24,7 +24,7 @@ public:
 
 
 	//Методы
-	void Move(Vector2f angleUnitCircle, float time, CreatorPlatform& creatorPlatform);
+	void Move(Vector2f angleUnitCircle, float time, CreatorPlatform* creatorPlatform);
 	
 
 	void SetSpeedFast();  //тестовые функции
@@ -36,4 +36,6 @@ public:
 
 	void SetFlagInit(bool flagInit) { this->_flagInit = flagInit; }
 	bool GetFlagInit() { return this->_flagInit; }
+
+	void SetSpeed(float acceleration);
 };

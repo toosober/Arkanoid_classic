@@ -9,7 +9,7 @@ Ball::Ball(float acceleration)
 
 
 
-void Ball::Move(Vector2f angleUnitCircle, float time, CreatorPlatform& creatorPlatform)
+void Ball::Move(Vector2f angleUnitCircle, float time, CreatorPlatform* creatorPlatform)
 {
     // ¬ этот блок попадаем при первой инициализации угла, на который вылетит шарик при нажатии клавиши space
     if (_flagInit)
@@ -48,30 +48,38 @@ void Ball::Move(Vector2f angleUnitCircle, float time, CreatorPlatform& creatorPl
     }
 
     // ѕровер€ем столкновение с платформой
-
-    if (this->GetRect().intersects(creatorPlatform.SomeGetRect()))
+    if (this->GetRect().intersects(creatorPlatform->SomeGetRect()))
     {
-        _angleUnitCircle = creatorPlatform.SomeCollisionWithBall(_angleUnitCircle, *this);
+        _angleUnitCircle = creatorPlatform->SomeCollisionWithBall(_angleUnitCircle, *this);
     }
     
 
     //если шарик упал
     if (this->getPosition().y > BORDER_BOTTOM)
     {
-        Menu::GetInstance().SetCountlives(-1);       
+        Menu::GetInstance().SetCountlives(-1);
+        creatorPlatform = new CreatorMediumPlatform();
+        this->SetFlagInit(true);
+        this->SetFlagMove(false);
     }
 
 }
 
 
-
+// ”величиваем скорость шарика в два раза
 void Ball::SetSpeedFast()
 {
     _acceleration *= 2;
 }
 
+// ”меньшаем скорость шарика в два раза
 void Ball::SetSpeedSlow()
 {
     _acceleration /= 2;
+}
+
+void Ball::SetSpeed(float acceleration)
+{
+    _acceleration = acceleration;
 }
 

@@ -4,7 +4,7 @@
 //-------------------------------------------------------------------------Platform
 
 //движение платформы
-void Platform::Move(const int& speed, const float& time)
+void Platform::Move(const float speed, const float time)
 {
     this->move(speed * time, 0);
 }
@@ -324,6 +324,31 @@ FloatRect CreatorPlatform::SomeGetRect()
     Platform* platform = this->FactoryMethod();
 
     FloatRect result = platform->GetRect();
+    delete platform;
+    return result;
+}
+
+void CreatorPlatform::SomeSetPosition(Vector2f position)
+{
+    Platform* platform = this->FactoryMethod();
+
+    platform->setPosition(position);
+    delete platform;
+}
+
+void CreatorPlatform::SomeMove(const float speed, float time)
+{
+    Platform* platform = this->FactoryMethod();
+
+    platform->Move(speed, time);
+    delete platform;
+}
+
+Vector2f CreatorPlatform::SomeGetPosition()
+{
+    Platform* platform = this->FactoryMethod();
+    
+    Vector2f result = platform->getPosition();
     delete platform;
     return result;
 }
