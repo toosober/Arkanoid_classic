@@ -7,50 +7,19 @@
 
 //------------------------------------// GameObject //------------------------------------//
 
-GameObject::GameObject(float coordX, float coordY, float width, float height, int speedX, int speedY)
+GameObject::GameObject()
 {   
-    this->image.loadFromFile(ImgPath);
-    this->texture.loadFromImage(image);
-    this->coordX = coordX;
-    this->coordY = coordY;
-    this->width = width;
-    this->height = height;
-    this->speedX = speedX;
-    this->speedY = speedY;
-    isMove = false;
+    this->image.loadFromFile(IMGPATH);
+    this->texture.loadFromImage(image);    
 }
 
 FloatRect GameObject::GetRect()
 {
-    return FloatRect(this->getPosition().x, this->getPosition().y, width, height);
+    return FloatRect(this->getGlobalBounds().left, this->getGlobalBounds().top, this->getGlobalBounds().width, this->getGlobalBounds().height);
 }
 
-Vector2f GameObject::GetSpeed()
-{
-    return Vector2f(speedX, speedY);
-}
-
-void GameObject::SetSpeed(Vector2f speed)
-{
-    speedX = speed.x;
-    speedY = speed.y;
-}
-
-//------------------------------------// Platform //------------------------------------//
 
 
-
-//------------------------------------// Balls //------------------------------------//
-
-
-
-
-
-//------------------------------------// Bonus //------------------------------------//
-
-
-
-//------------------------------------// Block //------------------------------------//
 
 
 

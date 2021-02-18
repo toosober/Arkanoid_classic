@@ -17,6 +17,7 @@ int main()
         lvs.StartGame(window);
 
 
+    delete lvs;
     return 0;
 }
 

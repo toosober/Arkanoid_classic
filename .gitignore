@@ -33,3 +33,6 @@
 
 *.opendb
 *.opensdf
+
+*.suo
+*.db

@@ -1,72 +1,39 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Platform.h"
+#include "Menu.h"
 
-class Balls : public GameObject
+
+class Ball : public GameObject
 {
 private:
 
-	double angle_unit_circle_x = 0.0;  //направление полета шарика по x
-	double angle_unit_circle_y = 0.0;  //направление полета шарика по y
-	bool initialization = true;  //инициализация направления при запуске шарика с платформы (начало игры)
-	bool change_angle = true;    //используется для изменения угла в методе Move
-	unsigned score_ratio = 1;
+	Vector2f _angleUnitCircle;   // Вектор направления полета шарика
+	Vector2f _speed;			 // Вектор скорости
+	
+	int _acceleration;			  // Коээфициент ускорения
 
-	float speed_vector_x = 0; //вектор движения по x
-	float speed_vector_y = 0; //вектор движения по y
+	bool _flagInit;				 // Инициализация направления при запуске шарика с платформы (начало игры)
+	bool _flagMove;				 // Флаг запуска шарика
 
-
-
-	float ball_center_x = 0;    // центр шарика по х
-	float ball_center_y = 0;    // центр шарика по y
-	float ball_right_x = 0;     // правый край по х
-	float ball_left_x = 0;      // левый край по х
-
-	float platform_left_x = 0;  // левый край платформы по х это здесь хранить неправильно! исправить
-	float platform_right_x = 0;	// правый край платформы по х это здесь хранить неправильно! исправить
-	float platform_top_y = 0;   // верх платформы
-
-	bool greenBonus = false; //поймали ли пурпурный бонус, надобно убрать это в бонус
-
-	int ballPositionOnPlatform = 37; //позиция шарика относительно платформы по х
-
-
-
-	void CollisionLargePlatform(Platform* platform);
-	void CollisionSmallAndMediumPlatform(Platform* platform);
-
-
-
-
+	
 public:
-	Balls(Image& image, float coordX = 0, float coordY = 0, float width = 0, float height = 0, int speedX = 0, int speedY = 0);
+	Ball(float acceleration = 0.5);
+	~Ball() { }
 
-	Balls(const Balls&) = delete;
-	~Balls() { }
 
 	//Методы
-	void Move(double unit_circle_x, double unit_circle_y, float time, Platform* platform);
-	void ChangeVector(int x);
+	void Move(Vector2f angleUnitCircle, float time, CreatorPlatform& creatorPlatform);
+	
 
-	void SetSpeedFast(int x);  //тестовые функции
-	void SetSpeedSlow(int x);  //тестовые функции
+	void SetSpeedFast();  //тестовые функции
+	void SetSpeedSlow();  //тестовые функции
 
+	//Свойства
+	void SetFlagMove(bool flagMove) { this->_flagMove = flagMove; }	
+	bool GetFlagMove() { return this->_flagMove; }
 
-	void IncreaseValue_ScoreRatio() { this->score_ratio += 1; }
-	unsigned GetScoreRatio() { return score_ratio; }
-
-	void SetIsMove(bool isMove) { this->isMove = isMove; }
-	bool GetIsMove() { return this->isMove; }
-
-	void SetGreenBonus() { greenBonus = true; }
-	void ResetGreenBonus() { greenBonus = false; }
-	void SetBallPositionOnPlatform(int x) { ballPositionOnPlatform = x; }
-	void ResetBallPositionOnPlatform() { ballPositionOnPlatform = 37; }
-	int GetBallPositionOnPlatform() { return ballPositionOnPlatform; }
-
-
-
-
-
-
+	void SetFlagInit(bool flagInit) { this->_flagInit = flagInit; }
+	bool GetFlagInit() { return this->_flagInit; }
 };

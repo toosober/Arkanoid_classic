@@ -17,10 +17,7 @@ private:
    //На данный момент тайлы вырезаны кустарным способом и поэтому отличаются по своему размеру
    //Поэтому карту нельзя создать автоматически приходится немного подгадывать с размером тайлов
 	//Будет время это нужно исправть
-	int horizontalSize = 26;
-	int verticalSize = 22;
-	int horizontalSizeMenu = horizontalSize + 9;
-	int verticalSizeMenu = verticalSize - 2;
+	
 
 
 public:

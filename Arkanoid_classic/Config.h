@@ -2,7 +2,7 @@
 
 #include <string>
 
-const std::string ImgPath = "Images/Sprites_Arkanoid.png";
+const std::string IMGPATH = "Images/Sprites_Arkanoid.png";
 
 
 
@@ -10,12 +10,14 @@ const std::string ImgPath = "Images/Sprites_Arkanoid.png";
 const int BORDER_RIGHT = 750;
 const int BORDER_LEFT = 25;
 const int BORDER_TOP = 25;
+const int BORDER_BOTTOM = 700;
 
 
 
 //------------------------------------------Элементы спрайтов
 
-//Платформа
+//------------------------------------------------Платформа
+
 //Большая платформа
 const int LARGE_PLATFORM_LEFT = 148;
 const int LARGE_PLATFORM_TOP = 302;
@@ -34,13 +36,15 @@ const int SMALL_PLATFORM_TOP = 302;
 const int SMALL_PLATFORM_WIDTH = 58;
 const int SMALL_PLATFORM_HEIGHT = 31;
 
+//-------------------------------------------------------------------Шарик
 //Шарик
 const int BLUE_BALL_LEFT = 64;
 const int BLUE_BALL_TOP = 128;
 const int BLUE_BALL_WIDTH = 16;
 const int BLUE_BALL_HEIGHT = 16;
 
-//Блоки
+
+//--------------------------------------------------------------------Блоки
 const int BLOCK_WIDTH = 54;
 const int BLOCK_HEIGHT = 22;
 
@@ -96,4 +100,13 @@ const int BLUE_BONUS_BLOCK_TOP = 308;
 const int ORANGE_BLOCK_LEFT = 432;
 const int ORANGE_BLOCK_TOP = 22;
 
-//Бонусы
+//----------------------------------------------------------------------------Бонусы
+
+//-----------------------------------------------------------------------------Границы карты и меню
+
+//границы карты
+const int WIDTH_MAP = 26;
+const int HEIGHT_MAP = 22;
+//границы меню
+const int WIDTH_MENU = 35;
+const int HEIGHT_MENU = 20;
