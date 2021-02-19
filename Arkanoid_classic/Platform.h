@@ -1,10 +1,8 @@
 #pragma once
 
-
-#include "Config.h"
 #include "GameObject.h"
-#include "Bonus.h"
-#include "Ball.h"
+
+
 
 
 class Platform : public GameObject
@@ -12,13 +10,13 @@ class Platform : public GameObject
 
 protected:
 
-	Vector2f BallCollisionLeftEdge(Vector2f angleUnitCircle, Ball& ball);			// Попали в верхнюю часть платформы в левый край (0-8 пиксель)
-	Vector2f BallCollisionRightEdge(Vector2f angleUnitCircle, Ball& ball);			// Попали в верхнюю часть платформы в правый край (0-8 пиксель с правого края)
-	Vector2f BallCollisionStandart(Vector2f angleUnitCircle, Ball& ball);			// Попали в верхнюю часть платформы
-	Vector2f BallCollisionLeftWall(Vector2f angleUnitCircle, Ball& ball);
-	Vector2f BallCollisionRightWall(Vector2f angleUnitCircle, Ball& ball);
+	//Vector2f BallCollisionLeftEdge(Vector2f angleUnitCircle, Ball& ball);			// Попали в верхнюю часть платформы в левый край (0-8 пиксель)
+	//Vector2f BallCollisionRightEdge(Vector2f angleUnitCircle, Ball& ball);			// Попали в верхнюю часть платформы в правый край (0-8 пиксель с правого края)
+	//Vector2f BallCollisionStandart(Vector2f angleUnitCircle, Ball& ball);			// Попали в верхнюю часть платформы
+	//Vector2f BallCollisionLeftWall(Vector2f angleUnitCircle, Ball& ball);
+	//Vector2f BallCollisionRightWall(Vector2f angleUnitCircle, Ball& ball);
 	
-	float CollisionLocation(Ball& ball);
+	//float CollisionLocation(Ball& ball);
 
 public:
 	Platform() {}
@@ -32,7 +30,7 @@ public:
 
 
 	// Виртуальные методы
-	virtual Vector2f CollisionWithBall(Vector2f angleUnitCircle, Ball& ball); // Cтолкновение с шариком
+	//virtual Vector2f CollisionWithBall(Vector2f angleUnitCircle, Ball& ball); // Cтолкновение с шариком
 };
 
 //---------------------------------------Большая платформа
@@ -41,9 +39,9 @@ class LargePlatform : public Platform
 {
 private:
 
-	Vector2f BallCollisionLeftEdgePlus(Vector2f angleUnitCircle, Ball& ball);
+	/*Vector2f BallCollisionLeftEdgePlus(Vector2f angleUnitCircle, Ball& ball);
 	Vector2f BallCollisionRightEdgePlus(Vector2f angleUnitCircle, Ball& ball);
-	Vector2f BallCollisionCenter(Vector2f angleUnitCircle, Ball& ball);
+	Vector2f BallCollisionCenter(Vector2f angleUnitCircle, Ball& ball);*/
 
 
 
@@ -52,7 +50,7 @@ public:
 	~LargePlatform() {}
 
 
-	virtual Vector2f CollisionWithBall(Vector2f angleUnitCircle, Ball& ball) override; // Переопределяет столкновение с шариком
+	//virtual Vector2f CollisionWithBall(Vector2f angleUnitCircle, Ball& ball) override; // Переопределяет столкновение с шариком
 
 };
 
@@ -61,7 +59,8 @@ public:
 class MediumPlatform : public Platform
 {
 private:
-	
+	Image image;
+	Texture texture;
 
 public:
 	MediumPlatform();
@@ -83,11 +82,15 @@ public:
 //---------------------------------------------Классы Фабричныого метода
 class CreatorPlatform
 {
-public:
+
+	
+	
+
+public:	
 	virtual ~CreatorPlatform() {};
 	virtual Platform* FactoryMethod() const = 0;
 
-	Vector2f SomeCollisionWithBall(Vector2f angleUnitCircle, Ball& ball);
+	//Vector2f SomeCollisionWithBall(Vector2f angleUnitCircle, Ball& ball);
 
 	FloatRect SomeGetRect();
 	void SomeSetPosition(Vector2f position);

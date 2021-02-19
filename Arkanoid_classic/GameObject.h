@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Config.h"
+#include "config.h"
 
 using std::string;
 using namespace sf;
@@ -9,7 +9,7 @@ using namespace sf;
 class GameObject : public Sprite
 {
 protected:
-	static Image image;
+	Image image;
 	Texture texture;
 	
 

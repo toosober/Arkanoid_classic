@@ -38,3 +38,4 @@
 *.db
 
 Arkanoid_classic/.vs/*
+Arkanoid_classic/x64/*

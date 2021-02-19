@@ -1,5 +1,6 @@
-
+#include "Config.h"
 #include "Border.h"
+#include <iostream>
 
 Border::Border()
 {
@@ -9,20 +10,26 @@ Border::Border()
 	_leftTopCorner.setTexture(texture);
 	_leftTopCorner.setTextureRect(sf::IntRect(CORNER_LEFT, CORNER_TOP, CORNER_WIDTH, CORNER_HEIGHT));
 
-	_leftBottomCorner = _leftTopCorner;
-	_leftBottomCorner.setRotation(-90.f);
+	_leftBottomCorner.setTexture(texture);
+	_leftBottomCorner.setTextureRect(sf::IntRect(CORNER_LEFT, CORNER_BOTTOM, CORNER_WIDTH, -CORNER_HEIGHT));
 
-	_rightTopCorner = _leftTopCorner;
-	_rightTopCorner.setRotation(-180.f);
+	_rightTopCorner.setTexture(texture);
+	_rightTopCorner.setTextureRect(sf::IntRect(CORNER_RIGHT, CORNER_TOP, -CORNER_WIDTH, CORNER_HEIGHT));
 
-	_rightBottomCorner = _leftTopCorner;
-	_rightBottomCorner.setRotation(-270.f);
+	_rightBottomCorner.setTexture(texture);
+	_rightBottomCorner.setTextureRect(sf::IntRect(CORNER_RIGHT, CORNER_BOTTOM, -CORNER_WIDTH, -CORNER_HEIGHT));
 
-	_horizontalWall.setTexture(texture);
-	_horizontalWall.setTextureRect(sf::IntRect(WALL_LEFT, WALL_TOP, WALL_WIDTH, WALL_HEIGHT));
+	_horizontalTopWall.setTexture(texture);
+	_horizontalTopWall.setTextureRect(sf::IntRect(HORIZONTAL_WALL_LEFT, HORIZONTAL_WALL_TOP, HORIZONTAL_WALL_WIDTH, HORIZONTAL_WALL_HEIGHT));
 
-	_verticalWall = _horizontalWall;	
-	_verticalWall.setRotation(90.f);
+	_horizontalBottomWall.setTexture(texture);
+	_horizontalBottomWall.setTextureRect(sf::IntRect(HORIZONTAL_WALL_LEFT, HORIZONTAL_WALL_BOTTOM, HORIZONTAL_WALL_WIDTH, -HORIZONTAL_WALL_HEIGHT));
+	
+	_verticalLeftWall.setTexture(texture);
+	_verticalLeftWall.setTextureRect(sf::IntRect(VERTICAL_WALL_LEFT, VERTICAL_WALL_TOP, VERTICAL_WALL_WIDTH, VERTICAL_WALL_HEIGHT));
+
+	_verticalRightWall.setTexture(texture);
+	_verticalRightWall.setTextureRect(sf::IntRect(VERTICAL_WALL_RIGHT, VERTICAL_WALL_TOP, -VERTICAL_WALL_WIDTH, VERTICAL_WALL_HEIGHT));
 }
 
 
@@ -50,16 +57,28 @@ sf::Sprite Border::GetRightBottomCorner(int posX, int posY)
 	return _rightBottomCorner;
 }
 
-sf::Sprite Border::GetVerticalWall(int posX, int posY)
+sf::Sprite Border::GetVerticalLeftWall(int posX, int posY)
 {
-	_verticalWall.setPosition(posX, posY);
-	return _verticalWall;
+	_verticalLeftWall.setPosition(posX, posY);
+	return _verticalLeftWall;
 }
 
-sf::Sprite Border::GetHorizontalWall(int posX, int posY)
+sf::Sprite Border::GetVerticalRightWall(int posX, int posY)
 {
-	_horizontalWall.setPosition(posX, posY);
-	return _horizontalWall;
+	_verticalRightWall.setPosition(posX, posY);
+	return _verticalRightWall;
+}
+
+sf::Sprite Border::GetHorizontalTopWall(int posX, int posY)
+{
+	_horizontalTopWall.setPosition(posX, posY);
+	return _horizontalTopWall;
+}
+
+sf::Sprite Border::GetHorizontalBottomWall(int posX, int posY)
+{
+	_horizontalBottomWall.setPosition(posX, posY);
+	return _horizontalBottomWall;
 }
 
 void Border::CreateMap(RenderWindow& window)
@@ -74,13 +93,13 @@ void Border::CreateMap(RenderWindow& window)
 			if (i == 0 && j == 0)
 				window.draw(this->GetLeftTopCorner(0, 0));
 			else if (i < WIDTH_MAP - 1 && j == 0)
-				window.draw(this->GetHorizontalWall(31 * i, 0));
+				window.draw(this->GetHorizontalTopWall(32 * i, 0));
 			else if (i == WIDTH_MAP - 1 && j == 0)
-				window.draw(this->GetRightTopCorner((31 * i) - 4, 0));
+				window.draw(this->GetRightTopCorner(32 * i, 0));
 			else if (j > 0 && i == 0)
-				window.draw(this->GetVerticalWall(0, 29 * j));
+				window.draw(this->GetVerticalLeftWall(0, 30 * j));
 			else if (j > 0 && i == WIDTH_MAP - 1)
-				window.draw(this->GetVerticalWall(31 * i, 29 * j));
+				window.draw(this->GetVerticalRightWall(32 * i, 30 * j));
 		}
 	}
 }
@@ -90,26 +109,26 @@ void Border::CreateMenu(RenderWindow& window)
 	//Отрисовываем меню из тайликов
 	   //В тайлах не выдержан размер, поэтому коэффициенты в некоторых местах
 	   //подогнанны вручную...
-	for (int i = (WIDTH_MAP); i < (WIDTH_MENU); i++)
+	for (int i = WIDTH_MAP; i < WIDTH_MENU; i++)
 	{
 		for (int j = 0; j < HEIGHT_MENU; j++)
 		{
 			if (i == WIDTH_MAP && j == 0)
-				window.draw(this->GetLeftTopCorner((i * 31), 0));
+				window.draw(this->GetLeftTopCorner((32 * i), 0));
 			else if (i < WIDTH_MENU - 1 && j == 0)
-				window.draw(this->GetHorizontalWall(31 * i, 0));
+				window.draw(this->GetHorizontalTopWall(32 * i, 0));
 			else if (i == WIDTH_MENU - 1 && j == 0)
-				window.draw(this->GetRightTopCorner((31 * i) - 4, 0));
+				window.draw(this->GetRightTopCorner(32 * i, 0));
 			else if (j > 0 && i == WIDTH_MAP && j < HEIGHT_MENU - 1)
-				window.draw(this->GetVerticalWall(i * 31, 29 * j));
+				window.draw(this->GetVerticalLeftWall(32 * i, 30 * j));
 			else if (j > 0 && i == WIDTH_MENU - 1 && j < HEIGHT_MENU - 1)
-				window.draw(this->GetVerticalWall(i * 31, 29 * j));
+				window.draw(this->GetVerticalRightWall(32 * i, 30 * j));
 			else if (j == HEIGHT_MENU - 1 && i == WIDTH_MAP)
-				window.draw(this->GetLeftBottomCorner((i * 31), (j * 29)));
+				window.draw(this->GetLeftBottomCorner(32 * i, (30 * j)));
 			else if (j == HEIGHT_MENU - 1 && i == WIDTH_MENU - 1)
-				window.draw(this->GetRightBottomCorner((i * 31) - 4, (j * 29)));
+				window.draw(this->GetRightBottomCorner(32 * i, 30 * j));
 			else if (j == HEIGHT_MENU - 1 && i > WIDTH_MAP && i < WIDTH_MENU - 1)
-				window.draw(this->GetHorizontalWall(31 * i, (j * 29 + 7)));
+				window.draw(this->GetHorizontalBottomWall(32 * i, 30 * j));
 		}
 	}
 }

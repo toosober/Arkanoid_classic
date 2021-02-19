@@ -142,17 +142,24 @@ const int YELLOW_BONUS_TOP = 481;
 
 //-------------------------------------------------------------------------------Спрайты границ
 
-const int CORNER_WIDTH = 31;
-const int CORNER_HEIGHT = 31;
-const int CORNER_LEFT = 1;
+const int CORNER_WIDTH = 32;
+const int CORNER_HEIGHT = 32;
+const int CORNER_LEFT = 0;
 const int CORNER_TOP = 2;
 const int CORNER_RIGHT = 32;
-const int CORNER_BOTTOM = 33;
+const int CORNER_BOTTOM = 32;
 
-const int WALL_WIDTH = 22;
-const int WALL_HEIGHT = 22;
-const int WALL_LEFT = 65;
-const int WALL_TOP = 33;
+const int VERTICAL_WALL_WIDTH = 31;
+const int VERTICAL_WALL_HEIGHT = 30;
+const int VERTICAL_WALL_LEFT = 64;
+const int VERTICAL_WALL_TOP = 0;
+const int VERTICAL_WALL_RIGHT = 96;
+
+const int HORIZONTAL_WALL_WIDTH = 32;
+const int HORIZONTAL_WALL_HEIGHT = 32;
+const int HORIZONTAL_WALL_LEFT = 64;
+const int HORIZONTAL_WALL_TOP = 32;
+const int HORIZONTAL_WALL_BOTTOM = 62;
 //-----------------------------------------------------------------------------Конец элементов спрайтов
 
 
@@ -161,10 +168,10 @@ const int WALL_TOP = 33;
 
 // Количество тайликов для прорисовки карты 
 // Границы карты
-const int WIDTH_MAP = 26;
+const int WIDTH_MAP = 25;
 const int HEIGHT_MAP = 22;
 // Границы меню
-const int WIDTH_MENU = 35;
+const int WIDTH_MENU = 34;
 const int HEIGHT_MENU = 20;
 
 

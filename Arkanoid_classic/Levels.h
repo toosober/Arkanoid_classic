@@ -1,17 +1,15 @@
 #pragma once
 
-
 #include "Config.h"
-#include "Block.h"
-#include "Ball.h"
-#include "Bonus.h"
+#include "Border.h"
+#include "Platform.h"
 
 
 
 class Levels
 {
 
-    unsigned level;
+    /*unsigned level;
     bool change_level;
     Image image;
     std::list<Block*> block;
@@ -32,15 +30,15 @@ class Levels
 
 
 
-
+*/
 
 public:
-    Levels() { level = 1; change_level = true; }
-    ~Levels() {}
+    /*Levels() { level = 1; change_level = true; }
+    ~Levels() {}*/
 
     int StartGame(RenderWindow& window);
-    void SetChangeLevel(bool change) { change_level = change; }
-    void CreateBonus(FloatRect blockPosition, BlockType blockType);
+    /*void SetChangeLevel(bool change) { change_level = change; }
+    void CreateBonus(FloatRect blockPosition, BlockType blockType);*/
 
 };
 
