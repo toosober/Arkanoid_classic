@@ -1,7 +1,8 @@
 ﻿
 #include "Config.h" //Файл конфига
-#include "Levels.h" //Основаная логика уровней
-#include "Menu.h"   //Файл с вступительным меню и 
+#include "Menu.h"
+#include "Levels.h"
+
 
 
 int main()

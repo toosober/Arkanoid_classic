@@ -1,13 +1,15 @@
 #pragma once
 
+#include "Config.h"
 #include "GameObject.h"
+
+
 
 class Border
 {
 private:
 	Image image;
-	Texture texture;
-	//тайлы границ (углы и стены)
+	Texture texture; 	//тайлы границ (углы и стены)
 	Sprite _verticalWall;
 	Sprite _horizontalWall;
 	Sprite _leftTopCorner;

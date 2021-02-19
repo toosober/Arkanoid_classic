@@ -1,13 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-#include <string>
-#include <iostream>
-#include <list>
-#include <random> //Для задания случайного направления полета шарика при первом его запуске с платформы
-#include "Config.h" //Хранит константные значения конфигурации
+#include "Config.h"
 
 using std::string;
 using namespace sf;
@@ -37,4 +30,3 @@ public:
 	FloatRect GetRect();
 	
 };
-

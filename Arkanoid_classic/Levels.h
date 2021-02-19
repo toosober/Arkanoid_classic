@@ -1,7 +1,11 @@
 #pragma once
 
 
-#include "Border.h"
+#include "Config.h"
+#include "Block.h"
+#include "Ball.h"
+#include "Bonus.h"
+
 
 
 class Levels
@@ -10,11 +14,11 @@ class Levels
     unsigned level;
     bool change_level;
     Image image;
-    std::list<Block*> blocks;
-    std::list<Block*>::iterator blks;
+    std::list<Block*> block;
+    std::list<Block*>::iterator blk;
 
-   /* std::list<Bonus*> bonuses;
-    std::list<Bonus*>::iterator bns;*/
+    std::list<Bonus*> bonus;
+    std::list<Bonus*>::iterator bns;
 
     void GameInit();
     int InitLevel(int lvl);
@@ -36,6 +40,7 @@ public:
 
     int StartGame(RenderWindow& window);
     void SetChangeLevel(bool change) { change_level = change; }
+    void CreateBonus(FloatRect blockPosition, BlockType blockType);
 
 };
 

@@ -1,5 +1,9 @@
-#include "Menu.h"
 
+#include "Menu.h"
+#include "Platform.h"
+#include "Ball.h"
+#include "Border.h"
+#include "Block.h"
 
 
 Menu::Menu()
@@ -122,6 +126,9 @@ void Menu::CreateStartMenu(RenderWindow& window)
     text_multiply.setColor(Color::Red);
     text_multiply.setPosition(216, 344);
     
+    MediumPlatform platform;
+    Ball ball;
+    Border board;
 
     //устанавливаем начальные позиции для элементов
     platform.setPosition(-25, 550);
@@ -242,7 +249,7 @@ void Menu::CreateMenu(RenderWindow& window)
     window.draw(text_level);
 }
 
-void Menu::CreateStopGame(RenderWindow& window, CreatorPlatform& creatorPlatform, std::list<Block*>& blocks, Border& board)
+void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board)
 {
     std::ostringstream Record;
     Record << scoreRecord;
@@ -283,10 +290,10 @@ void Menu::CreateStopGame(RenderWindow& window, CreatorPlatform& creatorPlatform
             }
         }
 
-        if (platform.getPosition().x < 1300)
-            platform.move(time * 1.5, 0);
-        else
-            platform.setPosition(1300, 550);
+       ///* if (platform.getPosition().x < 1300)
+       //     platform.move(time * 1.5, 0);*/
+       // else
+       //     platform.setPosition(1300, 550);
 
         for (blks = blocks.begin(); blks != blocks.end(); blks++)
         {
@@ -313,7 +320,7 @@ void Menu::CreateStopGame(RenderWindow& window, CreatorPlatform& creatorPlatform
         for (blks = blocks.begin(); blks != blocks.end(); blks++)
             window.draw(**blks);
 
-        window.draw(platform);        
+        //window.draw(platform);        
         window.draw(text_score);
         window.draw(text_lives);
         window.draw(text_level);

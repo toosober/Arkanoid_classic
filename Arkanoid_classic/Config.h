@@ -1,6 +1,17 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+#include <list>
+#include <random>				//Для задания случайного направления полета шарика при первом его запуске с платформы
+#include <sstream>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+
+
+
+using namespace sf;
 
 const std::string IMGPATH = "Images/Sprites_Arkanoid.png";
 const std::string FONTPATH = "Fonts/Neucha/Neucha-Regular.ttf";
@@ -50,12 +61,12 @@ const int BLOCK_WIDTH = 54;
 const int BLOCK_HEIGHT = 22;
 
 // Желтый блок
-const int BLUE_BLOCK_LEFT = 648;
-const int BLUE_BLOCK_TOP = 22;
+const int YELLOW_BLOCK_LEFT = 648;
+const int YELLOW_BLOCK_TOP = 22;
 
 // Бонусный желтый блок
-const int BLUE_BONUS_BLOCK_LEFT = 594;
-const int BLUE_BONUS_BLOCK_TOP = 374;
+const int YELLOW_BONUS_BLOCK_LEFT = 594;
+const int YELLOW_BONUS_BLOCK_TOP = 374;
 
 // Зеленый блок
 const int GREEN_BLOCK_LEFT = 378;
@@ -102,34 +113,34 @@ const int ORANGE_BLOCK_LEFT = 432;
 const int ORANGE_BLOCK_TOP = 22;
 
 //----------------------------------------------------------------------------Бонусы
-const int BLUE_BONUS_WIDTH = 27;
-const int BLUE_BONUS_HEIGHT = 30;
+const int BONUS_WIDTH = 27;
+const int BONUS_HEIGHT = 30;
 
 // Голубой бонус
 const int BLUE_BONUS_LEFT = 456;
-const int BLUE_BONUS_HEIGHT = 449;
+const int BLUE_BONUS_TOP = 449;
 
 // Зеленый бонус
 const int GREEN_BONUS_LEFT = 488;
-const int GREEN_BONUS_HEIGHT = 449;
+const int GREEN_BONUS_TOP = 449;
 
 // Розовый бонус
 const int PINK_BONUS_LEFT = 520;
-const int PINK_BONUS_HEIGHT = 449;
+const int PINK_BONUS_TOP = 449;
 
 // Фиолетовый бонус
 const int PURPLE_BONUS_LEFT = 553;
-const int PURPLE_BONUS_HEIGHT = 449;
+const int PURPLE_BONUS_TOP = 449;
 
 // Красный бонус
 const int RED_BONUS_LEFT = 456;
-const int RED_BONUS_HEIGHT = 482;
+const int RED_BONUS_TOP = 482;
 
 // Желтый бонус
 const int YELLOW_BONUS_LEFT = 488;
-const int YELLOW_BONUS_HEIGHT = 481;
+const int YELLOW_BONUS_TOP = 481;
 
-//----------------------------------------------------------------------------Спрайты границ
+//-------------------------------------------------------------------------------Спрайты границ
 
 const int CORNER_WIDTH = 31;
 const int CORNER_HEIGHT = 31;
@@ -166,3 +177,17 @@ const sf::Vector2f PLATFORM_START_POSITION = Vector2f(320.f, 550.f);
 const sf::Vector2f BALL_START_POSITION = Vector2f(376.f, 534.f);
 //Шарик относительно платформы
 const sf::Vector2f BALL_RELATIVE_PLATFORM = Vector2f(56.f, -16.f);
+
+
+//----------------------------------------------------------------------------------Цветка Бонусов и Блков 
+
+enum BlockType { NO_BONUS, BLUE, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
+/*
+* Blue	  - увеличивает / уменьшает платформу
+* Green	  - шарик прилипает к платформе
+* Orange  - не имеет бонуса
+* Pink	  - из одного шарика становится три 
+* Purple  - замедляет / ускоряет платформу
+* Red     - платформа стреляет плуями по блокам
+* Yellow  - игроку добавляется одна жизнь
+*/

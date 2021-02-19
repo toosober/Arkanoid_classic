@@ -1,3 +1,270 @@
 ﻿  Arkanoid_classic.cpp
-F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.h(6,32): warning C4081: требуется "newline"; обнаружен ";"
-  Arkanoid_classic.vcxproj -> F:\My_project\С++\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,54): error C2065: Block: необъявленный идентификатор
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,60): error C2059: синтаксическая ошибка: >
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(15,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(16,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(17,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(18,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(19,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(21,30): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(35,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(44,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(45,68): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(46,61): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(55,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(90,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+  Ball.cpp
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(15,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(16,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(17,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(18,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(19,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(21,30): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(35,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(44,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(45,68): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(46,61): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(55,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(90,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,54): error C2065: Block: необъявленный идентификатор
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,60): error C2059: синтаксическая ошибка: >
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Ball.cpp(10,20): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Ball.cpp(56,90): error C2660: CreatorPlatform::SomeCollisionWithBall: функция не принимает 2 аргументов
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(90,11): message : см. объявление "CreatorPlatform::SomeCollisionWithBall"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Ball.cpp(86,21): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+  Block.cpp
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(15,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(16,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(17,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(18,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(19,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(21,30): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(35,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(44,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(45,68): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(46,61): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(55,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(90,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,54): error C2065: Block: необъявленный идентификатор
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,60): error C2059: синтаксическая ошибка: >
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(160,32): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(161,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(185,33): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(186,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(210,32): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(211,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(235,33): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Block.cpp(236,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+  Levels.cpp
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(15,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(16,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(17,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(18,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(19,64): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(21,30): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(35,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(44,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(45,68): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(46,61): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(55,67): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.h(90,63): error C2061: синтаксическая ошибка: идентификатор "Ball"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,54): error C2065: Block: необъявленный идентификатор
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,60): error C2059: синтаксическая ошибка: >
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(16,19): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(33,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(55,71): warning C4244: =: преобразование "unsigned int" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(56,49): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(112,68): error C2664: "void Menu::CreateStopGame(sf::RenderWindow &,unknown-type &,Border &)": невозможно преобразовать аргумент 2 из "std::list<Block *,std::allocator<Block *>>" в "unknown-type &"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,7): message : см. объявление "Menu::CreateStopGame"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(190,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(190,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(197,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(197,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(211,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(211,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(218,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(218,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(232,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(232,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(239,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(239,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(253,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(253,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(260,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(260,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(274,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(274,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(281,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(281,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(294,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(294,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(301,57): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(301,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(313,53): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(313,32): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(334,49): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(334,36): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Menu.cpp
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,54): error C2065: Block: необъявленный идентификатор
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,60): error C2059: синтаксическая ошибка: >
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Ball.h(28,65): error C2061: синтаксическая ошибка: идентификатор "CreatorPlatform"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(150,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(175,32): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(180,28): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(185,41): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(201,45): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(253,1): error C2511: void Menu::CreateStopGame(sf::RenderWindow &,std::list<Block *,std::allocator<Block *>> &,Border &): перегруженная функция-член не найдена в "Menu"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(10): message : см. объявление "Menu"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(255,15): error C2597: недопустимая ссылка на нестатический член "Menu::scoreRecord"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(15): message : см. объявление "Menu::scoreRecord"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(269,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(301,36): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(324,21): error C2597: недопустимая ссылка на нестатический член "Menu::text_score"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(25): message : см. объявление "Menu::text_score"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(325,21): error C2597: недопустимая ссылка на нестатический член "Menu::text_lives"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(27): message : см. объявление "Menu::text_lives"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(326,21): error C2597: недопустимая ссылка на нестатический член "Menu::text_level"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(26): message : см. объявление "Menu::text_level"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.cpp(327,21): error C2597: недопустимая ссылка на нестатический член "Menu::text_stopgame"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(29): message : см. объявление "Menu::text_stopgame"
+  Platform.cpp
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,54): error C2065: Block: необъявленный идентификатор
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(58,60): error C2059: синтаксическая ошибка: >
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Ball.h(28,65): error C2061: синтаксическая ошибка: идентификатор "CreatorPlatform"
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(57,33): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(58,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(67,34): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(68,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(83,33): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(84,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(93,33): warning C4305: =: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(94,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(122,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(235,35): warning C4305: +=: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(236,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(241,39): warning C4305: +=: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(243,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(261,35): warning C4305: +=: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(262,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(267,38): warning C4305: +=: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(269,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(298,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+  Создание кода...

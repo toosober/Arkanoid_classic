@@ -1,10 +1,9 @@
 #pragma once
 
+#include "Config.h"
+
 #include "Border.h"
-#include <sstream>
-#include "Ball.h"
-#include "Platform.h"
-#include "Block.h"
+
 
 #pragma warning(disable : 4996); //ругается на устаревшую строку text.setColor(Color::Yellow)
 
@@ -54,9 +53,9 @@ public:
 	void Setlevel(int x) { level = x-1; }
 	const unsigned& Getlevel() const { return level; }
 
-	void CreateStartMenu(Image& image, RenderWindow& window, Platform& platform, Ball& ball, Border& board);
+	void CreateStartMenu(RenderWindow& window);
 	void CreateMenu(RenderWindow& window);
-	void CreateStopGame(RenderWindow& window, CreatorPlatform& creatorPlatform, std::list<Block*>& blocks, Border& board);
+	void CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board);
 	void PlayerInit() { score = 0; lives = 3; level = 1; }
 
 	
