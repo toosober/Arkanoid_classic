@@ -1,6 +1,9 @@
-#pragma once
 
-#include "config.h"
+
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
+#include "Config.h"
 
 using std::string;
 using namespace sf;
@@ -8,13 +11,11 @@ using namespace sf;
 //---------------------------------------------Game Object--------------------------------------------------
 class GameObject : public Sprite
 {
+
 protected:
-	Image image;
-	Texture texture;
 	
-
-	
-
+	Image _image;
+	Texture _texture;
 
 public:
 	//конструторы
@@ -22,11 +23,17 @@ public:
 	GameObject(const GameObject&) = delete;
 	virtual ~GameObject() {}
 
-	//переопределенные операторы
-	GameObject operator=(const GameObject&) const = delete;
-	GameObject operator+(const GameObject&) const = delete;
 
 	//ћетоды
 	FloatRect GetRect();
-	
+
+	Image GetImage() { return _image; };
+	void SetImage(string path) { _image.loadFromFile(path); }
+
+	Texture GetTexture() { return _texture; }
+	void SetTexture() { _texture.loadFromImage(_image); }
 };
+
+#endif 
+
+

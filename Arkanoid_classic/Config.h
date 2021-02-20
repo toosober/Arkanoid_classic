@@ -1,4 +1,6 @@
-#pragma once
+
+#ifndef _CONFIG_H
+#define _CONFIG_H
 
 #include <string>
 #include <iostream>
@@ -19,9 +21,9 @@ const std::string FONTPATH = "Fonts/Neucha/Neucha-Regular.ttf";
 
 
 // √раницы меню
-const int BORDER_RIGHT = 750;
+const int BORDER_RIGHT = 775;
 const int BORDER_LEFT = 25;
-const int BORDER_TOP = 25;
+const int BORDER_TOP = 23;
 const int BORDER_BOTTOM = 700;
 
 
@@ -198,3 +200,4 @@ enum BlockType { NO_BONUS, BLUE, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
 * Red     - платформа стрел€ет плу€ми по блокам
 * Yellow  - игроку добавл€етс€ одна жизнь
 */
+#endif

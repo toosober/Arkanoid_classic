@@ -1,8 +1,10 @@
-#pragma once
+
+
+#ifndef _LEVELS_H
+#define _LEVELS_H
 
 #include "Config.h"
-#include "Border.h"
-#include "Platform.h"
+
 
 
 
@@ -42,3 +44,4 @@ public:
 
 };
 
+#endif

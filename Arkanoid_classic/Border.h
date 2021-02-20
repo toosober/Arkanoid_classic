@@ -1,6 +1,7 @@
-#pragma once
 
 
+#ifndef _BORDER_H
+#define _BORDER_H
 
 
 
@@ -49,3 +50,4 @@ public:
 
 };
 
+#endif
