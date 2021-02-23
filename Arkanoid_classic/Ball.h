@@ -1,10 +1,9 @@
-#pragma once
+
+#ifndef _BALL_H
+#define _BALL_H
 
 #include "GameObject.h"
 
-#include "Platform.h"
-
-class CreatorPlatform;
 class Ball : public GameObject
 {
 private:
@@ -24,18 +23,25 @@ public:
 
 
 	//Методы
-	void Move(double angleUnitCircleX, double angleUnityCircleY, float time, CreatorPlatform* creatorPlatform);
-	
+	void Move(double angleUnitCircleX, double angleUnityCircleY, float time);
 
-	void SetSpeedFast();  //тестовые функции
-	void SetSpeedSlow();  //тестовые функции
+	void SetSpeedFast();  // Тестовые функции
+	void SetSpeedSlow();  // Тестовые функции
+	void SetSpeed(float acceleration); // Функция ускорения, нужна будет когда буду делать бонусы
+
 
 	//Свойства
-	void SetFlagMove(bool flagMove) { this->_flagMove = flagMove; }	
-	bool GetFlagMove() { return this->_flagMove; }
+	void SetFlagMove(bool flagMove) { _flagMove = flagMove; }	
+	bool GetFlagMove() { return _flagMove; }
 
-	void SetFlagInit(bool flagInit) { this->_flagInit = flagInit; }
-	bool GetFlagInit() { return this->_flagInit; }
+	void SetFlagInit(bool flagInit) { _flagInit = flagInit; }
+	bool GetFlagInit() { return _flagInit; }
 
-	void SetSpeed(float acceleration);
+	void SetAngleUnitCircle(Vector2f angleUnitCircle) { _angleUnitCircle = angleUnitCircle; }
+	Vector2f GetAngleUnitCircle() { return _angleUnitCircle; }
+
+	
+
 };
+
+#endif // _BALL_H

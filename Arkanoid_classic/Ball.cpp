@@ -6,7 +6,7 @@
 
 
 Ball::Ball(float acceleration)    
-{  
+{   
     this->setTexture(_texture);
     this->setTextureRect(sf::IntRect(BLUE_BALL_LEFT, BLUE_BALL_TOP, BLUE_BALL_WIDTH, BLUE_BALL_HEIGHT));
    _acceleration = acceleration;
@@ -16,7 +16,7 @@ Ball::Ball(float acceleration)
 
 
 
-void Ball::Move(double angleUnitCircleX, double angleUnitCircleY, float time, CreatorPlatform* creatorPlatform)
+void Ball::Move(double angleUnitCircleX, double angleUnitCircleY, float time)
 {
     // В этот блок попадаем при первой инициализации угла, на который вылетит шарик при нажатии клавиши space
     if (_flagInit)
@@ -26,9 +26,9 @@ void Ball::Move(double angleUnitCircleX, double angleUnitCircleY, float time, Cr
         _angleUnitCircle.y = angleUnitCircleY;
     }
 
-     _speed = Vector2f (_acceleration * time * _angleUnitCircle.x, _acceleration*time* _angleUnitCircle.y); //вектор полета шарика
+     _speed = Vector2f (_acceleration * time * _angleUnitCircle.x, _acceleration*time* _angleUnitCircle.y); // Вектор полета шарика
     
-    this->move(_speed); //вызываем стандартную функцию move от класса Sprite
+    this->move(_speed); // Вызываем стандартную функцию move от класса Sprite
 
 
     // После сдвига проверяем куда мы попали?
@@ -36,37 +36,34 @@ void Ball::Move(double angleUnitCircleX, double angleUnitCircleY, float time, Cr
     // Проверяем пересечение с левой стенкой карты
     if (this->GetRect().left < BORDER_LEFT)
     {
-        this->setPosition(BORDER_LEFT, this->getPosition().y);      //если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
-        _angleUnitCircle.x = -_angleUnitCircle.x;                    //меняем направление на противоположное по х
+        this->setPosition(BORDER_LEFT, this->getPosition().y);      // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
+        _angleUnitCircle.x = -_angleUnitCircle.x;                    // Меняем направление на противоположное по х
     }
 
-    //проверяем пересечение с правой стенкой
+    // Проверяем пересечение с правой стенкой
     if (this->GetRect().left+this->GetRect().width > BORDER_RIGHT)
     {
-        //если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
+        // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
         this->setPosition(BORDER_RIGHT-this->GetRect().width, this->getPosition().y);
-        _angleUnitCircle.x = -_angleUnitCircle.x;          //меняем направление на противоположное по х
+        _angleUnitCircle.x = -_angleUnitCircle.x;          // Меняем направление на противоположное по х
     }
 
-    //проверяем пересечение с потолком
+    // Проверяем пересечение с потолком
     if (this->getPosition().y < BORDER_TOP)
     {
-        this->setPosition(this->getPosition().x, BORDER_TOP); //если вдруг перелетели потолок, то устанавливаемся в саоме крайнее возможное положение
-        _angleUnitCircle.y = -_angleUnitCircle.y;    // меняем напрваления на противоположное, по y
+        this->setPosition(this->getPosition().x, BORDER_TOP); // Если вдруг перелетели потолок, то устанавливаемся в саоме крайнее возможное положение
+        _angleUnitCircle.y = -_angleUnitCircle.y;             // Меняем напрваления на противоположное, по y
     }
 
-    // Проверяем столкновение с платформой
-    if (this->GetRect().intersects(creatorPlatform->GetInstance()->GetRect()))
-    {
-        _angleUnitCircle = creatorPlatform->GetInstance()->CollisionWithBall(_angleUnitCircle, *this);
-    }
+    // Cтолкновение с платформой проверяем и обрабатываем в классе Platform
+    
     
 
-    //если шарик упал
+    // Если шарик упал (на этот случай нужно сделать отдельную функцию!!!)
     if (this->getPosition().y > BORDER_BOTTOM)
     {
        // Menu::GetInstance().SetCountlives(-1);
-        creatorPlatform = new CreatorMediumPlatform();
+        /*creatorPlatform = new CreatorMediumPlatform();*/
         this->SetFlagInit(true);
         this->SetFlagMove(false);
     }
@@ -86,6 +83,8 @@ void Ball::SetSpeedSlow()
     _acceleration /= 2;
 }
 
+
+// Устанавливаем скорость вручную (функция будет нужна, когда буду делать бонусы)
 void Ball::SetSpeed(float acceleration)
 {
     _acceleration = acceleration;

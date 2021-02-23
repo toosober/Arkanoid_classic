@@ -1,34 +1,31 @@
 
 #include "Levels.h"
-#include "Border.h"
-#include "Platform.h"
-#include "Ball.h"
+
 //#include "Menu.h"
 
+Levels::Levels() : ball(0.1)
+{
+    platform = new ConcretePlatform;
+    platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
 
+    ball.setPosition(BALL_START_POSITION);
+
+    level = 1;
+    change_level = true;
+
+}
 
 int Levels::StartGame(RenderWindow& window)
 {
     //Menu::GetInstance().PlayerInit(); // Начало игры, устанавливаем жизни игрока, номер уровня и количество очков.
-    
-    Border board;
-    
-    CreatorPlatform* creatorPlatform = new CreatorMediumPlatform();             // Через фабрику создаем игровую платформу
-    creatorPlatform->ChangePlatform();                                          // Инициализируем платформу
-    creatorPlatform->GetInstance()->setPosition(PLATFORM_START_POSITION);       // Устанавливаем стартовую позицию
-
-    // Создаем шарик
-    Ball ball;
-    ball.setPosition(BALL_START_POSITION);
-    
    
     //Инициализация случайного числа при помощи Вихря Мерсенна, нужен для того, чтобы при запуске шарика в начале игры
     //он полетел по случайной траектории
     std::random_device rd;
     std::mt19937 mersenne(rd());
 
-    double angleUnitCircleX;         // Переменные в которой будет храниться направление движения шарика (вектор на единичной окружности)
-    double angleUnitCircleY;         
+    double angleUnitCircleX = 0;         // Переменные в которой будет храниться направление движения шарика (вектор на единичной окружности)
+    double angleUnitCircleY = 0;         
 
     // Инициализируем переменную которая будет отдавать время и перезагружать его
     Clock clock;
@@ -54,16 +51,16 @@ int Levels::StartGame(RenderWindow& window)
             {
                 if (event.key.code == Keyboard::Space)
                 {
-                    // Здесь отдадим команду начала игры через булеву переменную ballIsMove;
+                    // Здесь отдадим команду начала игры через булеву переменную FlagMove;
                     if (!ball.GetFlagMove())
                     {
-                        //Формируем начальное направление движения шарика при помощи единичной окружности
+                        // Формируем начальное направление движения шарика при помощи единичной окружности
                         angleUnitCircleX = (mersenne() % 150);
                         angleUnitCircleX = (angleUnitCircleX - 75) / 100;
                         angleUnitCircleY = sqrt(1.0 - pow(angleUnitCircleX, 2));
                         angleUnitCircleY = -1 * abs(angleUnitCircleY);
 
-                        //не заходим в этот блок до следующей инициализации
+                        // Не заходим в этот блок до следующей инициализации
                         ball.SetFlagMove(true);
                     }
                 }
@@ -79,47 +76,51 @@ int Levels::StartGame(RenderWindow& window)
                 }
 
                 if (event.key.code == Keyboard::F)
-               {
-                    creatorPlatform = new CreatorLargePlatform;
-                    creatorPlatform->ChangePlatform();
-                    creatorPlatform->GetInstance()->setPosition(PLATFORM_START_POSITION);
+               {    
+                    platform->ChangePlatform(3);                    
                }
             }
         }
 
-        //Движение платформы
+        // Движение платформы
         if (Keyboard::isKeyPressed(Keyboard::Left))
         {
-            //Двигаемся влево, пока координата х не станет меньше 25,
-            //Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
-            creatorPlatform->GetInstance()->Move(-0.5, time);
-            if (creatorPlatform->GetInstance()->GetRect().left < BORDER_LEFT)
+            // Двигаемся влево, пока координата х не станет меньше 25,
+            // Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
+            platform->GetInstance()->Move(-0.5, time);
+            if (platform->GetInstance()->GetRect().left < BORDER_LEFT)
             {   
-                creatorPlatform->GetInstance()->setPosition(Vector2f(BORDER_LEFT, PLATFORM_START_POSITION.y));
+                platform->GetInstance()->setPosition(Vector2f(BORDER_LEFT, PLATFORM_START_POSITION.y));
             }
-
         }
         if (Keyboard::isKeyPressed(Keyboard::Right))
         {
-            //Двигаемся влево, пока координата х не станет меньше 25,
-            //Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
-            creatorPlatform->GetInstance()->Move(0.5, time);
-            if (creatorPlatform->GetInstance()->GetRect().left+ creatorPlatform->GetInstance()->GetRect().width > BORDER_RIGHT)
+            // Двигаемся влево, пока координата х не станет меньше 25,
+            // Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
+            platform->GetInstance()->Move(0.5, time);
+            if (platform->GetInstance()->GetRect().left+ platform->GetInstance()->GetRect().width > BORDER_RIGHT)
             {
-                creatorPlatform->GetInstance()->setPosition(Vector2f(BORDER_RIGHT-creatorPlatform->GetInstance()->GetRect().width, PLATFORM_START_POSITION.y));
+                platform->GetInstance()->setPosition(Vector2f(BORDER_RIGHT-platform->GetInstance()->GetRect().width, PLATFORM_START_POSITION.y));
             }
         }
 
-        //Если игра началась запускаем движение шарика
+        // Если игра началась запускаем движение шарика
         if (ball.GetFlagMove())
         {
-            ball.Move(angleUnitCircleX, angleUnitCircleX, time, creatorPlatform);
+            ball.Move(angleUnitCircleX, angleUnitCircleY, time);
+            platform->GetInstance()->IntersectsWithBall(ball);
         }
         else
-        {   //Если игра не началась, шарик привязан к середине платформы 
-            ball.setPosition((creatorPlatform->GetInstance()->GetRect().left + (creatorPlatform->GetInstance()->GetRect().width/2)-(ball.GetRect().width/2)),
-                creatorPlatform->GetInstance()->GetRect().top - ball.GetRect().height);
+        {   //Если игра не началась, шарик привязан к середине платформы    
+            // Первое условие: "х" шарика всегда по середине платформы
+            ball.setPosition((platform->GetInstance()->GetRect().left +
+                (platform->GetInstance()->GetRect().width / 2) - (ball.GetRect().width / 2)),
+                // Второе условие: "y" шарика всегда выше платформы на высотку шарика
+                platform->GetInstance()->GetRect().top - ball.GetRect().height);              
         }
+
+        //После всех перемещений проверяем столкновения
+        CollisionDetecter();
 
         //if (Menu::GetInstance().GetCountlives() <= 0)
         //{
@@ -150,9 +151,9 @@ int Levels::StartGame(RenderWindow& window)
         for (bns = bonus.begin(); bns != bonus.end(); bns++)
             window.draw(**bns);*/
 
-        creatorPlatform->SomeDraw(window);
+        //creatorPlatform->SomeDraw(window);
       
-
+        window.draw(*platform->GetInstance());
         
         window.draw(ball);
 
@@ -163,6 +164,11 @@ int Levels::StartGame(RenderWindow& window)
 
     //delete creatorPlatform;
     return 0;
+}
+
+void Levels::CollisionDetecter()
+{
+
 }
 
 

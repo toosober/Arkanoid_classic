@@ -1,92 +1,22 @@
-﻿  Platform.cpp
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(58,33): warning C4305: =: усечение из "double" в "T"
+﻿  Block.cpp
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Block.cpp(160,32): warning C4305: =: усечение из "double" в "T"
           with
           [
               T=float
           ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(59,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Block.cpp(185,33): warning C4305: =: усечение из "double" в "T"
           with
           [
               T=float
           ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(68,34): warning C4305: =: усечение из "double" в "T"
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Block.cpp(210,32): warning C4305: =: усечение из "double" в "T"
           with
           [
               T=float
           ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(69,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Block.cpp(235,33): warning C4305: =: усечение из "double" в "T"
           with
           [
               T=float
           ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(84,33): warning C4305: =: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(85,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(94,33): warning C4305: =: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(95,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(123,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(240,35): warning C4305: +=: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(241,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(246,39): warning C4305: +=: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(248,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(266,35): warning C4305: +=: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(267,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(272,38): warning C4305: +=: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(274,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Platform.cpp(303,33): warning C4244: =: преобразование "double" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-  Arkanoid_classic.vcxproj -> C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe
+  Arkanoid_classic.vcxproj -> F:\My_project\С++\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe

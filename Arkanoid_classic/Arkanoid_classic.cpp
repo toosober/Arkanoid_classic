@@ -9,7 +9,7 @@
 int main()
 {
     RenderWindow window(VideoMode(1100, 600), "Arkanoid");
-    window.setVerticalSyncEnabled(0);
+    window.setVerticalSyncEnabled(1);
    
 
     //Menu::GetInstance().CreateStartMenu(window);
