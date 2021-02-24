@@ -12,17 +12,6 @@ void Platform::Move(const float speed, const float time)
     this->move(speed * time, 0);
 }
 
-// Определяем факт столкновения с шариком
-void Platform::IntersectsWithBall(Ball& ball)
-{
-    
-    if (this->GetRect().intersects(ball.GetRect()))
-    {   
-        std::cout << "intersssseeeeect" << std::endl;
-        ball.SetAngleUnitCircle(this->CollisionWithBall(ball.GetAngleUnitCircle(), ball));
-    }
-
-}
 
 
 
@@ -80,7 +69,7 @@ Vector2f Platform::BallCollisionLeftEdge(Vector2f angleUnitCircle, Ball& ball)
     }
     else if (angleUnitCircle.x < 0) // Иначе если летим справа налево, то должны улететь под большим углом
     {
-        angleUnitCircle.x = -0.95;                                 //отражаемся по х
+        angleUnitCircle.x = -0.9;                                 //отражаемся по х
         angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.y, 2)); 
         angleUnitCircle.y = -angleUnitCircle.y;                    //отражаемся по y
     }
@@ -108,7 +97,7 @@ Vector2f Platform::BallCollisionRightEdge(Vector2f angleUnitCircle, Ball& ball)
     }
     else if (angleUnitCircle.x > 0) // Иначе если летим слева направо, то должны улететь под большим углом
     {
-        angleUnitCircle.x = 0.95;                                 //отражаемся по х
+        angleUnitCircle.x = 0.9;                                 //отражаемся по х
         angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.y, 2));
         angleUnitCircle.y = -angleUnitCircle.y;                      //отражаемся по y
     }

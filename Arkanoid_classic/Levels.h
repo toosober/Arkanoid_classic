@@ -29,8 +29,8 @@ private:
     std::list<Block*> block;
     std::list<Block*>::iterator blk;
 
-    //std::list<Bonus*> bonus;
-    //std::list<Bonus*>::iterator bns;
+    std::list<Bonus*> bonus;
+    std::list<Bonus*>::iterator bns;
 
     void GameInit();
     int InitLevel(int lvl);
@@ -47,8 +47,8 @@ private:
 
 
 public:
-    /*Levels() { level = 1; change_level = true; }
-    ~Levels() {}*/
+    Levels();
+    //~Levels() {}*/
 
     int StartGame(RenderWindow& window);
     /*void SetChangeLevel(bool change) { change_level = change; }

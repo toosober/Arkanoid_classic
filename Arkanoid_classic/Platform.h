@@ -31,7 +31,6 @@ public:
 
 
 	// Виртуальные методы
-	void IntersectsWithBall(Ball& ball);									  // Функция определяет событие столкновения
 	virtual Vector2f CollisionWithBall(Vector2f angleUnitCircle, Ball& ball); // Функция обрабатывает столкновение
 };
 

@@ -7,7 +7,6 @@ Levels::Levels() : ball(0.1)
 {
     platform = new ConcretePlatform;
     platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
-
     ball.setPosition(BALL_START_POSITION);
 
     level = 1;
@@ -107,16 +106,20 @@ int Levels::StartGame(RenderWindow& window)
         // Если игра началась запускаем движение шарика
         if (ball.GetFlagMove())
         {
-            ball.Move(angleUnitCircleX, angleUnitCircleY, time);
-            platform->GetInstance()->IntersectsWithBall(ball);
+            ball.Move(angleUnitCircleX, angleUnitCircleY, time);            
         }
         else
         {   //Если игра не началась, шарик привязан к середине платформы    
             // Первое условие: "х" шарика всегда по середине платформы
             ball.setPosition((platform->GetInstance()->GetRect().left +
                 (platform->GetInstance()->GetRect().width / 2) - (ball.GetRect().width / 2)),
-                // Второе условие: "y" шарика всегда выше платформы на высотку шарика
+                // Второе условие: "y" шарика всегда выше платформы на высоту шарика
                 platform->GetInstance()->GetRect().top - ball.GetRect().height);              
+        }
+
+        for (bns = bonus.begin(); bns != bonus.end(); bns++)
+        {
+            (*bns)->Move(time);
         }
 
         //После всех перемещений проверяем столкновения
@@ -131,27 +134,27 @@ int Levels::StartGame(RenderWindow& window)
         //    return 0;
         //}
 
-        //if (change_level) //если булева пременная = true необходимо собрать новый уровень
-        //{
-        //    level = InitLevel(level);
+        if (change_level) //если булева пременная = true необходимо собрать новый уровень
+        {
+            level = InitLevel(level);
         //    Menu::GetInstance().Setlevel(level);
-        //    change_level = false;
-        //}
+            change_level = false;
+        }
 
         window.clear();
 
         board.CreateMap(window);
         board.CreateMenu(window);
 
-       /* Menu::GetInstance().CreateMenu(window);
+       /* Menu::GetInstance().CreateMenu(window); */
 
         for (blk = block.begin(); blk != block.end(); blk++)
             window.draw(**blk);
 
         for (bns = bonus.begin(); bns != bonus.end(); bns++)
-            window.draw(**bns);*/
+            window.draw(**bns);
 
-        //creatorPlatform->SomeDraw(window);
+       
       
         window.draw(*platform->GetInstance());
         
@@ -168,7 +171,66 @@ int Levels::StartGame(RenderWindow& window)
 
 void Levels::CollisionDetecter()
 {
+//---------------------------------------------------------------------Проверяем столкновение шарика с границами карты
+    // Проверяем пересечение шарика с левой стенкой карты
+    if (ball.GetRect().left < BORDER_LEFT)
+    {
+        ball.setPosition(BORDER_LEFT, ball.getPosition().y);  // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
+        ball.SetAngleUnitCircle(Vector2f(-ball.GetAngleUnitCircle().x, ball.GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+    }
 
+    // Проверяем пересечение с правой стенкой
+    if (ball.GetRect().left + ball.GetRect().width > BORDER_RIGHT)
+    {
+        // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
+        ball.setPosition(BORDER_RIGHT - ball.GetRect().width, ball.getPosition().y);
+        ball.SetAngleUnitCircle(Vector2f(-ball.GetAngleUnitCircle().x, ball.GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+    }
+
+    // Проверяем пересечение с потолком
+    if (ball.getPosition().y < BORDER_TOP)
+    {
+        ball.setPosition(ball.getPosition().x, BORDER_TOP); // Если вдруг перелетели потолок, то устанавливаемся в саоме крайнее возможное положение
+        ball.SetAngleUnitCircle(Vector2f(ball.GetAngleUnitCircle().x, -ball.GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+    }
+
+
+
+
+//----------------------------------------------------------------Проверяем столкновение шарика с платформой, (обрабатываем в классе Platform)
+    if (platform->GetInstance()->GetRect().intersects(ball.GetRect()))
+    {
+        std::cout << "intersssseeeeect" << std::endl;
+        ball.SetAngleUnitCircle(platform->GetInstance()->CollisionWithBall(ball.GetAngleUnitCircle(), ball));
+    }
+
+
+
+
+//----------------------------------------------------------------Проверяем столкновение шарика с блоками, (обрабатываем в блкоах)
+    
+    for (blk = block.begin(); blk != block.end();)
+    {
+        if ((*blk)->GetRect().intersects(ball.GetRect()))
+        {
+            ball.SetAngleUnitCircle((*blk)->BallCollision(ball));
+            if ((*blk)->GetFlagBonus())
+            {
+                bonus.push_back(new Bonus((*blk)->GetBlockType(), Vector2f((*blk)->GetRect().left + (*blk)->GetRect().width / 2, (*blk)->getPosition().y)));
+            }            
+            blk = block.erase(blk);
+        }
+        else
+        {
+            blk++;
+        }
+            
+    }
+
+
+
+    
+   
 }
 
 
@@ -176,190 +238,194 @@ void Levels::CollisionDetecter()
 //{
 //
 //}
-//
-//int Levels::InitLevel(int lvl)
-//{
-//    switch (lvl)
-//    {
-//    case 1:
-//        return CreateLevel1();
-//        break;
-//    case 2:
-//        return CreateLevel2();
-//        break;
-//    default:
-//        break;
-//    }
-//
-//
-//
-//}
-//
-//int Levels::CreateLevel1()
-//{
-//    int positionX = 0; //отвечает за столбец
-//    int positionY = 0; //отвечает за ряд
-//
-//    //Первый ряд
-//    for (int i = 0; i < 13; i++)
-//    {
-//        positionX = i;
-//        if (i == 5 || i == 7)
-//        {
-//            block.push_back(new Block(YELLOW, true));  //создаем бонусные блоки
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//        else
-//        {
-//            block.push_back(new Block(YELLOW));
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//    }
-//
-//    //Второй ряд
-//    positionY = 1;
-//    for (int i = 0; i < 13; i++)
-//    {
-//        positionX = i;
-//        if (i == 4 || i == 8)
-//        {
-//            block.push_back(new Block(GREEN, true));  //создаем бонусные блоки
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//        else
-//        {
-//            block.push_back(new Block(GREEN));
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//    }
-//
-//    //третий ряд
-//    positionY = 2;
-//    for (int i = 0; i < 13; i++)
-//    {
-//        positionX = i;
-//        if (i == 3 || i == 9)
-//        {
-//            block.push_back(new Block(PINK, true));  //создаем бонусные блоки
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//        else
-//        {
-//            block.push_back(new Block(PINK));
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//    }
-//
-//    //четвертый ряд
-//    positionY = 3;
-//    for (int i = 0; i < 13; i++)
-//    {
-//        positionX = i;
-//        if (i == 2 || i == 10)
-//        {
-//            block.push_back(new Block(PURPLE, true));                    //создаем бонусные блоки
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//        else
-//        {
-//            block.push_back(new Block(PURPLE));
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//    }
-//
-//    //пятый ряд
-//    positionY = 4;
-//    for (int i = 0; i < 13; i++)
-//    {
-//        positionX = i;
-//        if (i == 1 || i == 11)
-//        {
-//            block.push_back(new Block(RED, true));  //создаем бонусные блоки
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//        else
-//        {
-//            block.push_back(new Block(RED));
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//    }
-//    //шестой ряд
-//    positionY = 5;
-//    for (int i = 0; i < 13; i++)
-//    {
-//        positionX = i;
-//        if (i == 0 || i == 12)
-//        {
-//            block.push_back(new Block(BLUE, true));  //создаем бонусные блоки
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//        else
-//        {
-//            block.push_back(new Block(BLUE));
-//            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--;                                                         //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//        }
-//    }
-//
-//    //седьмой ряд
-//    positionY = 6;
-//    for (int i = 0; i < 13; i++)
-//    {
-//        positionX = i;
-//        block.push_back(new Block(ORANGE));
-//        blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-//        blk--;                                                         //смещаемся на последний элемент.
-//        (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-//       
-//    }
-//   
-//    return 2;
-//}
-//
-//int Levels::CreateLevel2()
-//{
-//    int color = 1;
-//    int positionX;
-//    int positionY;
-//    for (int i = 0; i < 7; i++)
-//    {
-//        positionX = i;
-//        for (int j = 0; j < color; j++)
-//        {
-//            block.push_back(new Block(GREEN));
-//            positionY = j;
-//            blk = block.end(); //итератор устанавливаем на адрес стоящий за последним элементом листа
-//            blk--; //смещаемся на последний элемент.
-//            (*blk)->setPosition(40 + j * 55, 60 + i * 23);
-//        }
-//        color += 2;
-//    }
-//
-//    return 3;
-//}
+
+
+
+int Levels::InitLevel(int lvl)
+{
+    switch (lvl)
+    {
+    case 1:
+        return CreateLevel1();
+        break;
+    case 2:
+        return CreateLevel2();
+        break;
+    default:
+        break;
+    }
+
+
+
+}
+
+int Levels::CreateLevel1()
+{
+    int positionX = 0; //отвечает за столбец
+    int positionY = 0; //отвечает за ряд
+
+    //Первый ряд
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 5 || i == 7)
+        {
+            block.push_back(new Block(YELLOW, true));  //создаем бонусные блоки
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            block.push_back(new Block(YELLOW));
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
+
+    //Второй ряд
+    positionY = 1;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 4 || i == 8)
+        {
+            block.push_back(new Block(GREEN, true));  //создаем бонусные блоки
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            block.push_back(new Block(GREEN));
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
+
+    //третий ряд
+    positionY = 2;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 3 || i == 9)
+        {
+            block.push_back(new Block(PINK, true));  //создаем бонусные блоки
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            block.push_back(new Block(PINK));
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
+
+    //четвертый ряд
+    positionY = 3;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 2 || i == 10)
+        {
+            block.push_back(new Block(PURPLE, true));                    //создаем бонусные блоки
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            block.push_back(new Block(PURPLE));
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
+
+    //пятый ряд
+    positionY = 4;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 1 || i == 11)
+        {
+            block.push_back(new Block(RED, true));  //создаем бонусные блоки
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            block.push_back(new Block(RED));
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
+    //шестой ряд
+    positionY = 5;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 0 || i == 12)
+        {
+            block.push_back(new Block(BLUE, true));  //создаем бонусные блоки
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            block.push_back(new Block(BLUE));
+            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--;                                                         //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
+
+    //седьмой ряд
+    positionY = 6;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        block.push_back(new Block(ORANGE));
+        blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+        blk--;                                                         //смещаемся на последний элемент.
+        (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+       
+    }
+   
+    return 2;
+}
+
+int Levels::CreateLevel2()
+{
+    int color = 1;
+    int positionX;
+    int positionY;
+    for (int i = 0; i < 7; i++)
+    {
+        positionX = i;
+        for (int j = 0; j < color; j++)
+        {
+            block.push_back(new Block(GREEN));
+            positionY = j;
+            blk = block.end(); //итератор устанавливаем на адрес стоящий за последним элементом листа
+            blk--; //смещаемся на последний элемент.
+            (*blk)->setPosition(40 + j * 55, 60 + i * 23);
+        }
+        color += 2;
+    }
+
+    return 3;
+}
+
+
 
 
 

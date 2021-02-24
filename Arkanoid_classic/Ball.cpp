@@ -31,32 +31,7 @@ void Ball::Move(double angleUnitCircleX, double angleUnitCircleY, float time)
     this->move(_speed); // Вызываем стандартную функцию move от класса Sprite
 
 
-    // После сдвига проверяем куда мы попали?
-
-    // Проверяем пересечение с левой стенкой карты
-    if (this->GetRect().left < BORDER_LEFT)
-    {
-        this->setPosition(BORDER_LEFT, this->getPosition().y);      // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
-        _angleUnitCircle.x = -_angleUnitCircle.x;                    // Меняем направление на противоположное по х
-    }
-
-    // Проверяем пересечение с правой стенкой
-    if (this->GetRect().left+this->GetRect().width > BORDER_RIGHT)
-    {
-        // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
-        this->setPosition(BORDER_RIGHT-this->GetRect().width, this->getPosition().y);
-        _angleUnitCircle.x = -_angleUnitCircle.x;          // Меняем направление на противоположное по х
-    }
-
-    // Проверяем пересечение с потолком
-    if (this->getPosition().y < BORDER_TOP)
-    {
-        this->setPosition(this->getPosition().x, BORDER_TOP); // Если вдруг перелетели потолок, то устанавливаемся в саоме крайнее возможное положение
-        _angleUnitCircle.y = -_angleUnitCircle.y;             // Меняем напрваления на противоположное, по y
-    }
-
-    // Cтолкновение с платформой проверяем и обрабатываем в классе Platform
-    
+    // После сдвига проверяем куда мы попали?    
     
 
     // Если шарик упал (на этот случай нужно сделать отдельную функцию!!!)
