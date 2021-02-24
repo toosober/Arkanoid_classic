@@ -21,7 +21,9 @@ public:
 	~Bonus() {}
 
 	void Move(float time);
-	void CollisionWithPlatform(Platform& platform);
+
+	//обработка столкновения с платформой
+	void CollisionWithPlatform(Platform* platform);
 
 };
 

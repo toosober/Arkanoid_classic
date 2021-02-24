@@ -38,3 +38,8 @@ void Bonus::Move(float time)
     this->move(0, _speedFall * time);
 }
 
+void Bonus::CollisionWithPlatform(Platform* platform)
+{
+
+}
+

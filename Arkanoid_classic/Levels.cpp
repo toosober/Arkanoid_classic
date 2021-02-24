@@ -201,7 +201,7 @@ void Levels::CollisionDetecter()
     if (platform->GetInstance()->GetRect().intersects(ball.GetRect()))
     {
         std::cout << "intersssseeeeect" << std::endl;
-        ball.SetAngleUnitCircle(platform->GetInstance()->CollisionWithBall(ball.GetAngleUnitCircle(), ball));
+        ball.SetAngleUnitCircle(platform->GetInstance()->CollisionWithBall(ball));
     }
 
 
@@ -216,15 +216,31 @@ void Levels::CollisionDetecter()
             ball.SetAngleUnitCircle((*blk)->BallCollision(ball));
             if ((*blk)->GetFlagBonus())
             {
-                bonus.push_back(new Bonus((*blk)->GetBlockType(), Vector2f((*blk)->GetRect().left + (*blk)->GetRect().width / 2, (*blk)->getPosition().y)));
+                bonus.push_back(new Bonus((*blk)->GetBlockType(), Vector2f((*blk)->GetRect().left + (*blk)->GetRect().width / 2 - BONUS_WIDTH/2,
+                    (*blk)->getPosition().y)));
             }            
             blk = block.erase(blk);
         }
         else
         {
             blk++;
+        }   
+    }
+
+//-------------------------------------------------------------------Проверяем столкновение бонуса с платформой (обрабатываем в платформе)
+
+    for (bns = bonus.begin(); bns != bonus.end();)
+    {
+        if ((*bns)->GetRect().intersects(platform->GetInstance()->GetRect()))
+        {
+            (*bns)->CollisionWithPlatform(platform->GetInstance());
+            bns = bonus.erase(bns);
         }
-            
+        else
+        {
+            bns++;
+        }
+        
     }
 
 

@@ -18,7 +18,7 @@ void Platform::Move(const float speed, const float time)
 // Пересечение платформы с шариком
 // На вход принимаем шарик, который столкнулся с платформой и вектор его движения на единичной окружности
 // Возвращаем новый вектор движения шарика на единичной окружности
-Vector2f Platform::CollisionWithBall(Vector2f angleUnitCircle, Ball& ball) //Пересечение платформы с шариком
+Vector2f Platform::CollisionWithBall(Ball& ball) //Пересечение платформы с шариком
 {
     
     float collisionLocation = this->CollisionLocation(ball);
@@ -26,34 +26,35 @@ Vector2f Platform::CollisionWithBall(Vector2f angleUnitCircle, Ball& ball) //Пер
     // Если центр шарика по координате х находится левее платформы
     if (collisionLocation < 0)
     {
-        return this->BallCollisionLeftWall(angleUnitCircle, ball);
+        return this->BallCollisionLeftWall(ball);
     }
     // Если центр шарика по координате х находится на левом крае
     else if (collisionLocation < 8)
     {
-        return this->BallCollisionLeftEdge(angleUnitCircle, ball);
+        return this->BallCollisionLeftEdge(ball);
     }
     // Если центр шарика по координате х находится по середине между левым и правым краем
     else if (collisionLocation < this->GetRect().width - 8)
     {
-        return this->BallCollisionStandart(angleUnitCircle, ball);
+        return this->BallCollisionStandart(ball);
     }
     // Если центр шарика по координате х находится на правом крае
     else if (collisionLocation < this->GetRect().width)
     {
-        return this->BallCollisionRightEdge(angleUnitCircle, ball);
+        return this->BallCollisionRightEdge(ball);
     }
     // Если центр шарика по коориднае х находится правее платформы
     else
     {
-        return this->BallCollisionRightWall(angleUnitCircle, ball);
+        return this->BallCollisionRightWall(ball);
     }
 
 }
 
-Vector2f Platform::BallCollisionLeftEdge(Vector2f angleUnitCircle, Ball& ball)
+Vector2f Platform::BallCollisionLeftEdge(Ball& ball)
 {
     ball.setPosition(ball.getPosition().x, this->getPosition().y - ball.GetRect().height);
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
 
     //Если приземлились на платформу практически прямо
     if (angleUnitCircle.x > -0.001 && angleUnitCircle.x < 0.001)
@@ -79,9 +80,10 @@ Vector2f Platform::BallCollisionLeftEdge(Vector2f angleUnitCircle, Ball& ball)
 
 }
 
-Vector2f Platform::BallCollisionRightEdge(Vector2f angleUnitCircle, Ball& ball)
+Vector2f Platform::BallCollisionRightEdge(Ball& ball)
 {
     ball.setPosition(ball.getPosition().x, this->getPosition().y - ball.GetRect().height);
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
 
     //Если приземлились на платформу практически прямо
     if (angleUnitCircle.x > -0.001 && angleUnitCircle.x < 0.001)
@@ -107,9 +109,10 @@ Vector2f Platform::BallCollisionRightEdge(Vector2f angleUnitCircle, Ball& ball)
 
 }
 
-Vector2f Platform::BallCollisionStandart(Vector2f angleUnitCircle, Ball& ball)
+Vector2f Platform::BallCollisionStandart(Ball& ball)
 {
     ball.setPosition(ball.getPosition().x, this->getPosition().y - ball.GetRect().height);
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
 
     // Если по х практически не смещаемся и попадаем в центральную часть платформы, то должны улететь либо вправо, либо влево в зависимости от
     //состояния переменной change_angel
@@ -139,18 +142,22 @@ Vector2f Platform::BallCollisionStandart(Vector2f angleUnitCircle, Ball& ball)
     return angleUnitCircle;
 }
 
-Vector2f Platform::BallCollisionLeftWall(Vector2f angleUnitCircle, Ball& ball)
+Vector2f Platform::BallCollisionLeftWall(Ball& ball)
 {
     //не даем шарику пролететь сквозь платформу
     ball.setPosition(this->GetRect().left - ball.GetRect().width, ball.getPosition().y);
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
+
     angleUnitCircle.x = -1 * abs(angleUnitCircle.x); // однозначно летим только влево от платформы, по y продолжаем лететь как летели
     return angleUnitCircle;
 }
 
-Vector2f Platform::BallCollisionRightWall(Vector2f angleUnitCircle, Ball& ball)
+Vector2f Platform::BallCollisionRightWall(Ball& ball)
 {
     // Не даем шарику залететь внутрь платформы
     ball.setPosition(this->GetRect().left + this->GetRect().width, ball.getPosition().y);
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
+
     angleUnitCircle.x = abs(angleUnitCircle.x); //однозначно летим вправо от платформы
     return angleUnitCircle;
 }
@@ -160,6 +167,9 @@ float Platform::CollisionLocation(Ball& ball)
 {
     return ball.GetRect().left + ( ball.GetRect().width / 2 ) - this->GetRect().left;
 }
+
+
+
 
 
 //-------------------------------------------------------------------------MediumPlatform
@@ -192,59 +202,60 @@ LargePlatform::LargePlatform()
     this->setTextureRect(IntRect(LARGE_PLATFORM_LEFT, LARGE_PLATFORM_TOP, LARGE_PLATFORM_WIDTH, LARGE_PLATFORM_HEIGHT));    
 }
 
-Vector2f LargePlatform::CollisionWithBall(Vector2f angleUnitCircle, Ball& ball)
+Vector2f LargePlatform::CollisionWithBall(Ball& ball)
 {
     float collisionLocation = this->CollisionLocation(ball);
     // Если центр шарика по координате х находится левее платформы
     if (collisionLocation < 0)
     {
-        return this->BallCollisionLeftWall(angleUnitCircle, ball);
+        return this->BallCollisionLeftWall(ball);
     }
     // Если центр шарика по координате х находится на левом крае
     else if (collisionLocation < 8)
     {
-        return this->BallCollisionLeftEdge(angleUnitCircle, ball);
+        return this->BallCollisionLeftEdge(ball);
     }
     // Если попали в край платформы основной зоны, но не в сам угол
     else if (collisionLocation < 16)
     {
-        return this->BallCollisionLeftEdgePlus(angleUnitCircle, ball);
+        return this->BallCollisionLeftEdgePlus(ball);
     }
     // Если попали в левую часть
     else if (collisionLocation < 58)
     {
-        return this->BallCollisionStandart(angleUnitCircle, ball);
+        return this->BallCollisionStandart(ball);
     }
     // Если попали в самый центр
     else if (collisionLocation < 72)
     {
-        return this->BallCollisionCenter(angleUnitCircle, ball);
+        return this->BallCollisionCenter(ball);
     }
 
     // Если попали в правую часть
     else if (collisionLocation < this->GetRect().width - 16)
     {
-        return this->BallCollisionStandart(angleUnitCircle, ball);
+        return this->BallCollisionStandart(ball);
     }
     else if (collisionLocation < this->GetRect().width - 8)
     {
-        return this->BallCollisionRightEdgePlus(angleUnitCircle, ball);
+        return this->BallCollisionRightEdgePlus(ball);
     }
     // Если центр шарика по координате х находится на правом крае
     else if (collisionLocation < this->GetRect().width)
     {
-        return this->BallCollisionRightEdge(angleUnitCircle, ball);
+        return this->BallCollisionRightEdge(ball);
     }
     // Если центр шарика по коориднае х находится правее платформы
     else
     {
-        return this->BallCollisionRightWall(angleUnitCircle, ball);
+        return this->BallCollisionRightWall(ball);
     }
 }
 
-Vector2f LargePlatform::BallCollisionLeftEdgePlus(Vector2f angleUnitCircle, Ball& ball)
+Vector2f LargePlatform::BallCollisionLeftEdgePlus(Ball& ball)
 {
     ball.setPosition(ball.getPosition().x, this->getPosition().y - ball.GetRect().height); //если пересекли платформу, то выталкиваем шарик из платформы
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
 
     if (angleUnitCircle.x < 0.001 && angleUnitCircle.x > -0.001) //Если по х практически не смещаемся и попадаем в левый край, то должны слегка изменить свою траекторию
     {
@@ -270,9 +281,10 @@ Vector2f LargePlatform::BallCollisionLeftEdgePlus(Vector2f angleUnitCircle, Ball
         
 }
 
-Vector2f LargePlatform::BallCollisionRightEdgePlus(Vector2f angleUnitCircle, Ball& ball)
+Vector2f LargePlatform::BallCollisionRightEdgePlus(Ball& ball)
 {
     ball.setPosition(ball.getPosition().x, this->getPosition().y - ball.GetRect().height); //если пересекли платформу, то выталкиваем шарик из платформы
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
 
     if (angleUnitCircle.x < 0.001 && angleUnitCircle.x > -0.001) //Если по х практически не смещаемся и попадаем в правый край, то должны слегка изменить свою траекторию
     {
@@ -297,10 +309,11 @@ Vector2f LargePlatform::BallCollisionRightEdgePlus(Vector2f angleUnitCircle, Bal
     return angleUnitCircle;
 }
 
-Vector2f LargePlatform::BallCollisionCenter(Vector2f angleUnitCircle, Ball& ball)
+Vector2f LargePlatform::BallCollisionCenter(Ball& ball)
 {
     ball.setPosition(ball.getPosition().x, this->GetRect().top - ball.GetRect().height-5); //если пересекли платформу, то выталкиваем шарик из платформы
-    
+    Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
+
     std::random_device rd;
     std::mt19937 mersenne(rd());
     //Если по х практически не смещаемся и попадаем в центральную часть платформы, то должны улететь либо вправо, либо влево в зависимости от
