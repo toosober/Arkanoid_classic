@@ -19,18 +19,22 @@ class Levels
 
 private:
 
-    Border board;
-    ConcretePlatform* platform;
-    Ball ball;
-
-    unsigned level;                 // Текущий номер уровня
-    bool change_level;              // Когда true собираем новый уровень
+    Border _board;
+    ConcretePlatform* _platform;
     
-    std::list<Block*> block;
-    std::list<Block*>::iterator blk;
 
-    std::list<Bonus*> bonus;
-    std::list<Bonus*>::iterator bns;
+    unsigned _level;                 // Текущий номер уровня
+    bool _changeLevel;              // Когда true собираем новый уровень
+    
+    std::list<Block*> _block;
+    std::list<Block*>::iterator _blk;
+
+    std::list<Bonus*> _bonus;
+    std::list<Bonus*>::iterator _bns;
+
+    std::list<Ball*> _ball;
+    std::list<Ball*>::iterator _bl;
+    bool _flagBallMove;				 // Флаг запуска шарика
 
     void GameInit();
     int InitLevel(int lvl);
@@ -48,7 +52,7 @@ private:
 
 public:
     Levels();
-    //~Levels() {}*/
+    //~Levels() {  }
 
     int StartGame(RenderWindow& window);
     /*void SetChangeLevel(bool change) { change_level = change; }

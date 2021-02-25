@@ -3,16 +3,24 @@
 
 //#include "Menu.h"
 
-Levels::Levels() : ball(0.1)
-{
-    platform = new ConcretePlatform;
-    platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
-    ball.setPosition(BALL_START_POSITION);
+unsigned Ball::_ballCounter = 0;
 
-    level = 1;
-    change_level = true;
+Levels::Levels()
+{
+    _platform = new ConcretePlatform;
+    _platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
+
+    _ball.push_back(new Ball(0.1));
+    _bl = _ball.begin();
+    (*_bl)->setPosition(BALL_START_POSITION);
+
+    _level = 1;
+    _changeLevel = true;
+    _flagBallMove = false;
 
 }
+
+
 
 int Levels::StartGame(RenderWindow& window)
 {
@@ -50,8 +58,8 @@ int Levels::StartGame(RenderWindow& window)
             {
                 if (event.key.code == Keyboard::Space)
                 {
-                    // Здесь отдадим команду начала игры через булеву переменную FlagMove;
-                    if (!ball.GetFlagMove())
+                    // Здесь отдадим команду начала игры через булеву переменную _flagBallMove;
+                    if (!_flagBallMove)
                     {
                         // Формируем начальное направление движения шарика при помощи единичной окружности
                         angleUnitCircleX = (mersenne() % 150);
@@ -60,23 +68,30 @@ int Levels::StartGame(RenderWindow& window)
                         angleUnitCircleY = -1 * abs(angleUnitCircleY);
 
                         // Не заходим в этот блок до следующей инициализации
-                        ball.SetFlagMove(true);
+                        _flagBallMove = true;;
                     }
                 }
                 if (event.key.code == Keyboard::X)
                 {
-                    ball.SetSpeedFast();
+                    for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+                    {
+                        (*_bl)->SetSpeedFast();
+                    }
+                    
                 }
 
 
                 if (event.key.code == Keyboard::Z)
                 {
-                    ball.SetSpeedSlow();
+                     for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+                    {
+                        (*_bl)->SetSpeedSlow();
+                    }
                 }
 
                 if (event.key.code == Keyboard::F)
                {    
-                    platform->ChangePlatform(3);                    
+                    _platform->ChangePlatform(3);                    
                }
             }
         }
@@ -86,40 +101,42 @@ int Levels::StartGame(RenderWindow& window)
         {
             // Двигаемся влево, пока координата х не станет меньше 25,
             // Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
-            platform->GetInstance()->Move(-0.5, time);
-            if (platform->GetInstance()->GetRect().left < BORDER_LEFT)
+            _platform->GetInstance()->Move(-0.5, time);
+            if (_platform->GetInstance()->GetRect().left < BORDER_LEFT)
             {   
-                platform->GetInstance()->setPosition(Vector2f(BORDER_LEFT, PLATFORM_START_POSITION.y));
+                _platform->GetInstance()->setPosition(Vector2f(BORDER_LEFT, PLATFORM_START_POSITION.y));
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Right))
         {
             // Двигаемся влево, пока координата х не станет меньше 25,
             // Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
-            platform->GetInstance()->Move(0.5, time);
-            if (platform->GetInstance()->GetRect().left+ platform->GetInstance()->GetRect().width > BORDER_RIGHT)
+            _platform->GetInstance()->Move(0.5, time);
+            if (_platform->GetInstance()->GetRect().left + _platform->GetInstance()->GetRect().width > BORDER_RIGHT)
             {
-                platform->GetInstance()->setPosition(Vector2f(BORDER_RIGHT-platform->GetInstance()->GetRect().width, PLATFORM_START_POSITION.y));
+                _platform->GetInstance()->setPosition(Vector2f(BORDER_RIGHT - _platform->GetInstance()->GetRect().width, PLATFORM_START_POSITION.y));
             }
         }
 
         // Если игра началась запускаем движение шарика
-        if (ball.GetFlagMove())
+        if (_flagBallMove)
         {
-            ball.Move(angleUnitCircleX, angleUnitCircleY, time);            
+            for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+            (*_bl)->Move(angleUnitCircleX, angleUnitCircleY, time);
         }
         else
         {   //Если игра не началась, шарик привязан к середине платформы    
             // Первое условие: "х" шарика всегда по середине платформы
-            ball.setPosition((platform->GetInstance()->GetRect().left +
-                (platform->GetInstance()->GetRect().width / 2) - (ball.GetRect().width / 2)),
+            _bl = _ball.begin();
+            (*_bl)->setPosition((_platform->GetInstance()->GetRect().left +
+                (_platform->GetInstance()->GetRect().width / 2) - ((*_bl)->GetRect().width / 2)),
                 // Второе условие: "y" шарика всегда выше платформы на высоту шарика
-                platform->GetInstance()->GetRect().top - ball.GetRect().height);              
+                _platform->GetInstance()->GetRect().top - (*_bl)->GetRect().height);
         }
 
-        for (bns = bonus.begin(); bns != bonus.end(); bns++)
+        for (_bns = _bonus.begin(); _bns != _bonus.end(); _bns++)
         {
-            (*bns)->Move(time);
+            (*_bns)->Move(time);
         }
 
         //После всех перемещений проверяем столкновения
@@ -134,31 +151,33 @@ int Levels::StartGame(RenderWindow& window)
         //    return 0;
         //}
 
-        if (change_level) //если булева пременная = true необходимо собрать новый уровень
+        if (_changeLevel) //если булева пременная = true необходимо собрать новый уровень
         {
-            level = InitLevel(level);
+            _level = InitLevel(_level);
         //    Menu::GetInstance().Setlevel(level);
-            change_level = false;
+            _changeLevel = false;
         }
 
         window.clear();
 
-        board.CreateMap(window);
-        board.CreateMenu(window);
+        _board.CreateMap(window);
+        _board.CreateMenu(window);
 
        /* Menu::GetInstance().CreateMenu(window); */
 
-        for (blk = block.begin(); blk != block.end(); blk++)
-            window.draw(**blk);
+        for (_blk = _block.begin(); _blk != _block.end(); _blk++)
+            window.draw(**_blk);
 
-        for (bns = bonus.begin(); bns != bonus.end(); bns++)
-            window.draw(**bns);
+        for (_bns = _bonus.begin(); _bns != _bonus.end(); _bns++)
+            window.draw(**_bns);
 
+        for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+            window.draw(**_bl);
        
       
-        window.draw(*platform->GetInstance());
+        window.draw(*_platform->GetInstance());
         
-        window.draw(ball);
+        
 
         window.display();
 
@@ -172,89 +191,118 @@ int Levels::StartGame(RenderWindow& window)
 void Levels::CollisionDetecter()
 {
 //---------------------------------------------------------------------Проверяем столкновение шарика с границами карты
-    // Проверяем пересечение шарика с левой стенкой карты
-    if (ball.GetRect().left < BORDER_LEFT)
+
+    for (_bl = _ball.begin(); _bl != _ball.end();)
     {
-        ball.setPosition(BORDER_LEFT, ball.getPosition().y);  // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
-        ball.SetAngleUnitCircle(Vector2f(-ball.GetAngleUnitCircle().x, ball.GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
-    }
-
-    // Проверяем пересечение с правой стенкой
-    if (ball.GetRect().left + ball.GetRect().width > BORDER_RIGHT)
-    {
-        // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
-        ball.setPosition(BORDER_RIGHT - ball.GetRect().width, ball.getPosition().y);
-        ball.SetAngleUnitCircle(Vector2f(-ball.GetAngleUnitCircle().x, ball.GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
-    }
-
-    // Проверяем пересечение с потолком
-    if (ball.getPosition().y < BORDER_TOP)
-    {
-        ball.setPosition(ball.getPosition().x, BORDER_TOP); // Если вдруг перелетели потолок, то устанавливаемся в саоме крайнее возможное положение
-        ball.SetAngleUnitCircle(Vector2f(ball.GetAngleUnitCircle().x, -ball.GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
-    }
-
-
-
-
-//----------------------------------------------------------------Проверяем столкновение шарика с платформой, (обрабатываем в классе Platform)
-    if (platform->GetInstance()->GetRect().intersects(ball.GetRect()))
-    {
-        std::cout << "intersssseeeeect" << std::endl;
-        ball.SetAngleUnitCircle(platform->GetInstance()->CollisionWithBall(ball));
-    }
-
-
-
-
-//----------------------------------------------------------------Проверяем столкновение шарика с блоками, (обрабатываем в блкоах)
-    
-    for (blk = block.begin(); blk != block.end();)
-    {
-        if ((*blk)->GetRect().intersects(ball.GetRect()))
+        // Проверяем пересечение шарика с левой стенкой карты
+        if ((*_bl)->GetRect().left < BORDER_LEFT)
         {
-            ball.SetAngleUnitCircle((*blk)->BallCollision(ball));
-            if ((*blk)->GetFlagBonus())
+            (*_bl)->setPosition(BORDER_LEFT, (*_bl)->getPosition().y);  // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
+            (*_bl)->SetAngleUnitCircle(Vector2f(-(*_bl)->GetAngleUnitCircle().x, (*_bl)->GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+        }
+
+        // Проверяем пересечение с правой стенкой
+        if ((*_bl)->GetRect().left + (*_bl)->GetRect().width > BORDER_RIGHT)
+        {
+            // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
+            (*_bl)->setPosition(BORDER_RIGHT - (*_bl)->GetRect().width, (*_bl)->getPosition().y);
+            (*_bl)->SetAngleUnitCircle(Vector2f(-(*_bl)->GetAngleUnitCircle().x, (*_bl)->GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+        }
+
+        // Проверяем пересечение с потолком
+        if ((*_bl)->getPosition().y < BORDER_TOP)
+        {
+            (*_bl)->setPosition((*_bl)->getPosition().x, BORDER_TOP); // Если вдруг перелетели потолок, то устанавливаемся в саоме крайнее возможное положение
+            (*_bl)->SetAngleUnitCircle(Vector2f((*_bl)->GetAngleUnitCircle().x, -(*_bl)->GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+        }
+
+       
+        //----------------------------------------------------------------Проверяем столкновение шарика с платформой, (обрабатываем в классе Platform)
+        if (_platform->GetInstance()->GetRect().intersects((*_bl)->GetRect()))
+        {  
+            (*_bl)->SetAngleUnitCircle(_platform->GetInstance()->CollisionWithBall(**_bl));
+        }
+
+        //----------------------------------------------------------------Проверяем столкновение шарика с блоками, (обрабатываем в блкоах)
+
+        for (_blk = _block.begin(); _blk != _block.end();)
+        {
+            if ((*_blk)->GetRect().intersects((*_bl)->GetRect()))
             {
-                bonus.push_back(new Bonus((*blk)->GetBlockType(), Vector2f((*blk)->GetRect().left + (*blk)->GetRect().width / 2 - BONUS_WIDTH/2,
-                    (*blk)->getPosition().y)));
-            }            
-            blk = block.erase(blk);
+                (*_bl)->SetAngleUnitCircle((*_blk)->BallCollision(**_bl));
+                if ((*_blk)->GetFlagBonus())
+                {
+                    _bonus.push_back(new Bonus((*_blk)->GetBlockType(), Vector2f((*_blk)->GetRect().left + (*_blk)->GetRect().width / 2 - BONUS_WIDTH / 2,
+                        (*_blk)->getPosition().y)));
+                }
+                delete *_blk;
+                _blk = _block.erase(_blk);
+            }
+            else
+            {
+                _blk++;
+            }
+        }
+
+
+        // Если шарик упал (на этот случай нужно сделать отдельную функцию!!!)
+        if ((*_bl)->getPosition().y > BORDER_BOTTOM)
+        {
+            if (Ball::GetBallCount() <= 1)
+            {
+                _flagBallMove = false;
+                (*_bl)->SetFlagInit(true);
+                _bl++;
+            }
+            else
+            {
+                delete* _bl;
+                _bl = _ball.erase(_bl);
+            }
+            // Menu::GetInstance().SetCountlives(-1);
+             
         }
         else
         {
-            blk++;
-        }   
+            _bl++;
+        }
+
+
     }
+    
 
 //-------------------------------------------------------------------Проверяем столкновение бонуса с платформой (обрабатываем в платформе)
+//---------------------------------------------------------------------------------------Если бонус достик нижней границы карты, то удаляем его
 
-    for (bns = bonus.begin(); bns != bonus.end();)
+    for (_bns = _bonus.begin(); _bns != _bonus.end();)
     {
-        if ((*bns)->GetRect().intersects(platform->GetInstance()->GetRect()))
+        if ((*_bns)->GetRect().intersects(_platform->GetInstance()->GetRect()))
         {
-            (*bns)->CollisionWithPlatform(platform->GetInstance());
-            bns = bonus.erase(bns);
+            (*_bns)->CollisionWithPlatform(_ball);
+            delete *_bns;
+            _bns = _bonus.erase(_bns);
+        }
+        else if ((*_bns)->getPosition().y > BORDER_BOTTOM)
+        {
+            delete *_bns;
+            _bns = _bonus.erase(_bns);
+           
+            
         }
         else
         {
-            bns++;
+            _bns++;
         }
         
     }
 
 
 
+
+
     
    
 }
-
-
-//void Levels::CreateBonus(FloatRect blockPosition, BlockType blockType)
-//{
-//
-//}
-
 
 
 int Levels::InitLevel(int lvl)
@@ -286,17 +334,17 @@ int Levels::CreateLevel1()
         positionX = i;
         if (i == 5 || i == 7)
         {
-            block.push_back(new Block(YELLOW, true));  //создаем бонусные блоки
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(YELLOW, true));  // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
         else
         {
-            block.push_back(new Block(YELLOW));
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(YELLOW));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
     }
 
@@ -307,17 +355,17 @@ int Levels::CreateLevel1()
         positionX = i;
         if (i == 4 || i == 8)
         {
-            block.push_back(new Block(GREEN, true));  //создаем бонусные блоки
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(GREEN, true));  // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
         }
         else
         {
-            block.push_back(new Block(GREEN));
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(GREEN));
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
         }
     }
 
@@ -328,38 +376,38 @@ int Levels::CreateLevel1()
         positionX = i;
         if (i == 3 || i == 9)
         {
-            block.push_back(new Block(PINK, true));  //создаем бонусные блоки
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(PINK, true));  //создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
         }
         else
         {
-            block.push_back(new Block(PINK));
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(PINK));
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
         }
     }
 
-    //четвертый ряд
+    // Четвертый ряд
     positionY = 3;
     for (int i = 0; i < 13; i++)
     {
         positionX = i;
         if (i == 2 || i == 10)
         {
-            block.push_back(new Block(PURPLE, true));                    //создаем бонусные блоки
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(PURPLE, true));                    //создаем бонусные блоки
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
         else
         {
-            block.push_back(new Block(PURPLE));
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(PURPLE));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
     }
 
@@ -370,17 +418,17 @@ int Levels::CreateLevel1()
         positionX = i;
         if (i == 1 || i == 11)
         {
-            block.push_back(new Block(RED, true));  //создаем бонусные блоки
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(RED, true));  //создаем бонусные блоки
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
         else
         {
-            block.push_back(new Block(RED));
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(RED));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
     }
     //шестой ряд
@@ -390,17 +438,17 @@ int Levels::CreateLevel1()
         positionX = i;
         if (i == 0 || i == 12)
         {
-            block.push_back(new Block(BLUE, true));  //создаем бонусные блоки
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(BLUE, true));  //создаем бонусные блоки
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
         else
         {
-            block.push_back(new Block(BLUE));
-            blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--;                                                         //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+            _block.push_back(new Block(BLUE));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
     }
 
@@ -409,10 +457,10 @@ int Levels::CreateLevel1()
     for (int i = 0; i < 13; i++)
     {
         positionX = i;
-        block.push_back(new Block(ORANGE));
-        blk = block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-        blk--;                                                         //смещаемся на последний элемент.
-        (*blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        _block.push_back(new Block(ORANGE));
+        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+        _blk--;                                                         //смещаемся на последний элемент.
+        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
        
     }
    
@@ -429,11 +477,11 @@ int Levels::CreateLevel2()
         positionX = i;
         for (int j = 0; j < color; j++)
         {
-            block.push_back(new Block(GREEN));
+            _block.push_back(new Block(GREEN));
             positionY = j;
-            blk = block.end(); //итератор устанавливаем на адрес стоящий за последним элементом листа
-            blk--; //смещаемся на последний элемент.
-            (*blk)->setPosition(40 + j * 55, 60 + i * 23);
+            _blk = _block.end(); //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--; //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + j * 55, 60 + i * 23);
         }
         color += 2;
     }

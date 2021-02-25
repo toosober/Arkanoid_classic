@@ -38,8 +38,107 @@ void Bonus::Move(float time)
     this->move(0, _speedFall * time);
 }
 
-void Bonus::CollisionWithPlatform(Platform* platform)
+void Bonus::CollisionWithPlatform(std::list<Ball*>& ball)
+{
+    switch (_bonusType)
+    {
+    case BLUE:
+ //       ChangePlatform(platform); // Увеличиваем или уменьшаем платформу
+        break;
+    case RED:
+//        LaserOnBoard(platform);  // Устанавливаем лазер на платформу
+        break;
+        
+    case PURPLE:
+        MultipleBall(ball); // Из каждого шарика в игре вылетает еще два шарика
+        break;
+    case PINK:
+ //       ChangeSpeedBall(ball); // Ускоряем или замедляем шарик(и)
+        break;
+    case GREEN:
+//        CatchBall(ball);    // Если шарик на экране остался один, он приклеивается к платформе
+        break;
+    case YELLOW:
+        void AddLive();		// Этот бонус добавляет одну жизнь игроку
+        break;
+    default:
+        throw("invalid _bonusType");
+        break;
+    }
+}
+
+ 
+ 
+
+
+
+
+
+void Bonus::MultipleBall(std::list<Ball*>& ball)
+{
+    std::list<Ball*>::iterator bl;
+    std::list<Ball*>::iterator tempIt;
+    unsigned ballCounter = Ball::GetBallCount();
+    
+    Vector2f angleUnitCircle;
+    
+    bl = ball.begin();
+
+    while (ballCounter > 0 && bl != ball.end())
+    {
+        ball.push_back(new Ball((*bl)->GetSpeed(), false));
+        tempIt = ball.end();
+        tempIt--;
+        (*tempIt)->setPosition((*bl)->getPosition());
+        angleUnitCircle.x = (*bl)->GetAngleUnitCircle().x + 0.2;
+        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.x, 2));
+        if ((*bl)->GetAngleUnitCircle().y < 0)
+        {
+            angleUnitCircle.y = -angleUnitCircle.y;
+        }
+        (*tempIt)->SetAngleUnitCircle(angleUnitCircle);
+
+        ball.push_back(new Ball((*bl)->GetSpeed(), false));
+        tempIt = ball.end();
+        tempIt--;
+        (*tempIt)->setPosition((*bl)->getPosition());
+        angleUnitCircle.x = (*bl)->GetAngleUnitCircle().x - 0.2;
+        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.x, 2));
+        if ((*bl)->GetAngleUnitCircle().y < 0)
+        {
+            angleUnitCircle.y = -angleUnitCircle.y;
+        }
+        (*tempIt)->SetAngleUnitCircle(angleUnitCircle);
+
+        ballCounter--;
+        bl++;
+    }
+
+
+}
+
+
+void ChangePlatform(Platform* platform)
 {
 
 }
 
+void LaserOnBoard(Platform* platform)
+{
+
+}
+
+//void ChangeSpeedBall(std::list<Ball*>& ball)
+//{
+
+//}
+
+//void CatchBall(std::list<Ball*>& ball)
+//{
+
+//}
+
+void AddLive()
+{
+
+}

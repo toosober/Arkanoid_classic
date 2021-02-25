@@ -5,13 +5,16 @@
 
 
 
-Ball::Ball(float acceleration)    
+Ball::Ball(float acceleration, bool flagInit)    
 {   
     this->setTexture(_texture);
     this->setTextureRect(sf::IntRect(BLUE_BALL_LEFT, BLUE_BALL_TOP, BLUE_BALL_WIDTH, BLUE_BALL_HEIGHT));
-   _acceleration = acceleration;
-   _flagInit = true;
-   _flagMove = false;
+   
+    _acceleration = acceleration;
+   
+   _flagInit = flagInit;
+   
+   _ballCounter++;
 }
 
 
@@ -29,19 +32,6 @@ void Ball::Move(double angleUnitCircleX, double angleUnitCircleY, float time)
      _speed = Vector2f (_acceleration * time * _angleUnitCircle.x, _acceleration*time* _angleUnitCircle.y); // Вектор полета шарика
     
     this->move(_speed); // Вызываем стандартную функцию move от класса Sprite
-
-
-    // После сдвига проверяем куда мы попали?    
-    
-
-    // Если шарик упал (на этот случай нужно сделать отдельную функцию!!!)
-    if (this->getPosition().y > BORDER_BOTTOM)
-    {
-       // Menu::GetInstance().SetCountlives(-1);
-        /*creatorPlatform = new CreatorMediumPlatform();*/
-        this->SetFlagInit(true);
-        this->SetFlagMove(false);
-    }
 
 }
 

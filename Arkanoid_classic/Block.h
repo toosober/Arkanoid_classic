@@ -1,7 +1,7 @@
 #pragma once
 
 
-
+#include "Config.h"
 #include "GameObject.h"
 #include "Ball.h"
 

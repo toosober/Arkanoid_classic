@@ -15,10 +15,12 @@ int main()
     //Menu::GetInstance().CreateStartMenu(window);
 
     Levels lvs;
+    
 
     while(window.isOpen())
         lvs.StartGame(window);
-
+        
+    system("pause");
     return 0;
 }
 

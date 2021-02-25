@@ -71,7 +71,7 @@ Vector2f Platform::BallCollisionLeftEdge(Ball& ball)
     else if (angleUnitCircle.x < 0) // Иначе если летим справа налево, то должны улететь под большим углом
     {
         angleUnitCircle.x = -0.9;                                 //отражаемся по х
-        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.y, 2)); 
+        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.x, 2)); 
         angleUnitCircle.y = -angleUnitCircle.y;                    //отражаемся по y
     }
 
@@ -100,7 +100,7 @@ Vector2f Platform::BallCollisionRightEdge(Ball& ball)
     else if (angleUnitCircle.x > 0) // Иначе если летим слева направо, то должны улететь под большим углом
     {
         angleUnitCircle.x = 0.9;                                 //отражаемся по х
-        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.y, 2));
+        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.x, 2));
         angleUnitCircle.y = -angleUnitCircle.y;                      //отражаемся по y
     }
 
@@ -357,11 +357,12 @@ ConcretePlatform::ConcretePlatform()
 }
 
 ConcretePlatform::~ConcretePlatform()
-{
+{    
     delete _concretePlatform;
     delete _smallPlatform;
     delete _mediumPlatform;
     delete _largePlatform;
+   
 }
 
 
