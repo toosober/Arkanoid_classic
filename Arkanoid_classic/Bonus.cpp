@@ -38,12 +38,12 @@ void Bonus::Move(float time)
     this->move(0, _speedFall * time);
 }
 
-void Bonus::CollisionWithPlatform(std::list<Ball*>& ball)
+void Bonus::CollisionWithPlatform(ConcretePlatform* platform, std::list<Ball*>& ball)
 {
     switch (_bonusType)
     {
     case BLUE:
- //       ChangePlatform(platform); // Увеличиваем или уменьшаем платформу
+        ChangePlatform(platform); // Увеличиваем или уменьшаем платформу
         break;
     case RED:
 //        LaserOnBoard(platform);  // Устанавливаем лазер на платформу
@@ -59,7 +59,7 @@ void Bonus::CollisionWithPlatform(std::list<Ball*>& ball)
 //        CatchBall(ball);    // Если шарик на экране остался один, он приклеивается к платформе
         break;
     case YELLOW:
-        void AddLive();		// Этот бонус добавляет одну жизнь игроку
+        AddLive();		// Этот бонус добавляет одну жизнь игроку
         break;
     default:
         throw("invalid _bonusType");
@@ -118,27 +118,57 @@ void Bonus::MultipleBall(std::list<Ball*>& ball)
 }
 
 
-void ChangePlatform(Platform* platform)
+void Bonus::ChangePlatform(ConcretePlatform* platform)
+{
+    std::random_device rd;
+    std::mt19937 mersenne(rd());
+
+    if (platform->GetSizePlatform() < 2 || platform->GetSizePlatform() > 2)
+    {
+        platform->ChangePlatform(mediumPlatform);
+    }
+    else if (mersenne() % 2 == 0)
+    {
+        platform->ChangePlatform(smallPlatform);
+    }
+    else
+    {
+        platform->ChangePlatform(largePlatform);
+    }
+}
+
+void Bonus::LaserOnBoard(ConcretePlatform* platform)
 {
 
 }
 
-void LaserOnBoard(Platform* platform)
+void Bonus::ChangeSpeedBall(std::list<Ball*>& ball)
+{
+    std::random_device rd;
+    std::mt19937 mersenne(rd());
+    std::list<Ball*>::iterator it;
+    it = ball.begin();
+    int rand = mersenne() % 2;
+    for (it = ball.begin(); it != ball.end(); it++)
+    {
+        if (rand == 0)
+        {
+            (*it)->SetSpeedSlow();
+        }
+        else
+        {
+            (*it)->SetSpeedFast();
+        }
+    }
+    
+}
+
+void Bonus::CatchBall(std::list<Ball*>& ball)
 {
 
 }
 
-//void ChangeSpeedBall(std::list<Ball*>& ball)
-//{
-
-//}
-
-//void CatchBall(std::list<Ball*>& ball)
-//{
-
-//}
-
-void AddLive()
+void Bonus::AddLive()
 {
-
+    Menu::GetInstance().SetCountlives(1);
 }

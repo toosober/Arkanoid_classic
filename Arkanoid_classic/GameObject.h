@@ -34,6 +34,7 @@ public:
 	void SetTexture() { _texture.loadFromImage(_image); }
 };
 
+
 #endif 
 
 

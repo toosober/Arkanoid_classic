@@ -354,11 +354,11 @@ ConcretePlatform::ConcretePlatform()
     _mediumPlatform = new MediumPlatform;
     _largePlatform = new LargePlatform;
     _concretePlatform = _mediumPlatform;
+    _sizePlatform = mediumPlatform;
 }
 
 ConcretePlatform::~ConcretePlatform()
 {    
-    delete _concretePlatform;
     delete _smallPlatform;
     delete _mediumPlatform;
     delete _largePlatform;
@@ -369,11 +369,11 @@ ConcretePlatform::~ConcretePlatform()
 void ConcretePlatform::ChangePlatform(int sizePlatform)
 {
     Vector2f position = _concretePlatform->getPosition();
-    if (sizePlatform <= 1)
+    if (sizePlatform <= smallPlatform)
     {
         _concretePlatform = _smallPlatform;        
     }
-    else if (sizePlatform == 2)
+    else if (sizePlatform == mediumPlatform)
     {
         _concretePlatform = _mediumPlatform;
     }

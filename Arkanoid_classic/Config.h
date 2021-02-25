@@ -20,6 +20,7 @@ const std::string FONTPATH = "Fonts/Neucha/Neucha-Regular.ttf";
 
 
 
+
 // Границы меню
 const int BORDER_RIGHT = 775;
 const int BORDER_LEFT = 25;
@@ -186,6 +187,8 @@ const sf::Vector2f PLATFORM_START_POSITION = Vector2f(320.f, 550.f);
 const sf::Vector2f BALL_START_POSITION = Vector2f(376.f, 534.f);
 //Шарик относительно платформы
 const sf::Vector2f BALL_RELATIVE_PLATFORM = Vector2f(56.f, -16.f);
+
+enum sizePlatform {smallPlatform = 1, mediumPlatform = 2, largePlatform = 3};
 
 
 //----------------------------------------------------------------------------------Цветка Бонусов и Блков 

@@ -25,14 +25,14 @@ public:
 	void Move(float time);
 
 	//обработка столкновения с платформой
-	void CollisionWithPlatform(std::list<Ball*>& ball);
+	void CollisionWithPlatform(ConcretePlatform* platform, std::list<Ball*>& ball);
 
 	//функции бафов
 	void MultipleBall(std::list<Ball*>& ball); // Из каждого шарика в игре вылетает еще два шарика
-	void ChangePlatform(Platform* platform);   // Увеличиваем или уменьшаем платформу
-	void LaserOnBoard(Platform* platform);	   // Устанавливаем лазер на платформу
-	//void ChangeSpeedBall(std::list<Ball*>& ball); // Ускоряем или замедляем шарик(и)
-	//void CatchBall(std::list<Ball*>& ball);    // Если шарик на экране остался один, он приклеивается к платформе
+	void ChangePlatform(ConcretePlatform* platform);   // Увеличиваем или уменьшаем платформу
+	void LaserOnBoard(ConcretePlatform* platform);	   // Устанавливаем лазер на платформу
+	void ChangeSpeedBall(std::list<Ball*>& ball); // Ускоряем или замедляем шарик(и)
+	void CatchBall(std::list<Ball*>& ball);    // Если шарик на экране остался один, он приклеивается к платформе
 	void AddLive();							   // Этот бонус добавляет одну жизнь игроку
 
 	

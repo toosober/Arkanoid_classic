@@ -1,2 +1,14 @@
-﻿  Arkanoid_classic.cpp
-  Arkanoid_classic.vcxproj -> C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe
+﻿  Bonus.cpp
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.h(7,32): warning C4081: требуется "newline"; обнаружен ";"
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Bonus.cpp(38,30): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Bonus.cpp(93,59): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Bonus.cpp(105,59): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+  Arkanoid_classic.vcxproj -> F:\My_project\С++\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe

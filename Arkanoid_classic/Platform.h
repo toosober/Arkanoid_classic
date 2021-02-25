@@ -85,6 +85,8 @@ private:
 	LargePlatform* _largePlatform = NULL;
 	SmallPlatform* _smallPlatform = NULL;
 
+	sizePlatform _sizePlatform;
+
 public:
 	ConcretePlatform();
 	~ConcretePlatform();
@@ -92,6 +94,7 @@ public:
 	Platform* GetInstance() { return _concretePlatform; }
 
 	void ChangePlatform(int sizePlatform);
+	sizePlatform GetSizePlatform() { return _sizePlatform; }
 
 };
 
