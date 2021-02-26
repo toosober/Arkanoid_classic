@@ -5,12 +5,12 @@
 
 unsigned Ball::_ballCounter = 0;
 
-Levels::Levels()
+Levels::Levels(Image& img) : _image(img)
 {
-    _platform = new ConcretePlatform;
+    _platform = new ConcretePlatform(_image);
     _platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
 
-    _ball.push_back(new Ball(0.1));
+    _ball.push_back(new Ball(_image, 0.1));
     _bl = _ball.begin();
     (*_bl)->setPosition(BALL_START_POSITION);
 
@@ -18,6 +18,32 @@ Levels::Levels()
     _changeLevel = true;
     _flagBallMove = false;
 
+}
+
+Levels::~Levels()
+{
+    delete _platform;
+    
+    while (!_block.empty())
+    {
+        _blk = _block.begin();
+        delete* _blk;
+        _blk = _block.erase(_blk);
+    }
+
+    while (!_bonus.empty())
+    {
+        _bns = _bonus.begin();
+        delete* _bns;
+        _bns = _bonus.erase(_bns);
+    }
+
+    while (!_ball.empty())
+    {
+        _bl = _ball.begin();
+        delete* _bl;
+        _bl = _ball.erase(_bl);
+    }
 }
 
 
@@ -139,15 +165,18 @@ int Levels::StartGame(RenderWindow& window)
             (*_bns)->Move(time);
         }
 
-        //После всех перемещений проверяем столкновения
+        // После всех перемещений проверяем столкновения
         CollisionDetecter();
 
+        // Если жизни закончились выводим экран окончания игры, все переменные приводим к начальному значению
         if (Menu::GetInstance().GetCountlives() <= 0)
         {
             Menu::GetInstance().SetScoreRecord();
-            Menu::GetInstance().CreateStopGame(window, _block, _board);
+            Menu::GetInstance().CreateStopGame(window, _block, _board, _platform);
             _level = 1;
             _changeLevel = true;
+            _bl = _ball.begin();
+            (*_bl)->SetSpeed(0.1);
 
                  
             return 0;
@@ -158,6 +187,26 @@ int Levels::StartGame(RenderWindow& window)
             _level = InitLevel(_level);
             Menu::GetInstance().Setlevel(_level);
             _changeLevel = false;
+            _platform->ChangePlatform(mediumPlatform);
+            _platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
+            
+            while (Ball::GetBallCount() > 1)
+            {
+                _bl = _ball.begin();
+                delete (*_bl);
+                _bl = _ball.erase(_bl);
+            }
+            _bl = _ball.begin();
+            _flagBallMove = false;
+
+            while (!_bonus.empty())
+            {
+                _bns = _bonus.begin();
+                delete* _bns;
+                _bns = _bonus.erase(_bns);
+            }
+
+
         }
 
         if (_block.empty())
@@ -197,6 +246,7 @@ int Levels::StartGame(RenderWindow& window)
 
 void Levels::CollisionDetecter()
 {
+
 //---------------------------------------------------------------------Проверяем столкновение шарика с границами карты
 
     for (_bl = _ball.begin(); _bl != _ball.end();)
@@ -227,6 +277,7 @@ void Levels::CollisionDetecter()
         //----------------------------------------------------------------Проверяем столкновение шарика с платформой, (обрабатываем в классе Platform)
         if (_platform->GetInstance()->GetRect().intersects((*_bl)->GetRect()))
         {  
+            Menu::GetInstance().ResetCombo();
             (*_bl)->SetAngleUnitCircle(_platform->GetInstance()->CollisionWithBall(**_bl));
         }
 
@@ -236,10 +287,12 @@ void Levels::CollisionDetecter()
         {
             if ((*_blk)->GetRect().intersects((*_bl)->GetRect()))
             {
+                Menu::GetInstance().SetCountScore(10 * Menu::GetInstance().GetCombo());
+                Menu::GetInstance().IncreaseCombo();
                 (*_bl)->SetAngleUnitCircle((*_blk)->BallCollision(**_bl));
                 if ((*_blk)->GetFlagBonus())
                 {
-                    _bonus.push_back(new Bonus((*_blk)->GetBlockType(), Vector2f((*_blk)->GetRect().left + (*_blk)->GetRect().width / 2 - BONUS_WIDTH / 2,
+                    _bonus.push_back(new Bonus(_image, (*_blk)->GetBlockType(), Vector2f((*_blk)->GetRect().left + (*_blk)->GetRect().width / 2 - BONUS_WIDTH / 2,
                         (*_blk)->getPosition().y)));
                 }
                 delete *_blk;
@@ -325,6 +378,9 @@ int Levels::InitLevel(int lvl)
     case 2:
         return CreateLevel2();
         break;
+    case 3:
+        return CreateLevel3();
+        break;
     default:
         break;
     }
@@ -344,159 +400,425 @@ int Levels::CreateLevel1()
         positionX = i;
         if (i == 5 || i == 7)
         {
-            _block.push_back(new Block(YELLOW, true));  // Создаем бонусные блоки
+            _block.push_back(new Block(_image, YELLOW, true));  // Создаем бонусные блоки
             _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
             _blk--;                                                         //смещаемся на последний элемент.
             (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
         else
         {
-            _block.push_back(new Block(YELLOW));
+            _block.push_back(new Block(_image, YELLOW));
             _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
             _blk--;                                                         //смещаемся на последний элемент.
             (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
         }
     }
 
-    ////Второй ряд
-    //positionY = 1;
-    //for (int i = 0; i < 13; i++)
-    //{
-    //    positionX = i;
-    //    if (i == 4 || i == 8)
-    //    {
-    //        _block.push_back(new Block(GREEN, true));  // Создаем бонусные блоки
-    //        _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         // Смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
-    //    }
-    //    else
-    //    {
-    //        _block.push_back(new Block(GREEN));
-    //        _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         // Смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
-    //    }
-    //}
+    //Второй ряд
+    positionY = 1;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 4 || i == 8)
+        {
+            _block.push_back(new Block(_image, GREEN, true));  // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, GREEN));
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
 
-    ////третий ряд
-    //positionY = 2;
-    //for (int i = 0; i < 13; i++)
-    //{
-    //    positionX = i;
-    //    if (i == 3 || i == 9)
-    //    {
-    //        _block.push_back(new Block(PINK, true));  //создаем бонусные блоки
-    //        _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         // Смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
-    //    }
-    //    else
-    //    {
-    //        _block.push_back(new Block(PINK));
-    //        _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         // Смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
-    //    }
-    //}
+    //третий ряд
+    positionY = 2;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 3 || i == 9)
+        {
+            _block.push_back(new Block(_image, PINK, true));  //создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, PINK));
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
 
-    //// Четвертый ряд
-    //positionY = 3;
-    //for (int i = 0; i < 13; i++)
-    //{
-    //    positionX = i;
-    //    if (i == 2 || i == 10)
-    //    {
-    //        _block.push_back(new Block(PURPLE, true));                    //создаем бонусные блоки
-    //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         //смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-    //    }
-    //    else
-    //    {
-    //        _block.push_back(new Block(PURPLE));
-    //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         //смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-    //    }
-    //}
+    // Четвертый ряд
+    positionY = 3;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 2 || i == 10)
+        {
+            _block.push_back(new Block(_image, PURPLE, true));                    //создаем бонусные блоки
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, PURPLE));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
 
-    ////пятый ряд
-    //positionY = 4;
-    //for (int i = 0; i < 13; i++)
-    //{
-    //    positionX = i;
-    //    if (i == 1 || i == 11)
-    //    {
-    //        _block.push_back(new Block(RED, true));  //создаем бонусные блоки
-    //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         //смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-    //    }
-    //    else
-    //    {
-    //        _block.push_back(new Block(RED));
-    //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         //смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-    //    }
-    //}
-    ////шестой ряд
-    //positionY = 5;
-    //for (int i = 0; i < 13; i++)
-    //{
-    //    positionX = i;
-    //    if (i == 0 || i == 12)
-    //    {
-    //        _block.push_back(new Block(BLUE, true));  //создаем бонусные блоки
-    //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         //смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-    //    }
-    //    else
-    //    {
-    //        _block.push_back(new Block(BLUE));
-    //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-    //        _blk--;                                                         //смещаемся на последний элемент.
-    //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-    //    }
-    //}
+    // Пятый ряд
+    positionY = 4;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 1 || i == 11)
+        {
+            _block.push_back(new Block(_image, RED, true));  //создаем бонусные блоки
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, RED));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
+    //шестой ряд
+    positionY = 5;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 0 || i == 12)
+        {
+            _block.push_back(new Block(_image, BLUE, true));  //создаем бонусные блоки
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, BLUE));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
 
-    ////седьмой ряд
-    //positionY = 6;
-    //for (int i = 0; i < 13; i++)
-    //{
-    //    positionX = i;
-    //    _block.push_back(new Block(ORANGE));
-    //    _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-    //    _blk--;                                                         //смещаемся на последний элемент.
-    //    (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-    //   
-    //}
+    //седьмой ряд
+    positionY = 6;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        _block.push_back(new Block(_image, ORANGE));
+        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+        _blk--;                                                         //смещаемся на последний элемент.
+        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+       
+    }
    
     return 2;
 }
 
 int Levels::CreateLevel2()
-{
-    int color = 1;
-    int positionX;
-    int positionY;
+{   
+    int positionX = 0;
+    int positionY = 0;
+
+    // Первый ряд
+    _block.push_back(new Block(_image, ORANGE));
+    _blk = _block.end();                                             // Итератор устанавливаем на адрес стоящий за последним элементом листа
+    _blk--;                                                          // Смещаемся на последний элемент.
+    (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23);  // Устанавливаем позицию блока
+    
+
+    // Второй ряд
+    positionY = 1;
+    for (int i = 0; i < 3; i++)
+    {
+        positionX = i;
+        if (i == 2)
+        {
+            _block.push_back(new Block(_image, PURPLE, true));              // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, PURPLE));                    // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Третий ряд
+    positionY = 2;
+    for (int i = 0; i < 5; i++)
+    {
+        positionX = i;
+        if (i == 4)
+        {
+            _block.push_back(new Block(_image, PINK, true));                // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, PINK));                      // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Четвертый ряд
+    positionY = 3;
     for (int i = 0; i < 7; i++)
     {
         positionX = i;
-        for (int j = 0; j < color; j++)
+        if (i == 6)
         {
-            _block.push_back(new Block(GREEN));
-            positionY = j;
-            _blk = _block.end(); //итератор устанавливаем на адрес стоящий за последним элементом листа
-            _blk--; //смещаемся на последний элемент.
-            (*_blk)->setPosition(40 + j * 55, 60 + i * 23);
+            _block.push_back(new Block(_image, YELLOW, true));              // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
         }
-        color += 2;
+        else
+        {
+            _block.push_back(new Block(_image, YELLOW));                    // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Пятый ряд
+    positionY = 4;
+    for (int i = 0; i < 9; i++)
+    {
+        positionX = i;
+        if (i == 8)
+        { 
+            _block.push_back(new Block(_image, RED, true));                 // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, RED));                       // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Шестой ряд
+    positionY = 5;
+    for (int i = 0; i < 11; i++)
+    {
+        positionX = i;
+        if (i == 10)
+        {
+            _block.push_back(new Block(_image, BLUE, true));                // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, BLUE));                      // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Седьмой ряд
+    positionY = 6;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 12)
+        {
+            _block.push_back(new Block(_image, GREEN, true));               // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, GREEN));                     // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
     }
 
     return 3;
+}
+
+int Levels::CreateLevel3()
+{
+    int positionX = 0;
+    int positionY = 0;
+
+    // Первый ряд
+    positionY = 0;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 6)
+        {
+            _block.push_back(new Block(_image, PURPLE, true));              // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, PURPLE));                    // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Второй ряд
+    positionY = 1;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 4 || i == 8)
+        {
+            _block.push_back(new Block(_image, GREEN, true));               // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, GREEN));                     // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Третий ряд
+    positionY = 2;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 0 || i == 12)
+        {
+            _block.push_back(new Block(_image, YELLOW, true));                // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, YELLOW));                      // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Четвертый ряд
+    positionY = 3;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 2 || i == 10)
+        {
+            _block.push_back(new Block(_image, BLUE, true));              // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, BLUE));                    // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Пятый ряд
+    positionY = 4;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        {
+            _block.push_back(new Block(_image, ORANGE));                       // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Шестой ряд
+    positionY = 5;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 4 || i == 8)
+        {
+            _block.push_back(new Block(_image, RED, true));                // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, RED));                      // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    // Седьмой ряд
+    positionY = 6;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 6)
+        {
+            _block.push_back(new Block(_image, PINK, true));               // Создаем бонусные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Cмещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, PINK));                     // Создаем обычные блоки
+            _blk = _block.end();                                            // Итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         // Смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); // Устанавливаем позицию блока
+        }
+    }
+
+    return 4;
 }
 
 

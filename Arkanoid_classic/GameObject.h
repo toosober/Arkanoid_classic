@@ -14,12 +14,12 @@ class GameObject : public Sprite
 
 protected:
 	
-	Image _image;
+	Image& _image;
 	Texture _texture;
 
 public:
 	//конструторы
-	GameObject();
+	GameObject(Image &img);
 	GameObject(const GameObject&) = delete;
 	virtual ~GameObject() {}
 
@@ -27,8 +27,7 @@ public:
 	//Методы
 	FloatRect GetRect();
 
-	Image GetImage() { return _image; };
-	void SetImage(string path) { _image.loadFromFile(path); }
+	
 
 	Texture GetTexture() { return _texture; }
 	void SetTexture() { _texture.loadFromImage(_image); }

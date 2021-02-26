@@ -3,7 +3,7 @@
 #include "Block.h"
 
 
-Block::Block(BlockType blockType, bool flagBonus)
+Block::Block(Image& img, BlockType blockType, bool flagBonus) : GameObject(img)
 {
     _flagBonus = flagBonus;
     _blockType = blockType;
@@ -94,52 +94,52 @@ Vector2f Block::BallCollision(Ball& ball)
 
     // Столкновение с левым нижним углом
     if (ballCenterX < blockLeftX && ballCenterY > blockBottomY)                     // По х - центр шарика находится левее чем левый край блока,
-    {                                                                               // а по y - центр шарика находится ниже чем низ блока      
+    {                                                                               // а по y - центр шарика находится ниже чем низ блока              
         return BallCollisionLeftBottomCorner(ball);
     }    
     // Столкновение с левым верхним углом
     else if (ballCenterX < blockLeftX && ballCenterY < blockTopY)                   // По х - центр шарика находится левее чем левый край блока                                                             
-    {                                                                               // По y - центр шарика находится выше чем верх блока 
+    {                                                                               // По y - центр шарика находится выше чем верх блока         
         return BallCollisionLeftTopCorner(ball);
     }
 
     // Столкновение с правм верхним углом
     else if (ballCenterX > blockRightX && ballCenterY < blockTopY)                 // По х - центр шарика находится правее чем правый край блкоа                         
-    {                                                                              // По y - центр шарика находится выше чем верх блока         
+    {                                                                              // По y - центр шарика находится выше чем верх блока               
         return BallCollisionRightTopCorner(ball);
     }
 
     // Столкновение с парвым нижним углом
     else if (ballCenterX > blockRightX && ballCenterY > blockBottomY)                // По х - центр находится правее чем правый край блока        
-    {                                                                                // По у - центр находится ниже чем низ блока   
+    {                                                                                // По у - центр находится ниже чем низ блока         
         return BallCollisionRightBottomCorner(ball);
     }
 
     // Столкновение с низом
     else if (ballCenterX > blockLeftX && ballCenterX < blockRightX                   // Если по х находимся в диапазоне блока
         && ballBottomY > blockBottomY)                                               // И по y находимся ниже нижнего края
-    {
+    {        
         return BallCollisionBottomWall(ball);
     }
 
     // Столкновение с верхом
     else if (ballCenterX > blockLeftX && ballCenterX < blockRightX                       // Если по х находимся в диапазоне блока
         && ballTopY < blockTopY)                                                         // И по y находимся выше верхнего края края
-    {
+    {        
         return BallCollisionTopWall(ball);
     }
 
     // Если находимся с левоой стороны
     else if (ballCenterY > blockTopY && ballCenterY < blockBottomY                      // Если по y находимся в диапазоне платформы
         && ballLeftX < blockLeftX)                                                      // И по х находимся слева
-    {
+    {        
         return BallCollisionLeftWall(ball);
     }
 
     // Если находимся с правой стороны
     else if (ballCenterY > blockTopY && ballCenterY < blockBottomY                      // Если по y находимся в диапазоне платформы
         && ballRightX > blockRightX)                                                    // И по х находимся справа
-    {
+    {        
         return BallCollisionRightWall(ball);
     }
     else
@@ -170,16 +170,12 @@ Vector2f Block::BallCollisionRightBottomCorner(Ball& ball)
         }
         else
         {
-            ball.setPosition(this->GetRect().left - ball.GetRect().width, ball.getPosition().y);
+            ball.setPosition(this->GetRect().left + this->GetRect().width, ball.getPosition().y);
             angleUnitCircle.x = -angleUnitCircle.x;                 // Отражаемся только по х
         }
         
-    }
+    }  
     
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
 
     return angleUnitCircle;
 }
@@ -211,12 +207,7 @@ Vector2f Block::BallCollisionLeftBottomCorner(Ball& ball)
             angleUnitCircle.x = -angleUnitCircle.x;                 // Отражаемся только по х
         }
 
-    }
-
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
+    }   
 
     return angleUnitCircle;
 }
@@ -236,22 +227,17 @@ Vector2f Block::BallCollisionRightTopCorner(Ball& ball)
     else
     {
         if (angleUnitCircle.y > 0)
-        {
+        {            
             ball.setPosition(ball.getPosition().x, this->GetRect().top - BLUE_BALL_HEIGHT);
-            angleUnitCircle.y = -angleUnitCircle.y;                 // Отражаемся по y только вниз                    
+            angleUnitCircle.y = -angleUnitCircle.y;                 // Отражаемся по y                    
         }
         else
-        {
+        {            
             ball.setPosition(this->GetRect().left + this->GetRect().width, ball.getPosition().y);
             angleUnitCircle.x = -angleUnitCircle.x;                 // Отражаемся только по х
         }
 
-    }
-
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
+    }   
 
     return angleUnitCircle;
 }
@@ -283,12 +269,7 @@ Vector2f Block::BallCollisionLeftTopCorner(Ball& ball)
             angleUnitCircle.x = -angleUnitCircle.x;                 // Отражаемся только по х
         }
 
-    }
-
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
+    }   
 
     return angleUnitCircle;
 }
@@ -301,11 +282,7 @@ Vector2f Block::BallCollisionBottomWall(Ball& ball)
     Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
 
     angleUnitCircle.y = abs(angleUnitCircle.y);                 //отражаемся по y только вниз                    
-   
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
+      
 
     return angleUnitCircle;
 }
@@ -319,11 +296,6 @@ Vector2f Block::BallCollisionTopWall(Ball& ball)
 
     angleUnitCircle.y = -1 * abs(angleUnitCircle.y);                 //отражаемся по y только вверх                    
 
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
-
     return angleUnitCircle;
 }
 
@@ -336,36 +308,21 @@ Vector2f Block::BallCollisionLeftWall(Ball& ball)
 
     angleUnitCircle.x = -1 * abs(angleUnitCircle.x);                         //отражаемся по х
     
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
+   
 
     return angleUnitCircle;
 }
 
 Vector2f Block::BallCollisionRightWall(Ball& ball)
-{
+{    
     // Если попали в это место то устанавливаемся в максимально возможное положение
     ball.setPosition(this->GetRect().left + BLOCK_WIDTH, ball.getPosition().y);
 
     Vector2f angleUnitCircle = ball.GetAngleUnitCircle();
 
-    angleUnitCircle.x = abs(angleUnitCircle.x);                         //отражаемся по х
-
-    if (_flagBonus)
-    {
-        this->BonusCreate();
-    }
-
+    angleUnitCircle.x = -angleUnitCircle.x;                         //отражаемся по х
+    
     return angleUnitCircle;
 }
 
 
-void Block::BonusCreate()
-{
-   /* Vector2f startPosition;
-    startPosition.x = this->GetRect().left + BLOCK_WIDTH / 2 - BONUS_WIDTH / 2;
-    startPosition.y = this->GetRect().top;
-    bonus.push_back(new Bonus(_blockType, startPosition));*/
-}

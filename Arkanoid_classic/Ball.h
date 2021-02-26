@@ -18,7 +18,7 @@ private:
 
 	
 public:
-	Ball(float acceleration = 0.5, bool flagInit = true);
+	Ball(Image& img, float acceleration = 0.5, bool flagInit = true);
 	~Ball() { _ballCounter--; }
 
 

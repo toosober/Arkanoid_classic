@@ -22,7 +22,7 @@ protected:
 	
 
 public:
-	Platform() {}
+	Platform(Image& img) : GameObject(img) {}
 	virtual ~Platform() {};
 
 	
@@ -47,7 +47,7 @@ private:
 
 
 public:
-	LargePlatform();
+	LargePlatform(Image& img);
 	~LargePlatform() {}
 
 
@@ -62,7 +62,7 @@ class MediumPlatform : public Platform
 private:
 	
 public:
-	MediumPlatform();
+	MediumPlatform(Image& img);
 	~MediumPlatform() {}
 };
 
@@ -71,7 +71,7 @@ public:
 class SmallPlatform : public Platform
 {
 public:
-	SmallPlatform();
+	SmallPlatform(Image& img);
 	~SmallPlatform(){}
 
 };
@@ -80,6 +80,8 @@ public:
 class ConcretePlatform
 {
 private:
+	Image& _image;
+
 	Platform* _concretePlatform = NULL;
 	MediumPlatform* _mediumPlatform = NULL;
 	LargePlatform* _largePlatform = NULL;
@@ -88,7 +90,7 @@ private:
 	sizePlatform _sizePlatform;
 
 public:
-	ConcretePlatform();
+	ConcretePlatform(Image& img);
 	~ConcretePlatform();
 
 	Platform* GetInstance() { return _concretePlatform; }

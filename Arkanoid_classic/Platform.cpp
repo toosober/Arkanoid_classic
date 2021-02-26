@@ -6,6 +6,10 @@
 
 //-------------------------------------------------------------------------Platform
 
+
+
+
+
 // Движение платформы
 void Platform::Move(const float speed, const float time)
 {
@@ -174,7 +178,7 @@ float Platform::CollisionLocation(Ball& ball)
 
 //-------------------------------------------------------------------------MediumPlatform
 
-MediumPlatform::MediumPlatform()
+MediumPlatform::MediumPlatform(Image& img) : Platform(img)
 {   
     
     this->setTexture(_texture);
@@ -185,7 +189,7 @@ MediumPlatform::MediumPlatform()
 
 
 //--------------------------------------------------------------------------SmallPlatform
-SmallPlatform::SmallPlatform()
+SmallPlatform::SmallPlatform(Image& img) : Platform(img)
 {   
     this->setTexture(_texture);
     this->setTextureRect(IntRect(SMALL_PLATFORM_LEFT, SMALL_PLATFORM_TOP, SMALL_PLATFORM_WIDTH, SMALL_PLATFORM_HEIGHT));
@@ -196,7 +200,7 @@ SmallPlatform::SmallPlatform()
 
 //--------------------------------------------------------------------------LargePlatform
 
-LargePlatform::LargePlatform()
+LargePlatform::LargePlatform(Image& img) : Platform(img)
 {   
     this->setTexture(_texture);
     this->setTextureRect(IntRect(LARGE_PLATFORM_LEFT, LARGE_PLATFORM_TOP, LARGE_PLATFORM_WIDTH, LARGE_PLATFORM_HEIGHT));    
@@ -348,11 +352,11 @@ Vector2f LargePlatform::BallCollisionCenter(Ball& ball)
 
 
 
-ConcretePlatform::ConcretePlatform()
+ConcretePlatform::ConcretePlatform(Image& img) : _image(img)
 {
-    _smallPlatform = new SmallPlatform;
-    _mediumPlatform = new MediumPlatform;
-    _largePlatform = new LargePlatform;
+    _smallPlatform = new SmallPlatform(_image);
+    _mediumPlatform = new MediumPlatform(_image);
+    _largePlatform = new LargePlatform(_image);
     _concretePlatform = _mediumPlatform;
     _sizePlatform = mediumPlatform;
 }
@@ -371,14 +375,17 @@ void ConcretePlatform::ChangePlatform(int sizePlatform)
     Vector2f position = _concretePlatform->getPosition();
     if (sizePlatform <= smallPlatform)
     {
+        _sizePlatform = smallPlatform;
         _concretePlatform = _smallPlatform;        
     }
     else if (sizePlatform == mediumPlatform)
     {
+        _sizePlatform = mediumPlatform;
         _concretePlatform = _mediumPlatform;
     }
     else
     {
+        _sizePlatform = largePlatform;
         _concretePlatform = _largePlatform;
     }
 

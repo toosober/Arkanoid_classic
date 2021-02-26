@@ -2,7 +2,7 @@
 #include "Bonus.h"
 
 
-Bonus::Bonus(BlockType blockType, Vector2f startPosition) : _bonusType(blockType)
+Bonus::Bonus(Image& img, BlockType blockType, Vector2f startPosition) : GameObject(img), _bonusType(blockType)
 {
     this->setTexture(_texture);
     this->setPosition(startPosition);
@@ -53,10 +53,10 @@ void Bonus::CollisionWithPlatform(ConcretePlatform* platform, std::list<Ball*>& 
         MultipleBall(ball); // Из каждого шарика в игре вылетает еще два шарика
         break;
     case PINK:
- //       ChangeSpeedBall(ball); // Ускоряем или замедляем шарик(и)
+        ChangeSpeedBall(ball); // Ускоряем или замедляем шарик(и)
         break;
     case GREEN:
-//        CatchBall(ball);    // Если шарик на экране остался один, он приклеивается к платформе
+        CatchBall(ball);    // Если шарик на экране остался один, он приклеивается к платформе
         break;
     case YELLOW:
         AddLive();		// Этот бонус добавляет одну жизнь игроку
@@ -86,7 +86,7 @@ void Bonus::MultipleBall(std::list<Ball*>& ball)
 
     while (ballCounter > 0 && bl != ball.end())
     {
-        ball.push_back(new Ball((*bl)->GetSpeed(), false));
+        ball.push_back(new Ball(this->_image, (*bl)->GetSpeed(), false));
         tempIt = ball.end();
         tempIt--;
         (*tempIt)->setPosition((*bl)->getPosition());
@@ -98,7 +98,7 @@ void Bonus::MultipleBall(std::list<Ball*>& ball)
         }
         (*tempIt)->SetAngleUnitCircle(angleUnitCircle);
 
-        ball.push_back(new Ball((*bl)->GetSpeed(), false));
+        ball.push_back(new Ball(this->_image, (*bl)->GetSpeed(), false));
         tempIt = ball.end();
         tempIt--;
         (*tempIt)->setPosition((*bl)->getPosition());
@@ -164,7 +164,7 @@ void Bonus::ChangeSpeedBall(std::list<Ball*>& ball)
 }
 
 void Bonus::CatchBall(std::list<Ball*>& ball)
-{
+{    
 
 }
 

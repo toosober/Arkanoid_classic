@@ -5,7 +5,7 @@
 
 
 
-Ball::Ball(float acceleration, bool flagInit)    
+Ball::Ball(Image& img, float acceleration, bool flagInit) : GameObject(img)
 {   
     this->setTexture(_texture);
     this->setTextureRect(sf::IntRect(BLUE_BALL_LEFT, BLUE_BALL_TOP, BLUE_BALL_WIDTH, BLUE_BALL_HEIGHT));

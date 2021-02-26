@@ -2,6 +2,7 @@
 
 #include "Block.h"
 #include "Border.h"
+#include "Platform.h"
 
 
 #pragma warning(disable : 4996); //ругаетс€ на устаревшую строку text.setColor(Color::Yellow)
@@ -15,6 +16,8 @@ private:
 	unsigned score = 0;
 	int lives = 0;
 	unsigned level = 1;
+
+	unsigned _combo = 1;
 
 
 	//–азличные текста
@@ -47,6 +50,11 @@ public:
 	void SetScoreRecord() { if(score > scoreRecord) scoreRecord = score; }
 	const unsigned GetScoreRecord() { return scoreRecord; }
 
+	void ResetCombo() { _combo = 1; }
+	void IncreaseCombo() { _combo += 1; }
+	const unsigned GetCombo() { return _combo; }
+
+
 
 
 	void Setlevel(int x) { level = x-1; }
@@ -54,7 +62,7 @@ public:
 
 	void CreateStartMenu(RenderWindow& window);
 	void CreateMenu(RenderWindow& window);
-	void CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board);
+	void CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform);
 	void PlayerInit() { score = 0; lives = 3; level = 1; }
 
 	

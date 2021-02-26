@@ -1,9 +1,6 @@
 
 #include "Menu.h"
 #include "Ball.h"
-#include "Platform.h"
-
-
 
 
 Menu::Menu()
@@ -126,8 +123,8 @@ void Menu::CreateStartMenu(RenderWindow& window)
     text_multiply.setColor(Color::Red);
     text_multiply.setPosition(216, 344);
     
-    MediumPlatform platform;
-    Ball ball;
+    MediumPlatform platform(image);
+    Ball ball(image);
     Border board;
 
     //устанавливаем начальные позиции для элементов
@@ -249,7 +246,7 @@ void Menu::CreateMenu(RenderWindow& window)
     window.draw(text_level);
 }
 
-void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board)
+void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform)
 {
     std::ostringstream Record;
     Record << scoreRecord;
@@ -290,18 +287,34 @@ void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Borde
             }
         }
 
-       ///* if (platform.getPosition().x < 1300)
-       //     platform.move(time * 1.5, 0);*/
-       // else
-       //     platform.setPosition(1300, 550);
+        if (platform->GetInstance()->getPosition().x < 1300)
+            platform->GetInstance()->move(time * 1.5, 0);
+        else
+            platform->GetInstance()->setPosition(1300, 550);
 
-        for (blks = blocks.begin(); blks != blocks.end(); blks++)
+        while (!blocks.empty())
         {
+            blks = blocks.begin();
+            delete* blks;
+            blks = blocks.erase(blks);
+        }
+
+
+        /*for (blks = blocks.begin(); blks != blocks.end(); blks++)
+        {
+            blks = blocks.begin();
             if ((*blks)->getPosition().x > -50)
                 (*blks)->move(time * -1.5, 0);
             else
-                (*blks)->setPosition(-50, 25);
-        }
+            {
+                delete (*blks);
+                blks = blocks.erase(blks);
+            }
+            if (blocks.empty())
+            {
+                break;
+            }
+        }       */
 
         if (text_stopgame.getPosition().y < 100)
             text_stopgame.move(0, time * 0.5);
@@ -320,7 +333,7 @@ void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Borde
         for (blks = blocks.begin(); blks != blocks.end(); blks++)
             window.draw(**blks);
 
-        //window.draw(platform);        
+        window.draw(*platform->GetInstance());        
         window.draw(text_score);
         window.draw(text_lives);
         window.draw(text_level);

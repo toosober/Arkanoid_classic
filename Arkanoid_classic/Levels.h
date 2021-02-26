@@ -19,6 +19,8 @@ class Levels
 
 private:
 
+    Image& _image;
+
     Border _board;
     ConcretePlatform* _platform;
     
@@ -51,8 +53,8 @@ private:
 
 
 public:
-    Levels();
-    //~Levels() {  }
+    Levels(Image& img);
+    ~Levels();
 
     int StartGame(RenderWindow& window);
     /*void SetChangeLevel(bool change) { change_level = change; }

@@ -3,11 +3,9 @@
 
 //------------------------------------// GameObject //------------------------------------//
 
-GameObject::GameObject()
-{
-    _image.loadFromFile(IMGPATH);
-    _texture.loadFromImage(_image);
-  
+GameObject::GameObject(Image& img) : _image(img)
+{   
+    _texture.loadFromImage(_image);  
 }
 
 FloatRect GameObject::GetRect()

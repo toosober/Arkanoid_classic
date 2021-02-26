@@ -10,7 +10,7 @@ class Block : public GameObject
 {
 private:
 	
-	//std::list<Bonus*> bonus; 
+	
 
 	int _strength = 0;    //  оличество попаданий в блок до разрушени€ 
 	
@@ -28,7 +28,7 @@ private:
 	Vector2f BallCollisionRightWall(Ball& ball);			// —толкновение с правой стенкой
 
 public:
-	Block(BlockType blockType = NO_BONUS, bool bonus = false );
+	Block(Image& img, BlockType blockType = NO_BONUS, bool bonus = false );
 	~Block() { }
 
 
@@ -37,7 +37,7 @@ public:
 	BlockType GetBlockType() { return _blockType; }
 	bool GetFlagBonus() { return _flagBonus; }
 
-	void BonusCreate();
+	
 	
 
 };

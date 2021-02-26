@@ -19,7 +19,7 @@ private:
 	double _speedFall = 0.1;
 
 public:
-	Bonus(BlockType blockType, Vector2f startPosition);
+	Bonus(Image& img, BlockType blockType, Vector2f startPosition);
 	~Bonus() {}
 
 	void Move(float time);
