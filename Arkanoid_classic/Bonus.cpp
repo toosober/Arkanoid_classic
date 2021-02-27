@@ -77,44 +77,49 @@ void Bonus::CollisionWithPlatform(ConcretePlatform* platform, std::list<Ball*>& 
 void Bonus::MultipleBall(std::list<Ball*>& ball)
 {
     std::list<Ball*>::iterator bl;
-    std::list<Ball*>::iterator tempIt;
-    unsigned ballCounter = Ball::GetBallCount();
-    
-    Vector2f angleUnitCircle;
-    
-    bl = ball.begin();
+    std::list<Ball*> ballTemp;
+    std::list<Ball*>::iterator blTmp;
 
-    while (ballCounter > 0 && bl != ball.end())
-    {
-        ball.push_back(new Ball(this->_image, (*bl)->GetSpeed(), false));
-        tempIt = ball.end();
-        tempIt--;
-        (*tempIt)->setPosition((*bl)->getPosition());
-        angleUnitCircle.x = (*bl)->GetAngleUnitCircle().x + 0.2;
-        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.x, 2));
+    Vector2f angleUnitCircleTemp;
+
+    blTmp = ballTemp.begin();
+    
+    for (bl = ball.begin(); bl != ball.end(); bl++)
+    {        
+        Ball* temp1 = new Ball(this->_image, (*bl)->GetSpeed(), false);
+        Ball* temp2 = new Ball(this->_image, (*bl)->GetSpeed(), false);
+
+        temp1->setPosition((*bl)->getPosition());
+        temp2->setPosition((*bl)->getPosition());
+
+        angleUnitCircleTemp.x = (*bl)->GetAngleUnitCircle().x + 0.2;
+        angleUnitCircleTemp.y = sqrt(1 - pow(angleUnitCircleTemp.x, 2));        
         if ((*bl)->GetAngleUnitCircle().y < 0)
         {
-            angleUnitCircle.y = -angleUnitCircle.y;
+            angleUnitCircleTemp.y = -angleUnitCircleTemp.y;
         }
-        (*tempIt)->SetAngleUnitCircle(angleUnitCircle);
+        temp1->SetAngleUnitCircle(angleUnitCircleTemp);
 
-        ball.push_back(new Ball(this->_image, (*bl)->GetSpeed(), false));
-        tempIt = ball.end();
-        tempIt--;
-        (*tempIt)->setPosition((*bl)->getPosition());
-        angleUnitCircle.x = (*bl)->GetAngleUnitCircle().x - 0.2;
-        angleUnitCircle.y = sqrt(1 - pow(angleUnitCircle.x, 2));
+        ballTemp.push_back(temp1);
+
+        angleUnitCircleTemp.x = (*bl)->GetAngleUnitCircle().x - 0.2;
+        angleUnitCircleTemp.y = sqrt(1 - pow(angleUnitCircleTemp.x, 2));
         if ((*bl)->GetAngleUnitCircle().y < 0)
         {
-            angleUnitCircle.y = -angleUnitCircle.y;
+            angleUnitCircleTemp.y = -angleUnitCircleTemp.y;
         }
-        (*tempIt)->SetAngleUnitCircle(angleUnitCircle);
+        temp2->SetAngleUnitCircle(angleUnitCircleTemp);
 
-        ballCounter--;
-        bl++;
+        ballTemp.push_back(temp2);       
     }
 
+    std::cout << "all OK" << std::endl;
 
+    for (blTmp = ballTemp.begin(); blTmp != ballTemp.end();)
+    {        
+        ball.push_back((*blTmp));
+        blTmp = ballTemp.erase(blTmp);
+    }
 }
 
 

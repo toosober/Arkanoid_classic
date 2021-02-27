@@ -1,85 +1,14 @@
-﻿  Levels.cpp
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(13,42): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(69,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(179,33): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(406,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(406,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(413,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(413,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(427,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(427,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(434,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(434,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(448,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(448,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(455,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(455,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(469,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(469,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(476,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(476,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(490,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(490,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(497,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(497,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(510,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(510,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(517,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(517,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(529,54): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(529,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(545,50): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(545,29): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(558,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(558,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(565,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(565,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(579,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(579,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(586,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(586,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(600,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(600,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(607,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(607,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(621,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(621,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(628,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(628,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(642,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(642,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(649,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(649,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(663,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(663,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(670,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(670,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(692,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(692,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(699,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(699,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(713,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(713,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(720,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(720,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(734,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(734,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(741,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(741,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(755,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(755,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(762,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(762,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(775,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(775,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(789,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(789,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(796,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(796,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(810,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(810,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(817,58): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(817,37): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\Levels.cpp(390): warning C4715: Levels::InitLevel: значение возвращается не при всех путях выполнения
-  Arkanoid_classic.vcxproj -> C:\Users\griva\Source\Repos\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe
+﻿  Bonus.cpp
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Menu.h(8,32): warning C4081: требуется "newline"; обнаружен ";"
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Bonus.cpp(38,30): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Bonus.cpp(95,63): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+F:\My_project\С++\Arkanoid\Arkanoid_classic\Bonus.cpp(105,63): warning C4244: =: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+  Arkanoid_classic.vcxproj -> F:\My_project\С++\Arkanoid\Arkanoid_classic\x64\Debug\Arkanoid_classic.exe
