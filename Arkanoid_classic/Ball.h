@@ -14,6 +14,8 @@ private:
 	float _acceleration;		 // Коээфициент ускорения
 
 	bool _flagInit;				 // Инициализация направления при запуске шарика с платформы (начало игры)
+
+	bool _flagCatch;
 	
 
 	
@@ -37,6 +39,9 @@ public:
 
 	void SetAngleUnitCircle(Vector2f angleUnitCircle) { _angleUnitCircle = angleUnitCircle; }
 	Vector2f GetAngleUnitCircle() { return _angleUnitCircle; }
+
+	void SetFlagCatch(bool flag) { _flagCatch = flag; }
+	bool GetFlagCatch() { return _flagCatch; }
 
 	static unsigned GetBallCount() { return _ballCounter; }
 

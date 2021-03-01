@@ -13,6 +13,7 @@ Ball::Ball(Image& img, float acceleration, bool flagInit) : GameObject(img)
     _acceleration = acceleration;
    
    _flagInit = flagInit;
+   _flagCatch = false;
    
    _ballCounter++;
 }

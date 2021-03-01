@@ -10,7 +10,12 @@
 class Platform : public GameObject
 {
 
+
+	
+
 protected:
+
+	unsigned _Bullets;
 
 	Vector2f BallCollisionLeftEdge(Ball& ball);			// Попали в верхнюю часть платформы в левый край (0-8 пиксель)
 	Vector2f BallCollisionRightEdge(Ball& ball);			// Попали в верхнюю часть платформы в правый край (0-8 пиксель с правого края)
@@ -22,12 +27,16 @@ protected:
 	
 
 public:
-	Platform(Image& img) : GameObject(img) {}
+	Platform(Image& img) : GameObject(img) { _Bullets = 0; }
 	virtual ~Platform() {};
 
 	
 	// Методы для всех наследников
 	void Move(const float speed, const float time);	
+	void SetBullets() { _Bullets += 10; }
+	void Fire() { _Bullets -= 2; }
+	bool GetBullets() { return _Bullets; }
+
 
 
 	// Виртуальные методы

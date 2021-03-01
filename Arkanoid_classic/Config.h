@@ -143,6 +143,13 @@ const int RED_BONUS_TOP = 482;
 const int YELLOW_BONUS_LEFT = 488;
 const int YELLOW_BONUS_TOP = 481;
 
+//--------------------------------------------------------------------------------Пули
+
+const int BULLET_LEFT = 225;
+const int BULLET_TOP = 6;
+const int BULLET_WIDTH = 12;
+const int BULLET_HEIGHT = 12;
+
 //-------------------------------------------------------------------------------Спрайты границ
 
 const int CORNER_WIDTH = 32;

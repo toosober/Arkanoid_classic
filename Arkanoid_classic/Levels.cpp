@@ -17,6 +17,8 @@ Levels::Levels(Image& img) : _image(img)
     _level = 1;
     _changeLevel = true;
     _flagBallMove = false;
+   
+    
 
 }
 
@@ -61,6 +63,7 @@ int Levels::StartGame(RenderWindow& window)
     double angleUnitCircleY = 0;         
 
     // Инициализируем переменную которая будет отдавать время и перезагружать его
+    Clock clockForBullets;
     Clock clock;
 
     while (window.isOpen())
@@ -69,6 +72,8 @@ int Levels::StartGame(RenderWindow& window)
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
         time = time / 1000;
+
+        float timeForBullet = clockForBullets.getElapsedTime().asMilliseconds();  // Заводим таймер для выпуска пуль
 
         // Обработка событий нажатий кнопок
         sf::Event event;
@@ -95,6 +100,11 @@ int Levels::StartGame(RenderWindow& window)
 
                         // Не заходим в этот блок до следующей инициализации
                         _flagBallMove = true;;
+
+                        for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+                        {
+                            (*_bl)->SetFlagCatch(false);
+                        }
                     }
                 }
                 if (event.key.code == Keyboard::X)
@@ -165,6 +175,37 @@ int Levels::StartGame(RenderWindow& window)
             (*_bns)->Move(time);
         }
 
+        for (_blts = _bullets.begin(); _blts != _bullets.end(); _blts++)
+        {
+            (*_blts)->Move(time);
+        }
+
+        
+        
+        // Если выбран бонус создания пуль, создаем пули
+        if (_platform->GetInstance()->GetBullets() > 0)
+        {
+            if (timeForBullet > 1000)
+            {   
+                _platform->GetInstance()->Fire();
+                clockForBullets.restart();
+
+                Bullets* tempBullet1 = new Bullets(_image);
+                Bullets* tempBullet2 = new Bullets(_image);
+                
+                tempBullet1->setPosition(_platform->GetInstance()->GetRect().left, _platform->GetInstance()->GetRect().top +
+                    _platform->GetInstance()->GetRect().height / 2 - BULLET_HEIGHT / 2);
+
+                tempBullet2->setPosition(_platform->GetInstance()->GetRect().left + _platform->GetInstance()->GetRect().width - BULLET_WIDTH,
+                    _platform->GetInstance()->GetRect().top + _platform->GetInstance()->GetRect().height / 2 - BULLET_HEIGHT / 2);
+
+
+                _bullets.push_back(tempBullet1);
+                _bullets.push_back(tempBullet2);
+               
+            }
+        }
+
         // После всех перемещений проверяем столкновения
         CollisionDetecter();
 
@@ -229,6 +270,11 @@ int Levels::StartGame(RenderWindow& window)
 
         for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
             window.draw(**_bl);
+
+        for (_blts = _bullets.begin(); _blts != _bullets.end(); _blts++)
+        {
+            window.draw(**_blts);
+        }
        
       
         window.draw(*_platform->GetInstance());
@@ -243,12 +289,20 @@ int Levels::StartGame(RenderWindow& window)
     
     return 0;
 }
-
+//---------------------------------------------------------------Обработка коллизий
 void Levels::CollisionDetecter()
 {
 
-//---------------------------------------------------------------------Проверяем столкновение шарика с границами карты
+   BallCollision(); // Проверяем столкновение шариков с границами карты
 
+   PlatformCollision(); // Проверяем столкновения элементов игры с платформой
+
+   BulletsCollision();  // Проверяем столкновения элементов игры с пулями
+
+}
+
+void Levels::BallCollision()
+{
     for (_bl = _ball.begin(); _bl != _ball.end();)
     {
         // Проверяем пересечение шарика с левой стенкой карты
@@ -273,12 +327,22 @@ void Levels::CollisionDetecter()
             (*_bl)->SetAngleUnitCircle(Vector2f((*_bl)->GetAngleUnitCircle().x, -(*_bl)->GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
         }
 
-       
+
         //----------------------------------------------------------------Проверяем столкновение шарика с платформой, (обрабатываем в классе Platform)
         if (_platform->GetInstance()->GetRect().intersects((*_bl)->GetRect()))
-        {  
+        {
             Menu::GetInstance().ResetCombo();
-            (*_bl)->SetAngleUnitCircle(_platform->GetInstance()->CollisionWithBall(**_bl));
+
+            if ((*_bl)->GetFlagCatch() && Ball::GetBallCount() == 1)
+            {
+                (*_bl)->setPosition((*_bl)->getPosition().x, _platform->GetInstance()->GetRect().top - BLUE_BALL_HEIGHT);
+            }
+            else
+            {
+                (*_bl)->SetAngleUnitCircle(_platform->GetInstance()->CollisionWithBall(**_bl));
+            }
+
+            
         }
 
         //----------------------------------------------------------------Проверяем столкновение шарика с блоками, (обрабатываем в блкоах)
@@ -295,7 +359,7 @@ void Levels::CollisionDetecter()
                     _bonus.push_back(new Bonus(_image, (*_blk)->GetBlockType(), Vector2f((*_blk)->GetRect().left + (*_blk)->GetRect().width / 2 - BONUS_WIDTH / 2,
                         (*_blk)->getPosition().y)));
                 }
-                delete *_blk;
+                delete* _blk;
                 _blk = _block.erase(_blk);
             }
             else
@@ -305,68 +369,112 @@ void Levels::CollisionDetecter()
         }
 
 
-
-
-        // Если шарик упал (на этот случай нужно сделать отдельную функцию!!!)
+        // Если шарик упал 
         if ((*_bl)->getPosition().y > BORDER_BOTTOM)
         {
-            if (Ball::GetBallCount() <= 1)
-            {
-                _flagBallMove = false;
-                (*_bl)->SetFlagInit(true);
-                _bl++;
-                Menu::GetInstance().SetCountlives(-1);
-            }
-            else
-            {
-                delete* _bl;
-                _bl = _ball.erase(_bl);
-            }
-            
-             
+            BallFall();
         }
         else
         {
             _bl++;
         }
-
-
     }
-    
+}
+
+void Levels::BallFall()
+{
+    if (Ball::GetBallCount() <= 1)
+    {
+        _flagBallMove = false;
+        (*_bl)->SetFlagInit(true);
+        _bl++;
+        Menu::GetInstance().SetCountlives(-1);
+
+        for (_bns = _bonus.begin(); _bns != _bonus.end();)
+        {
+            delete (*_bns);
+            _bns = _bonus.erase(_bns);
+        }
+    }
+    else
+    {
+        delete* _bl;
+        _bl = _ball.erase(_bl);
+    }
+}
+
+void Levels::PlatformCollision()
+{
 
 //-------------------------------------------------------------------Проверяем столкновение бонуса с платформой (обрабатываем в платформе)
-//---------------------------------------------------------------------------------------Если бонус достик нижней границы карты, то удаляем его
+//---------------------------------------------------------------------------------------Если бонус достиг нижней границы карты, то удаляем его
 
     for (_bns = _bonus.begin(); _bns != _bonus.end();)
     {
         if ((*_bns)->GetRect().intersects(_platform->GetInstance()->GetRect()))
         {
             (*_bns)->CollisionWithPlatform(_platform, _ball);
-            delete *_bns;
+            delete* _bns;
             _bns = _bonus.erase(_bns);
         }
         else if ((*_bns)->getPosition().y > BORDER_BOTTOM)
         {
-            delete *_bns;
+            delete* _bns;
             _bns = _bonus.erase(_bns);
-           
-            
+
         }
         else
         {
             _bns++;
         }
-        
+
     }
-
-
-
-
-
-    
-   
 }
 
+void Levels::BulletsCollision()
+{
+    for (_blts = _bullets.begin(); _blts != _bullets.end();)
+    {
+        if ((*_blts)->getPosition().y < BORDER_TOP)
+        {
+            delete* _blts;
+            _blts = _bullets.erase(_blts);
+            continue;
+        }
+
+    
+        for (_blk = _block.begin(); _blk != _block.end();)
+        {
+            if ((*_blts)->GetRect().intersects((*_blk)->GetRect()))
+            {
+                if ((*_blk)->GetFlagBonus())
+                {
+                    _bonus.push_back(new Bonus(_image, (*_blk)->GetBlockType(), Vector2f((*_blk)->GetRect().left + (*_blk)->GetRect().width / 2 - BONUS_WIDTH / 2,
+                        (*_blk)->getPosition().y)));
+                }
+
+                delete* _blk;
+                _blk = _block.erase(_blk);
+
+                delete* _blts;
+                _blts = _bullets.erase(_blts);
+                break;
+            }
+            else
+            {
+                _blk++;
+            }
+        } 
+
+        if (!_bullets.empty() && _blts != _bullets.end())
+        {
+            _blts++;
+        }
+            
+    }
+}
+
+//----------------------------------------------------------------Создание уровней
 
 int Levels::InitLevel(int lvl)
 {
@@ -456,47 +564,47 @@ int Levels::CreateLevel1()
     //    }
     //}
 
-    // Четвертый ряд
-    positionY = 3;
-    for (int i = 0; i < 13; i++)
-    {
-        positionX = i;
-        if (i == 2 || i == 10)
-        {
-            _block.push_back(new Block(_image, PURPLE, true));                    //создаем бонусные блоки
-            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            _blk--;                                                         //смещаемся на последний элемент.
-            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-        }
-        else
-        {
-            _block.push_back(new Block(_image, PURPLE, true));
-            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
-            _blk--;                                                         //смещаемся на последний элемент.
-            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
-        }
-    }
-
-    //// Пятый ряд
-    //positionY = 4;
+    //// Четвертый ряд
+    //positionY = 3;
     //for (int i = 0; i < 13; i++)
     //{
     //    positionX = i;
-    //    if (i == 1 || i == 11)
+    //    if (i == 2 || i == 10)
     //    {
-    //        _block.push_back(new Block(_image, RED, true));  //создаем бонусные блоки
+    //        _block.push_back(new Block(_image, PURPLE, true));                    //создаем бонусные блоки
     //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
     //        _blk--;                                                         //смещаемся на последний элемент.
     //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
     //    }
     //    else
     //    {
-    //        _block.push_back(new Block(_image, RED));
+    //        _block.push_back(new Block(_image, PURPLE));
     //        _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
     //        _blk--;                                                         //смещаемся на последний элемент.
     //        (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
     //    }
     //}
+
+    // Пятый ряд
+    positionY = 4;
+    for (int i = 0; i < 13; i++)
+    {
+        positionX = i;
+        if (i == 1 || i == 11)
+        {
+            _block.push_back(new Block(_image, RED, true));  //создаем бонусные блоки
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+        else
+        {
+            _block.push_back(new Block(_image, RED, true));
+            _blk = _block.end();                                            //итератор устанавливаем на адрес стоящий за последним элементом листа
+            _blk--;                                                         //смещаемся на последний элемент.
+            (*_blk)->setPosition(40 + positionX * 55, 40 + positionY * 23); //устанавливаем позицию блока
+        }
+    }
     ////шестой ряд
     //positionY = 5;
     //for (int i = 0; i < 13; i++)

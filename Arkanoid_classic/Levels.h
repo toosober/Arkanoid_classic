@@ -9,6 +9,7 @@
 #include "Platform.h"
 #include "Block.h"
 #include "Bonus.h"
+#include "Bullets.h"
 
 
 
@@ -38,6 +39,25 @@ private:
     std::list<Ball*>::iterator _bl;
     bool _flagBallMove;				 // Флаг запуска шарика
 
+    
+    
+    std::list<Bullets*> _bullets;
+    std::list<Bullets*>::iterator _blts;
+
+
+
+
+
+    // Коллизии
+    void CollisionDetecter();
+    void BallCollision(); // Всевозможные столкновение шарика с элементами игры
+    void PlatformCollision(); // Всевозможные столкновение платформы с элементами игры (кроме столкновения с шариком) 
+    void BulletsCollision(); // Все возможные столкновения пули с элементами игры
+    void BallFall();          // Шарик упал в spawn зону
+    
+
+
+    // Создание уровней
     void GameInit();
     int InitLevel(int lvl);
     int CreateLevel1();
@@ -48,6 +68,13 @@ private:
     int CreateLevel6();
     int CreateLevel7();
 
+    
+    
+
+    
+
+
+
 
 
 
@@ -57,10 +84,8 @@ public:
     ~Levels();
 
     int StartGame(RenderWindow& window);
-    /*void SetChangeLevel(bool change) { change_level = change; }
-    void CreateBonus(FloatRect blockPosition, BlockType blockType);*/
-
-    void CollisionDetecter();
+    
+    
 
 };
 

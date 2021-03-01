@@ -144,7 +144,7 @@ Vector2f Block::BallCollision(Ball& ball)
     }
     else
     {
-        return Vector2f(0, 0);                                                          // Неизвестная ситуация, шарик остановится.
+        return ball.GetAngleUnitCircle();                                                          // Неизвестная ситуация, шарик остановится.
     }
 }
 

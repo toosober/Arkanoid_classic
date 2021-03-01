@@ -46,7 +46,7 @@ void Bonus::CollisionWithPlatform(ConcretePlatform* platform, std::list<Ball*>& 
         ChangePlatform(platform); // Увеличиваем или уменьшаем платформу
         break;
     case RED:
-//        LaserOnBoard(platform);  // Устанавливаем лазер на платформу
+        LaserOnBoard(platform);  // Устанавливаем лазер на платформу
         break;
         
     case PURPLE:
@@ -92,28 +92,77 @@ void Bonus::MultipleBall(std::list<Ball*>& ball)
         temp1->setPosition((*bl)->getPosition());
         temp2->setPosition((*bl)->getPosition());
 
-        angleUnitCircleTemp.x = (*bl)->GetAngleUnitCircle().x + 0.2;
-        angleUnitCircleTemp.y = sqrt(1 - pow(angleUnitCircleTemp.x, 2));        
-        if ((*bl)->GetAngleUnitCircle().y < 0)
+        if ((*bl)->GetAngleUnitCircle().x > 0.75)
         {
-            angleUnitCircleTemp.y = -angleUnitCircleTemp.y;
+            angleUnitCircleTemp.y = (*bl)->GetAngleUnitCircle().y + 0.2;
+            angleUnitCircleTemp.x = sqrt(1 - pow(angleUnitCircleTemp.y, 2));
+
+            if ((*bl)->GetAngleUnitCircle().x < 0)
+            {
+                angleUnitCircleTemp.x = -abs(angleUnitCircleTemp.x);
+            }
+            else
+            {
+                angleUnitCircleTemp.x = abs(angleUnitCircleTemp.x);
+            }
         }
+        else
+        {
+            angleUnitCircleTemp.x = (*bl)->GetAngleUnitCircle().x + 0.2;
+            angleUnitCircleTemp.y = sqrt(1 - pow(angleUnitCircleTemp.x, 2));
+
+            if ((*bl)->GetAngleUnitCircle().y < 0)
+            {
+                angleUnitCircleTemp.y = -abs(angleUnitCircleTemp.y);
+            }
+            else
+            {
+                angleUnitCircleTemp.y = abs(angleUnitCircleTemp.y);
+            }
+
+            
+        }
+               
         temp1->SetAngleUnitCircle(angleUnitCircleTemp);
 
         ballTemp.push_back(temp1);
 
-        angleUnitCircleTemp.x = (*bl)->GetAngleUnitCircle().x - 0.2;
-        angleUnitCircleTemp.y = sqrt(1 - pow(angleUnitCircleTemp.x, 2));
-        if ((*bl)->GetAngleUnitCircle().y < 0)
+        if ((*bl)->GetAngleUnitCircle().x < -0.75)
         {
-            angleUnitCircleTemp.y = -angleUnitCircleTemp.y;
+            angleUnitCircleTemp.y = (*bl)->GetAngleUnitCircle().y - 0.2;
+            angleUnitCircleTemp.x = sqrt(1 - pow(angleUnitCircleTemp.y, 2));
+
+            if ((*bl)->GetAngleUnitCircle().x < 0)
+            {
+                angleUnitCircleTemp.x = -abs(angleUnitCircleTemp.x);
+            }
+            else
+            {
+                angleUnitCircleTemp.x = abs(angleUnitCircleTemp.x);
+            }
         }
+        else
+        {
+            angleUnitCircleTemp.x = (*bl)->GetAngleUnitCircle().x - 0.2;
+            angleUnitCircleTemp.y = sqrt(1 - pow(angleUnitCircleTemp.x, 2));
+
+            if ((*bl)->GetAngleUnitCircle().y < 0)
+            {
+                angleUnitCircleTemp.y = -abs(angleUnitCircleTemp.y);
+            }
+            else
+            {
+                angleUnitCircleTemp.y = abs(angleUnitCircleTemp.y);
+            }
+        }
+
+        
         temp2->SetAngleUnitCircle(angleUnitCircleTemp);
 
         ballTemp.push_back(temp2);       
     }
 
-    std::cout << "all OK" << std::endl;
+    
 
     for (blTmp = ballTemp.begin(); blTmp != ballTemp.end();)
     {        
@@ -144,7 +193,7 @@ void Bonus::ChangePlatform(ConcretePlatform* platform)
 
 void Bonus::LaserOnBoard(ConcretePlatform* platform)
 {
-
+    platform->GetInstance()->SetBullets();
 }
 
 void Bonus::ChangeSpeedBall(std::list<Ball*>& ball)
@@ -170,7 +219,12 @@ void Bonus::ChangeSpeedBall(std::list<Ball*>& ball)
 
 void Bonus::CatchBall(std::list<Ball*>& ball)
 {    
-
+    std::list<Ball*>::iterator bl;
+    
+    for (bl = ball.begin(); bl != ball.end(); bl++)
+    {
+        (*bl)->SetFlagCatch(true);
+    }
 }
 
 void Bonus::AddLive()
