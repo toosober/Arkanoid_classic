@@ -475,13 +475,16 @@ int Levels::InitLevel(int lvl)
     switch (lvl)
     {
     case 1:
-        return CreateLevel4();
+        return CreateLevel1();
         break;
     case 2:
         return CreateLevel2();
         break;
     case 3:
         return CreateLevel3();
+        break;
+    case 4:
+        return CreateLevel4();
         break;
     default:
         break;

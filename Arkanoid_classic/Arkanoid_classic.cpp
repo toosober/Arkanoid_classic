@@ -6,6 +6,7 @@
 
 
 
+
 int main()
 {
     RenderWindow window(VideoMode(1100, 600), "Arkanoid");
@@ -13,6 +14,10 @@ int main()
 
     Image image;
     image.loadFromFile(IMGPATH);
+
+    Music music;                                            //создаем объект музыки
+    music.openFromFile("MusicAndSounds/Stupid_Dancer.wav"); //загружаем файл
+    music.play();                                           //
     
     Menu::GetInstance();
     Levels lvs(image);
