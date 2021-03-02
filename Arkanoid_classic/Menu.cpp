@@ -5,41 +5,44 @@
 
 Menu::Menu()
 {
-    if (font.loadFromFile(FONTPATH) == NULL)
+    if (_font.loadFromFile(FONTPATH) == NULL)
         std::cout << "Font Error" << std::endl;
 
-    text_startgame.setFont(font);
-    text_startgame.setCharacterSize(55);
-    text_startgame.setColor(Color::Red);
-    text_startgame.setStyle(Text::Bold);
-
-    text_stopgame.setFont(font);
-    text_stopgame.setCharacterSize(55);
-    text_stopgame.setColor(Color::Red);
-    text_stopgame.setStyle(Text::Bold);
+    _textStartGame.setFont(_font);
+    _textStartGame.setCharacterSize(55);
+    _textStartGame.setColor(Color::Red);
+    _textStartGame.setStyle(Text::Bold);
     
-    text_score.setFont(font);
-    text_score.setCharacterSize(35);
-    text_score.setColor(Color::Yellow);
-    text_score.setStyle(Text::Bold);
-    text_score.setPosition(850, 40);
+    _textStopGame.setFont(_font);
+    _textStopGame.setCharacterSize(55);
+    _textStopGame.setColor(Color::Red);
+    _textStopGame.setStyle(Text::Bold);
+        
+    _textScore.setFont(_font);
+    _textScore.setCharacterSize(35);
+    _textScore.setColor(Color::Yellow);    
+    _textScore.setStyle(Text::Bold);
+    _textScore.setPosition(850, 40);
 
-    text_level.setFont(font);
-    text_level.setCharacterSize(35);
-    text_level.setColor(Color::Yellow);
-    text_level.setStyle(Text::Bold);
 
-    text_lives.setFont(font);
-    text_lives.setCharacterSize(35);
-    text_lives.setColor(Color::Yellow);
-    text_lives.setStyle(Text::Bold);
-    text_lives.setPosition(850, 120);
+    _textLevel.setFont(_font);
+    _textLevel.setCharacterSize(35);
+    _textLevel.setColor(Color::Yellow);    
+    _textLevel.setStyle(Text::Bold);
 
-    text_game_over.setFont(font);
-    text_game_over.setCharacterSize(35);
-    text_game_over.setColor(Color::Yellow);
-    text_game_over.setStyle(Text::Bold);    
-    text_level.setPosition(850, 200);
+
+    _textLives.setFont(_font);
+    _textLives.setCharacterSize(35);
+    _textLives.setColor(Color::Yellow);    
+    _textLives.setStyle(Text::Bold);
+    _textLives.setPosition(850, 120);
+
+
+    _textGameOver.setFont(_font);
+    _textGameOver.setCharacterSize(35);
+    _textGameOver.setColor(Color::Yellow);        
+    _textGameOver.setStyle(Text::Bold);
+    _textLevel.setPosition(850, 200);
 
 }
 
@@ -96,32 +99,39 @@ void Menu::CreateStartMenu(RenderWindow& window)
     yellowBonus.setTextureRect(IntRect(488, 481, 27, 30));
     yellowBonus.setPosition(100, 450);
 
-    Text text_equal("=", font, 25);
-    text_equal.setColor(Color::Red);
+    Text textEqual("=", _font, 25);
+    textEqual.setColor(Color::Red);
+    textEqual.setStyle(Text::Bold);
 
-    Text text_or("or", font, 25);
-    text_or.setColor(Color::Red);
-    text_or.setPosition(338, 200);
+    Text textOr("or", _font, 25);
+    textOr.setColor(Color::Red);
+    textOr.setStyle(Text::Bold);
+    textOr.setPosition(338, 200);
 
-    Text text_laserOnBoard("Laser on board", font, 25);
-    text_laserOnBoard.setColor(Color::Red);
-    text_laserOnBoard.setPosition(190, 396);
+    Text textLaserOnBoard("Laser on board", _font, 25);
+    textLaserOnBoard.setColor(Color::Red);
+    textLaserOnBoard.setStyle(Text::Bold);
+    textLaserOnBoard.setPosition(190, 396);
 
-    Text text_platformCatchBall("Platform catch ball", font, 25);
-    text_platformCatchBall.setColor(Color::Red);
-    text_platformCatchBall.setPosition(190, 246);
+    Text textPlatformCatchBall("Platform catch ball", _font, 25);
+    textPlatformCatchBall.setColor(Color::Red);
+    textPlatformCatchBall.setStyle(Text::Bold);
+    textPlatformCatchBall.setPosition(190, 246);
 
-    Text text_slowOrFastBall("Slow or Fast ball speed", font, 25);
-    text_slowOrFastBall.setColor(Color::Red);
-    text_slowOrFastBall.setPosition(190, 296);
+    Text textSlowOrFastBall("Slow or Fast ball speed", _font, 25);
+    textSlowOrFastBall.setColor(Color::Red);
+    textSlowOrFastBall.setStyle(Text::Bold);
+    textSlowOrFastBall.setPosition(190, 296);
 
-    Text text_extraLife("Extra Life", font, 25);
-    text_extraLife.setColor(Color::Red);
-    text_extraLife.setPosition(190, 446);
+    Text textExtraLife("Extra Life", _font, 25);
+    textExtraLife.setColor(Color::Red);
+    textExtraLife.setStyle(Text::Bold);
+    textExtraLife.setPosition(190, 446);
 
-    Text text_multiply("X 3", font, 25);
-    text_multiply.setColor(Color::Red);
-    text_multiply.setPosition(216, 344);
+    Text textMultiply("X 3", _font, 25);
+    textMultiply.setColor(Color::Red);
+    textMultiply.setStyle(Text::Bold);
+    textMultiply.setPosition(216, 344);
     
     MediumPlatform platform(image);
     Ball ball(image);
@@ -130,14 +140,13 @@ void Menu::CreateStartMenu(RenderWindow& window)
     //устанавливаем начальные позиции для элементов
     platform.setPosition(-25, 550);
     ball.setPosition(800, 534);
-    text_startgame.setString("PRESS ENTER TO START");
-    text_startgame.setPosition(120, 0);
+    _textStartGame.setString("PRESS ENTER TO START");
+    _textStartGame.setPosition(120, 0);
 
     
 
     auto& score = Menu::GetInstance().GetCountScore();
-    auto& lives = Menu::GetInstance().GetCountlives();
-    auto& level = Menu::GetInstance().Getlevel();
+    auto& lives = Menu::GetInstance().GetCountlives();    
 
     Clock clock;
 
@@ -178,8 +187,8 @@ void Menu::CreateStartMenu(RenderWindow& window)
         else
             ball.setPosition(platform.getPosition().x + 37, platform.getPosition().y - 16);
 
-        if (text_startgame.getPosition().y <= 80)
-            text_startgame.move(0, time * 0.2);
+        if (_textStartGame.getPosition().y <= 80)
+            _textStartGame.move(0, time * 0.2);
 
 
         window.clear();
@@ -187,28 +196,28 @@ void Menu::CreateStartMenu(RenderWindow& window)
         board.CreateMap(window);
         board.CreateMenu(window);
 
-        text_score.setString("Score");
+        _textScore.setString("Score");
 
-        text_lives.setString("Lives");
+        _textLives.setString("Lives");
 
-        text_level.setString("Round");
+        _textLevel.setString("Round");
 
         for (int i = 0; i < 6; i++)
         {
-            text_equal.setPosition(150, 196 + i * 50);
-            window.draw(text_equal);
+            textEqual.setPosition(150, 196 + i * 50);
+            window.draw(textEqual);
         }
 
 
-        window.draw(text_multiply);
+        window.draw(textMultiply);
         window.draw(PrintBall);
-        window.draw(text_slowOrFastBall);
-        window.draw(text_platformCatchBall);
-        window.draw(text_laserOnBoard);
-        window.draw(text_or);
+        window.draw(textSlowOrFastBall);
+        window.draw(textPlatformCatchBall);
+        window.draw(textLaserOnBoard);
+        window.draw(textOr);
         window.draw(PrintPlatformSmall);
         window.draw(PrintPlatformLarge);
-        window.draw(text_extraLife);
+        window.draw(textExtraLife);
         window.draw(greenBonus);
         window.draw(blueBonus);
         window.draw(pinkBonus);
@@ -218,41 +227,44 @@ void Menu::CreateStartMenu(RenderWindow& window)
 
         window.draw(platform);
         window.draw(ball);
-        window.draw(text_score);
-        window.draw(text_lives);
-        window.draw(text_level);
-        window.draw(text_startgame);
+        window.draw(_textScore);
+        window.draw(_textLives);
+        window.draw(_textLevel);
+        window.draw(_textStartGame);
 
         window.display();
     }
 }
 
-void Menu::CreateMenu(RenderWindow& window)
+// Меню в левой части игрового экрана
+void Menu::CreateMenu(RenderWindow& window, unsigned level)
 {
     std::ostringstream playerScore;
     std::ostringstream playerLives;
     std::ostringstream gameLevel;
 
-    playerScore << score;
-    playerLives << lives;
+    playerScore << _score;
+    playerLives << _lives;
     gameLevel << level;
 
-    text_score.setString("Score: " + playerScore.str());
-    text_lives.setString("Lives: " + playerLives.str());
-    text_level.setString("Level: " + gameLevel.str());
+    _textScore.setString("Score: " + playerScore.str());
+    _textLives.setString("Lives: " + playerLives.str());
+    _textLevel.setString("Level: " + gameLevel.str());
 
-    window.draw(text_score);
-    window.draw(text_lives);
-    window.draw(text_level);
+    window.draw(_textScore);
+    window.draw(_textLives);
+    window.draw(_textLevel);
 }
 
+
+// Окно запускаемое при поражении
 void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform)
 {
-    std::ostringstream Record;
-    Record << scoreRecord;
-    text_stopgame.setString("Game Over\n\nYour Record is: " + Record.str() + "\n\n" +
+    std::ostringstream record;
+    record << _scoreRecord;
+    _textStopGame.setString("Game Over\n\nYour Record is: " + record.str() + "\n\n" +
         "Press Enter to try again");
-    text_stopgame.setPosition(100, -50);
+    _textStopGame.setPosition(100, -50);
 
     
     std::list<Block*>::iterator blks;
@@ -292,38 +304,33 @@ void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Borde
         else
             platform->GetInstance()->setPosition(1300, 550);
 
-        while (!blocks.empty())
-        {
-            blks = blocks.begin();
-            delete* blks;
-            blks = blocks.erase(blks);
-        }
 
-
-        /*for (blks = blocks.begin(); blks != blocks.end(); blks++)
-        {
-            blks = blocks.begin();
+        for (blks = blocks.begin(); blks != blocks.end();)
+        {   
             if ((*blks)->getPosition().x > -50)
+            {
                 (*blks)->move(time * -1.5, 0);
+                blks++;
+            }                
             else
             {
                 delete (*blks);
                 blks = blocks.erase(blks);
             }
-            if (blocks.empty())
-            {
-                break;
-            }
-        }       */
+            
+        }       
 
-        if (text_stopgame.getPosition().y < 100)
-            text_stopgame.move(0, time * 0.5);
+       
+        if (_textStopGame.getPosition().y < 100)
+            _textStopGame.move(0, time * 0.5);
         else
-            text_stopgame.setPosition(text_stopgame.getPosition().x, 100);
+            _textStopGame.setPosition(_textStopGame.getPosition().x, 100);
+       
         
-        text_score.setString("Score");
-        text_lives.setString("Lives");
-        text_level.setString("Round");
+        
+        _textScore.setString("Score");
+        _textLives.setString("Lives");
+        _textLevel.setString("Round");
 
         window.clear();
 
@@ -334,11 +341,56 @@ void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Borde
             window.draw(**blks);
 
         window.draw(*platform->GetInstance());        
-        window.draw(text_score);
-        window.draw(text_lives);
-        window.draw(text_level);
-        window.draw(text_stopgame);
+        window.draw(_textScore);
+        window.draw(_textLives);
+        window.draw(_textLevel);
+        window.draw(_textStopGame);
 
         window.display();
     }
+}
+
+void Menu::CreateLevelSplashCreen(RenderWindow& window, Border& board, unsigned level)
+{
+    bool isOpen = true;
+
+    Text textSPlashScreenLevel("Level ", _font, 60);
+    textSPlashScreenLevel.setColor(Color::Yellow);
+    textSPlashScreenLevel.setStyle(Text::Bold);
+    textSPlashScreenLevel.setPosition(300, 250);
+
+    std::ostringstream gameLevel;
+    gameLevel << level;
+
+    Clock clock;
+
+    Clock clockIsOpen;
+
+    while (isOpen)
+    {
+        float time = clock.getElapsedTime().asMicroseconds();
+        clock.restart();
+        time = time / 1000;
+
+        float timeIsOpen = clockIsOpen.getElapsedTime().asMilliseconds();
+        
+        if (timeIsOpen > 3000)
+        {
+            isOpen = false;
+            window.clear();
+        }
+
+        textSPlashScreenLevel.setString("Level " + gameLevel.str());
+
+        window.clear();
+
+        board.CreateMap(window);
+        board.CreateMenu(window);
+
+        window.draw(textSPlashScreenLevel);
+
+        window.display();
+            
+    }
+
 }

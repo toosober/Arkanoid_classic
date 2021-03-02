@@ -12,23 +12,23 @@ class Menu //наивный одиночка
 private:
 	Menu();
 
-	unsigned scoreRecord = 0;
-	unsigned score = 0;
-	int lives = 0;
-	unsigned level = 1;
+	unsigned _scoreRecord = 0;
+	unsigned _score = 0;
+	int _lives = 0;
+	
 
 	unsigned _combo = 1;
 
 
 	//Различные текста
-	Font font;
+	Font _font;
 
-	Text text_startgame;
-	Text text_score;
-	Text text_level;
-	Text text_lives;
-	Text text_game_over;
-	Text text_stopgame;
+	Text _textStartGame;
+	Text _textScore;
+	Text _textLevel;
+	Text _textLives;
+	Text _textGameOver;
+	Text _textStopGame;
 
 
 public:
@@ -41,14 +41,14 @@ public:
 		return menu_;
 	}
 
-	void SetCountScore(int x) { score += x; }
-	const unsigned& GetCountScore() const { return score; }
+	void SetCountScore(int x) { _score += x; }
+	const unsigned& GetCountScore() const { return _score; }
 
-	void SetCountlives(int x) { lives += x; }
-	const int& GetCountlives() const { return lives; }
+	void SetCountlives(int x) { _lives += x; }
+	const int& GetCountlives() const { return _lives; }
 
-	void SetScoreRecord() { if(score > scoreRecord) scoreRecord = score; }
-	const unsigned GetScoreRecord() { return scoreRecord; }
+	void SetScoreRecord() { if(_score > _scoreRecord) _scoreRecord = _score; }
+	const unsigned GetScoreRecord() { return _scoreRecord; }
 
 	void ResetCombo() { _combo = 1; }
 	void IncreaseCombo() { _combo += 1; }
@@ -57,13 +57,14 @@ public:
 
 
 
-	void Setlevel(int x) { level = x-1; }
-	const unsigned& Getlevel() const { return level; }
+	
 
 	void CreateStartMenu(RenderWindow& window);
-	void CreateMenu(RenderWindow& window);
+	void CreateMenu(RenderWindow& window, unsigned level);
 	void CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform);
-	void PlayerInit() { score = 0; lives = 3; level = 1; }
+	void PlayerInit() { _score = 0; _lives = 3;}
+
+	void CreateLevelSplashCreen(RenderWindow& window, Border& board, unsigned level);
 
 	
 };

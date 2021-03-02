@@ -14,6 +14,8 @@ Ball::Ball(Image& img, float acceleration, bool flagInit) : GameObject(img)
    
    _flagInit = flagInit;
    _flagCatch = false;
+   _flagBallCatchPosition = false;
+   _catchCounter = 0;
    
    _ballCounter++;
 }
@@ -54,5 +56,10 @@ void Ball::SetSpeedSlow()
 void Ball::SetSpeed(float acceleration)
 {
     _acceleration = acceleration;
+}
+
+void Ball::BonusCatch()
+{
+   
 }
 

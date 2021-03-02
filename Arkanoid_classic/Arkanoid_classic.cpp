@@ -14,9 +14,7 @@ int main()
     Image image;
     image.loadFromFile(IMGPATH);
     
-    
-    Menu::GetInstance().CreateStartMenu(window);
-
+    Menu::GetInstance();
     Levels lvs(image);
 
     while(window.isOpen())

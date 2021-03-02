@@ -14,13 +14,16 @@ private:
 	float _acceleration;		 // Коээфициент ускорения
 
 	bool _flagInit;				 // Инициализация направления при запуске шарика с платформы (начало игры)
-
+	
 	bool _flagCatch;
+	bool _flagBallCatchPosition;
+	float _catchPositionX;
+	unsigned _catchCounter;
 	
 
 	
 public:
-	Ball(Image& img, float acceleration = 0.5, bool flagInit = true);
+	Ball(Image& img, float acceleration = 0.3, bool flagInit = true);
 	~Ball() { _ballCounter--; }
 
 
@@ -43,7 +46,21 @@ public:
 	void SetFlagCatch(bool flag) { _flagCatch = flag; }
 	bool GetFlagCatch() { return _flagCatch; }
 
+	void SetFlagBallCatchPosition(bool flag) { _flagBallCatchPosition = flag; }
+	bool GetFlagBallCatchPosition() { return _flagBallCatchPosition; }
+
+	void SetCatchPositionX(float catchPositionX) { _catchPositionX = catchPositionX; }
+	float GetCatchPositionX() { return _catchPositionX; }
+
+	void SetCatchCounter() { _catchCounter += 10; }
+	void DecreaseCatchCounter() { _catchCounter--; }
+	unsigned GetCatchCounter() { return _catchCounter; }
+	
 	static unsigned GetBallCount() { return _ballCounter; }
+
+	void BonusCatch();
+
+
 
 	
 

@@ -26,7 +26,7 @@ private:
     ConcretePlatform* _platform;
     
 
-    unsigned _level;                 // Текущий номер уровня
+    unsigned _level;                // Текущий номер уровня
     bool _changeLevel;              // Когда true собираем новый уровень
     
     std::list<Block*> _block;
@@ -34,6 +34,7 @@ private:
 
     std::list<Bonus*> _bonus;
     std::list<Bonus*>::iterator _bns;
+    
 
     std::list<Ball*> _ball;
     std::list<Ball*>::iterator _bl;
@@ -84,8 +85,6 @@ public:
     ~Levels();
 
     int StartGame(RenderWindow& window);
-    
-    
 
 };
 

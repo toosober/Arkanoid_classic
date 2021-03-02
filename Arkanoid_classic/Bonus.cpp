@@ -224,6 +224,7 @@ void Bonus::CatchBall(std::list<Ball*>& ball)
     for (bl = ball.begin(); bl != ball.end(); bl++)
     {
         (*bl)->SetFlagCatch(true);
+        (*bl)->SetCatchCounter();
     }
 }
 

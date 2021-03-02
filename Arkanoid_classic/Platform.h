@@ -10,20 +10,17 @@
 class Platform : public GameObject
 {
 
-
-	
-
 protected:
 
 	unsigned _Bullets;
 
 	Vector2f BallCollisionLeftEdge(Ball& ball);			// Попали в верхнюю часть платформы в левый край (0-8 пиксель)
-	Vector2f BallCollisionRightEdge(Ball& ball);			// Попали в верхнюю часть платформы в правый край (0-8 пиксель с правого края)
+	Vector2f BallCollisionRightEdge(Ball& ball);		// Попали в верхнюю часть платформы в правый край (0-8 пиксель с правого края)
 	Vector2f BallCollisionStandart(Ball& ball);			// Попали в верхнюю часть платформы
 	Vector2f BallCollisionLeftWall(Ball& ball);			// Попали в левую стену платформы
-	Vector2f BallCollisionRightWall(Ball& ball);			// Попали в правую стену платформы
+	Vector2f BallCollisionRightWall(Ball& ball);		// Попали в правую стену платформы
 	
-	float CollisionLocation(Ball& ball);											// Определяем позицию столкновения на платформе
+	float CollisionLocation(Ball& ball);				// Определяем позицию столкновения на платформе
 	
 
 public:
@@ -34,6 +31,7 @@ public:
 	// Методы для всех наследников
 	void Move(const float speed, const float time);	
 	void SetBullets() { _Bullets += 10; }
+	void ReSetBulltes() { _Bullets = 0; }
 	void Fire() { _Bullets -= 2; }
 	bool GetBullets() { return _Bullets; }
 
