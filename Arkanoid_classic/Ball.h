@@ -33,7 +33,7 @@ public:
 	void SetSpeedFast();  // Тестовые функции
 	void SetSpeedSlow();  // Тестовые функции
 	
-	void SetSpeed(float acceleration); // Функция ускорения, нужна будет когда буду делать бонусы
+	void ResetSpeed(); // Функция ускорения, нужна будет когда буду делать бонусы
 	float GetSpeed() { return _acceleration; }
 
 
@@ -53,6 +53,7 @@ public:
 	float GetCatchPositionX() { return _catchPositionX; }
 
 	void SetCatchCounter() { _catchCounter += 10; }
+	void ResetCatch() { _catchCounter = 0; _flagBallCatchPosition = false; _flagCatch = false; }
 	void DecreaseCatchCounter() { _catchCounter--; }
 	unsigned GetCatchCounter() { return _catchCounter; }
 	

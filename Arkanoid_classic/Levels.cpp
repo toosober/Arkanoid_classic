@@ -1,11 +1,13 @@
 
 #include "Levels.h"
+#include "MusicAndSounds.h"
 
 
 unsigned Ball::_ballCounter = 0;
 
 Levels::Levels(Image& img) : _image(img)
 {
+    
     _platform = new ConcretePlatform(_image);
     _platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
 
@@ -13,13 +15,11 @@ Levels::Levels(Image& img) : _image(img)
     _bl = _ball.begin();
     (*_bl)->setPosition(BALL_START_POSITION);
 
-    _level = 1;
+    _level = 0;
     _changeLevel = true;
     _flagBallMove = false;
 
-    
-   
-    
+    MusicAndSounds::GetInstance();
 
 }
 
@@ -53,8 +53,9 @@ Levels::~Levels()
 
 int Levels::StartGame(RenderWindow& window)
 {
+
     Menu::GetInstance().CreateStartMenu(window);                        // Создаем стартовый экран
-    Menu::GetInstance().CreateLevelSplashCreen(window, _board, _level); // Запускаем экран с заставкой уровня
+   
     GameInit();                                                         // Приводим все элементы в стартовой полжожение
     Menu::GetInstance().PlayerInit();                                   // Начало игры, устанавливаем жизни игрока, и количество очков в начальные значения.
    
@@ -68,8 +69,10 @@ int Levels::StartGame(RenderWindow& window)
     double angleUnitCircleY = 0;         
 
     // Инициализируем переменную которая будет отдавать время и перезагружать его
-    Clock clockForBullets;
     Clock clock;
+
+    Clock clockForBullets;
+    Clock clockForBallSpeed;
 
     while (window.isOpen())
     {   
@@ -78,7 +81,8 @@ int Levels::StartGame(RenderWindow& window)
         clock.restart();
         time = time / 1000;
 
-        float timeForBullet = clockForBullets.getElapsedTime().asMilliseconds();  // Заводим таймер для выпуска пуль
+        float timeForBullet = clockForBullets.getElapsedTime().asMilliseconds();  // Заводим таймер для выпуска пуль      
+        float timeForBallSpeed = clockForBallSpeed.getElapsedTime().asMilliseconds(); // Заводим таймер для ускорения шарика
 
         //---------------------------------------------Обработка событий нажатия кнопок
         sf::Event event;
@@ -108,7 +112,7 @@ int Levels::StartGame(RenderWindow& window)
 
                         
                     }
-
+                    // Если мы поймали бонус прилипания к платформе, то отлипаем от нее здесь
                     for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
                     {   
                         if ((*_bl)->getPosition().y == _platform->GetInstance()->GetRect().top - BLUE_BALL_HEIGHT + 1)
@@ -118,28 +122,16 @@ int Levels::StartGame(RenderWindow& window)
                         }
                     }                    
                 }
-                if (event.key.code == Keyboard::X)
-                {
-                    for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
-                    {
-                        (*_bl)->SetSpeedFast();
-                    }
-                    
-                }
-
+               
 
                 if (event.key.code == Keyboard::Z)
                 {
                      for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
                     {
-                        (*_bl)->SetSpeedSlow();
+                        (*_bl)->SetSpeedSlow();                        
                     }
                 }
-
-                if (event.key.code == Keyboard::F)
-               {    
-                    _platform->ChangePlatform(3);                    
-               }
+              
             }
         }
 
@@ -152,6 +144,9 @@ int Levels::StartGame(RenderWindow& window)
             if (timeForBullet > 1000)
             {
                 _platform->GetInstance()->Fire();
+                
+                MusicAndSounds::GetInstance().PlatformFirePlay();
+
                 clockForBullets.restart();
 
                 Bullets* tempBullet1 = new Bullets(_image);
@@ -204,13 +199,16 @@ int Levels::StartGame(RenderWindow& window)
         }
         // Если игра не началась шарик привязан к платформе
         else
-        {      
+        {   
             // Первое условие: "х" шарика всегда по середине платформы
-            _bl = _ball.begin();
-            (*_bl)->setPosition((_platform->GetInstance()->GetRect().left +
-                (_platform->GetInstance()->GetRect().width / 2) - ((*_bl)->GetRect().width / 2)),
-                // Второе условие: "y" шарика всегда выше платформы на высоту шарика
-                _platform->GetInstance()->GetRect().top - (*_bl)->GetRect().height);
+            for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+            {
+                (*_bl)->setPosition((_platform->GetInstance()->GetRect().left +
+                    (_platform->GetInstance()->GetRect().width / 2) - ((*_bl)->GetRect().width / 2)),
+                    // Второе условие: "y" шарика всегда выше платформы на высоту шарика
+                    _platform->GetInstance()->GetRect().top - (*_bl)->GetRect().height);
+            }
+            
         }
 
         // Двигаем бонусы
@@ -226,38 +224,61 @@ int Levels::StartGame(RenderWindow& window)
         }
 
         
-        // После всех перемещений проверяем столкновения
+        // --------------------------------------------------------------------После всех перемещений проверяем столкновения
         CollisionDetecter();
 
-        // Если жизни закончились выводим экран окончания игры, все переменные приводим к начальному значению
+
+        // --------------------------------------------------------------------Если подошло время усложняем игру ускоряя шарик
+
+        if (timeForBallSpeed > 10000)
+        {            
+            clockForBallSpeed.restart();
+            for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+            {
+                (*_bl)->SetSpeedFast();                
+            }
+        }
+
+        // -------------------------------------------Если жизни закончились выводим экран окончания игры, все переменные приводим к начальному значению
         if (Menu::GetInstance().GetCountlives() <= 0)
         {
             Menu::GetInstance().SetScoreRecord();
             Menu::GetInstance().CreateStopGame(window, _block, _board, _platform);
             Menu::GetInstance().PlayerInit();
+
+            window.clear();
             GameInit();
 
-            _level = 1;
+            _level = 0;
             _changeLevel = true;
 
             return 0;
-        }
-
-        if (_changeLevel) //если булева пременная = true необходимо собрать новый уровень
-        {
-            
-            _level = InitLevel(_level);
-            _changeLevel = false;
-
         }
 
         if (_block.empty())
         {
             _changeLevel = true;
             _level++;
+            window.clear();
             GameInit();
             Menu::GetInstance().CreateLevelSplashCreen(window, _board, _level);
         }
+
+
+        if (_changeLevel) //если булева пременная = true необходимо собрать новый уровень
+        {   
+            InitLevel(_level);            
+            _changeLevel = false;
+
+            if (_level > 4)
+            {
+                Menu::GetInstance().CreateEndGame(window, _block, _board, _platform);
+                return 0;
+            }
+
+        }
+
+        
 
        
 
@@ -314,6 +335,7 @@ void Levels::BallCollision()
         {
             (*_bl)->setPosition(BORDER_LEFT, (*_bl)->getPosition().y);  // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
             (*_bl)->SetAngleUnitCircle(Vector2f(-(*_bl)->GetAngleUnitCircle().x, (*_bl)->GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+            MusicAndSounds::GetInstance().BallBounceOfBorderMapPlay();
         }
 
         // Проверяем пересечение с правой стенкой
@@ -322,6 +344,7 @@ void Levels::BallCollision()
             // Если вдруг перелетели правую стенку, то уснатавливаемся в самое крайнее возможное положение
             (*_bl)->setPosition(BORDER_RIGHT - (*_bl)->GetRect().width, (*_bl)->getPosition().y);
             (*_bl)->SetAngleUnitCircle(Vector2f(-(*_bl)->GetAngleUnitCircle().x, (*_bl)->GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+            MusicAndSounds::GetInstance().BallBounceOfBorderMapPlay();
         }
 
         // Проверяем пересечение с потолком
@@ -329,6 +352,7 @@ void Levels::BallCollision()
         {
             (*_bl)->setPosition((*_bl)->getPosition().x, BORDER_TOP); // Если вдруг перелетели потолок, то устанавливаемся в саоме крайнее возможное положение
             (*_bl)->SetAngleUnitCircle(Vector2f((*_bl)->GetAngleUnitCircle().x, -(*_bl)->GetAngleUnitCircle().y)); // Меняем направление на противоположное по х
+            MusicAndSounds::GetInstance().BallBounceOfBorderMapPlay();
         }
 
 
@@ -336,11 +360,14 @@ void Levels::BallCollision()
         if (_platform->GetInstance()->GetRect().intersects((*_bl)->GetRect()))
         {
             Menu::GetInstance().ResetCombo();
+            
 
             if ((*_bl)->GetFlagCatch() && Ball::GetBallCount() == 1)
             {
                 if (!(*_bl)->GetFlagBallCatchPosition())
                 {
+                    MusicAndSounds::GetInstance().BallCatchPlay();
+
                     (*_bl)->SetCatchPositionX((*_bl)->getPosition().x - _platform->GetInstance()->GetRect().left);
                     (*_bl)->SetFlagBallCatchPosition(true);
                     (*_bl)->DecreaseCatchCounter();
@@ -350,6 +377,7 @@ void Levels::BallCollision()
             }
             else
             {
+                MusicAndSounds::GetInstance().BallBounceOfPlatformPlay();
                 (*_bl)->SetAngleUnitCircle(_platform->GetInstance()->CollisionWithBall(**_bl));
 
                 if ((*_bl)->GetCatchCounter() > 0)
@@ -369,6 +397,9 @@ void Levels::BallCollision()
             {
                 Menu::GetInstance().SetCountScore(10 * Menu::GetInstance().GetCombo());
                 Menu::GetInstance().IncreaseCombo();
+
+                MusicAndSounds::GetInstance().BallBounceOfBlockPlay();
+
                 (*_bl)->SetAngleUnitCircle((*_blk)->BallCollision(**_bl));
                 if ((*_blk)->GetFlagBonus())
                 {
@@ -407,6 +438,7 @@ void Levels::PlatformCollision()
     {
         if ((*_bns)->GetRect().intersects(_platform->GetInstance()->GetRect()))
         {
+            MusicAndSounds::GetInstance().PlatformCollBonusPlay();
             (*_bns)->CollisionWithPlatform(_platform, _ball);
             delete* _bns;
             _bns = _bonus.erase(_bns);
@@ -431,6 +463,7 @@ void Levels::BulletsCollision()
     {
         if ((*_blts)->getPosition().y < BORDER_TOP)
         {
+            MusicAndSounds::GetInstance().BulletsHitBorderMapPlay();
             delete* _blts;
             _blts = _bullets.erase(_blts);
             continue;
@@ -441,6 +474,7 @@ void Levels::BulletsCollision()
         {
             if ((*_blts)->GetRect().intersects((*_blk)->GetRect()))
             {
+                MusicAndSounds::GetInstance().BulletsHitBlockPlay();
                 if ((*_blk)->GetFlagBonus())
                 {
                     _bonus.push_back(new Bonus(_image, (*_blk)->GetBlockType(), Vector2f((*_blk)->GetRect().left + (*_blk)->GetRect().width / 2 - BONUS_WIDTH / 2,
@@ -487,6 +521,7 @@ int Levels::InitLevel(int lvl)
         return CreateLevel4();
         break;
     default:
+        return 0;
         break;
     }
 
@@ -1051,13 +1086,14 @@ int Levels::CreateLevel4()
     return 4;
 }
 
-// Инициализация стартовых значений игры
+//---------------------------------------------------------------------Инициализация стартовых значений игры
 
 void Levels::GameInit()
-{
+{   
     _platform->ChangePlatform(mediumPlatform);
-    _platform->GetInstance()->ReSetBulltes();
+    _platform->GetInstance()->ReSetBullets();
     _platform->GetInstance()->setPosition(PLATFORM_START_POSITION);
+    
 
     _flagBallMove = false;
 
@@ -1087,14 +1123,23 @@ void Levels::GameInit()
     (*_bl)->setPosition(BALL_START_POSITION);
 }
 
+
+//-------------------------------------------------------------------Падение шарика
 void Levels::BallFall()
 {
     if (Ball::GetBallCount() <= 1)
     {
         _flagBallMove = false;
-        (*_bl)->SetFlagInit(true);
+        (*_bl)->SetFlagInit(true); 
+        (*_bl)->ResetCatch();
+        (*_bl)->ResetSpeed();
         _bl++;
+
         Menu::GetInstance().SetCountlives(-1);
+        MusicAndSounds::GetInstance().BallFallPlay();
+        
+        _platform->GetInstance()->ReSetBullets();
+        _platform->ChangePlatform(mediumPlatform);
 
         
     }
@@ -1102,6 +1147,7 @@ void Levels::BallFall()
     {
         delete* _bl;
         _bl = _ball.erase(_bl);
+        MusicAndSounds::GetInstance().BallBounceOfBorderMapPlay();
     }
 }
 

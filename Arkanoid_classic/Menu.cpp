@@ -29,6 +29,7 @@ Menu::Menu()
     _textLevel.setCharacterSize(35);
     _textLevel.setColor(Color::Yellow);    
     _textLevel.setStyle(Text::Bold);
+    _textLevel.setPosition(850, 200);
 
 
     _textLives.setFont(_font);
@@ -38,11 +39,11 @@ Menu::Menu()
     _textLives.setPosition(850, 120);
 
 
-    _textGameOver.setFont(_font);
-    _textGameOver.setCharacterSize(35);
-    _textGameOver.setColor(Color::Yellow);        
-    _textGameOver.setStyle(Text::Bold);
-    _textLevel.setPosition(850, 200);
+    _textCongratulations.setFont(_font);
+    _textCongratulations.setCharacterSize(35);
+    _textCongratulations.setColor(Color::Yellow);
+    _textCongratulations.setStyle(Text::Bold);
+    
 
 }
 
@@ -236,7 +237,7 @@ void Menu::CreateStartMenu(RenderWindow& window)
     }
 }
 
-// Меню в левой части игрового экрана
+// Меню в правой части игрового экрана
 void Menu::CreateMenu(RenderWindow& window, unsigned level)
 {
     std::ostringstream playerScore;
@@ -341,6 +342,101 @@ void Menu::CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Borde
             window.draw(**blks);
 
         window.draw(*platform->GetInstance());        
+        window.draw(_textScore);
+        window.draw(_textLives);
+        window.draw(_textLevel);
+        window.draw(_textStopGame);
+
+        window.display();
+    }
+}
+
+void Menu::CreateEndGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform)
+{
+    std::ostringstream record;
+    record << _scoreRecord;
+    std::ostringstream score;
+    score << _score;
+
+    _textCongratulations.setString("Congratulations\n\nYou Score is: " + score.str() + "\n\nYour Record is: " + record.str() + "\n\n" +
+        "Press Enter to try again");
+    _textCongratulations.setPosition(100, -50);
+
+
+    std::list<Block*>::iterator blks;
+
+
+    Clock clock;
+
+    bool isMenu = true;
+    while (isMenu)
+    {
+        float time = clock.getElapsedTime().asMicroseconds();
+        clock.restart();
+        time = time / 1000;
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            //выключаем игру если нажата клавиша Esc или крестик в правом верхнем углу
+            if (event.type == sf::Event::Closed ||
+                Keyboard::isKeyPressed(Keyboard::Escape))
+            {
+                window.close();
+                isMenu = false;
+            }
+
+            //реализуем событие однократного нажатия клавиши Enter
+            if (event.type == sf::Event::KeyReleased)
+            {
+                if (event.key.code == Keyboard::Enter)
+                {
+                    isMenu = false;
+                }
+            }
+        }
+
+        if (platform->GetInstance()->getPosition().x < 1300)
+            platform->GetInstance()->move(time * 1.5, 0);
+        else
+            platform->GetInstance()->setPosition(1300, 550);
+
+
+        for (blks = blocks.begin(); blks != blocks.end();)
+        {
+            if ((*blks)->getPosition().x > -50)
+            {
+                (*blks)->move(time * -1.5, 0);
+                blks++;
+            }
+            else
+            {
+                delete (*blks);
+                blks = blocks.erase(blks);
+            }
+
+        }
+
+
+        if (_textStopGame.getPosition().y < 100)
+            _textStopGame.move(0, time * 0.5);
+        else
+            _textStopGame.setPosition(_textStopGame.getPosition().x, 100);
+
+
+
+        _textScore.setString("Score");
+        _textLives.setString("Lives");
+        _textLevel.setString("Round");
+
+        window.clear();
+
+        board.CreateMap(window);
+        board.CreateMenu(window);
+
+        for (blks = blocks.begin(); blks != blocks.end(); blks++)
+            window.draw(**blks);
+
+        window.draw(*platform->GetInstance());
         window.draw(_textScore);
         window.draw(_textLives);
         window.draw(_textLevel);

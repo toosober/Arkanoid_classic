@@ -1,6 +1,7 @@
 
 #include "Platform.h"
 #include "Config.h"
+#include "MusicAndSounds.h"
 
 
 
@@ -372,6 +373,7 @@ ConcretePlatform::~ConcretePlatform()
 
 void ConcretePlatform::ChangePlatform(int sizePlatform)
 {
+    MusicAndSounds::GetInstance().ChangePlatformPlay();
     Vector2f position = _concretePlatform->getPosition();
     if (sizePlatform <= smallPlatform)
     {

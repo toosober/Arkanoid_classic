@@ -26,9 +26,9 @@ private:
 	Text _textStartGame;
 	Text _textScore;
 	Text _textLevel;
-	Text _textLives;
-	Text _textGameOver;
+	Text _textLives;	
 	Text _textStopGame;
+	Text _textCongratulations;
 
 
 public:
@@ -40,7 +40,7 @@ public:
 		static Menu menu_;
 		return menu_;
 	}
-
+	
 	void SetCountScore(int x) { _score += x; }
 	const unsigned& GetCountScore() const { return _score; }
 
@@ -62,6 +62,7 @@ public:
 	void CreateStartMenu(RenderWindow& window);
 	void CreateMenu(RenderWindow& window, unsigned level);
 	void CreateStopGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform);
+	void CreateEndGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform);
 	void PlayerInit() { _score = 0; _lives = 3;}
 
 	void CreateLevelSplashCreen(RenderWindow& window, Border& board, unsigned level);

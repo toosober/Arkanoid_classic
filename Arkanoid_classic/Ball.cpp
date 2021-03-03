@@ -42,24 +42,31 @@ void Ball::Move(double angleUnitCircleX, double angleUnitCircleY, float time)
 // Увеличиваем скорость шарика в два раза
 void Ball::SetSpeedFast()
 {
-    _acceleration *= 2;
+    if (_acceleration < 0.8)
+    {
+        _acceleration += 0.1;
+    }
+    
 }
 
 // Уменьшаем скорость шарика в два раза
 void Ball::SetSpeedSlow()
 {
-    _acceleration /= 2;
+    if (_acceleration >= 0.3)
+    {
+        _acceleration /= 2;
+    }
+    if (_acceleration < 0.3)
+    {
+        _acceleration = 0.3;
+    }
+        
 }
 
 
-// Устанавливаем скорость вручную (функция будет нужна, когда буду делать бонусы)
-void Ball::SetSpeed(float acceleration)
+// Сбрасываем скорость в начальную
+void Ball::ResetSpeed()
 {
-    _acceleration = acceleration;
-}
-
-void Ball::BonusCatch()
-{
-   
+    _acceleration = 0.3;
 }
 

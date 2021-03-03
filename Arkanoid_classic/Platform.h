@@ -31,7 +31,7 @@ public:
 	// Методы для всех наследников
 	void Move(const float speed, const float time);	
 	void SetBullets() { _Bullets += 10; }
-	void ReSetBulltes() { _Bullets = 0; }
+	void ReSetBullets() { _Bullets = 0; }
 	void Fire() { _Bullets -= 2; }
 	bool GetBullets() { return _Bullets; }
 

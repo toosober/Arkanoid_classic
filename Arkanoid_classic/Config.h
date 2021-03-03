@@ -18,6 +18,18 @@ using namespace sf;
 
 const std::string IMGPATH = "Images/Sprites_Arkanoid.png";
 const std::string FONTPATH = "Fonts/Neucha/Neucha-Regular.ttf";
+const std::string MUSIC_BASE = "MusicAndSounds/Stupid_Dancer.wav";
+const std::string SOUND_BALL_BOUNCE_OFF_BLOCK = "MusicAndSounds/ballBounceOfBlock.wav";
+const std::string SOUND_BALL_BOUNCE_OFF_BORDER_MAP = "MusicAndSounds/ballBounceOfBorderMap.wav";
+const std::string SOUND_BALL_BOUNCE_OFF_PLATFORM = "MusicAndSounds/ballBounceOfPlatform.wav";
+const std::string SOUND_BALL_FALL = "MusicAndSounds/ballFall.wav";
+const std::string SOUND_BULLET_HIT_BLOCK = "MusicAndSounds/bulletHitBlock.wav";
+const std::string SOUND_BULLET_HIT_BORDER_MAP = "MusicAndSounds/bulletHitBorderMap.wav";
+const std::string SOUND_PLATFORM_COLLECTS_BONUS = "MusicAndSounds/platformCollBonus.wav";
+const std::string SOUND_PLATFORM_FIRE = "MusicAndSounds/platformFire.wav";
+const std::string SOUND_BALL_START = "MusicAndSounds/ballStart.wav";
+const std::string SOUND_BALL_CATCH = "MusicAndSounds/ballCatch.wav";
+const std::string SOUND_CHANGE_PLATFORM = "MusicAndSounds/changePlatform.wav";
 
 
 
@@ -26,7 +38,7 @@ const std::string FONTPATH = "Fonts/Neucha/Neucha-Regular.ttf";
 const int BORDER_RIGHT = 775;
 const int BORDER_LEFT = 25;
 const int BORDER_TOP = 23;
-const int BORDER_BOTTOM = 700;
+const int BORDER_BOTTOM = 600;
 
 
 

@@ -7,7 +7,7 @@
 
 
 
-int main()
+int WinMain()
 {
     RenderWindow window(VideoMode(1100, 600), "Arkanoid");
     window.setVerticalSyncEnabled(0);
@@ -15,11 +15,15 @@ int main()
     Image image;
     image.loadFromFile(IMGPATH);
 
-    Music music;                                            //создаем объект музыки
-    music.openFromFile("MusicAndSounds/Stupid_Dancer.wav"); //загружаем файл
-    music.play();                                           //
+    Music music;
+    music.openFromFile(MUSIC_BASE);
+    music.setLoop(true);
+    music.play();
+
+    
     
     Menu::GetInstance();
+    
     Levels lvs(image);
 
     while(window.isOpen())
