@@ -15,8 +15,7 @@ Levels::Levels(Image& img) : _image(img)
     _bl = _ball.begin();
     (*_bl)->setPosition(BALL_START_POSITION);
 
-    _level = 0;
-    _changeLevel = true;
+    _level = 0;    
     _flagBallMove = false;
 
     MusicAndSounds::GetInstance();
@@ -55,27 +54,59 @@ int Levels::StartGame(RenderWindow& window)
 {
 
     Menu::GetInstance().CreateStartMenu(window);                        // Создаем стартовый экран
-   
-    GameInit();                                                         // Приводим все элементы в стартовой полжожение
     Menu::GetInstance().PlayerInit();                                   // Начало игры, устанавливаем жизни игрока, и количество очков в начальные значения.
    
+    _level++;
+    while (_level < 4 && window.isOpen())
+    {
+        window.clear();
+        GameInit();                                                     // Приводим все элементы в стартовой полжожение                                                                        
+        Menu::GetInstance().CreateLevelSplashScreen(window, _board, _level);
+        InitLevel(_level);
+        if (StartLevel(window) < 0)
+        {
+            Menu::GetInstance().SetScoreRecord();
+            Menu::GetInstance().CreateStopGame(window, _block, _board, _platform);
+            _level = 0;
+            return 0;
+        }
+        _level++;                                                       // Увеличиваем уровень на 1
+    }
 
-    //Инициализация случайного числа при помощи Вихря Мерсенна, нужен для того, чтобы при запуске шарика в начале игры
-    //он полетел по случайной траектории
+    Menu::GetInstance().CreateEndGame(window, _block, _board, _platform);
+    return 0;
+
+
+
+
+
+                                                           
+   
+   
+
+    
+}
+
+
+int Levels::StartLevel(RenderWindow& window)
+{
+    // Инициализация случайного числа при помощи Вихря Мерсенна, нужен для того, чтобы при запуске шарика с платформы
+    // Он полетел по случайной траектории
     std::random_device rd;
     std::mt19937 mersenne(rd());
 
     double angleUnitCircleX = 0;         // Переменные в которых будет храниться направление движения шарика (вектор на единичной окружности)
-    double angleUnitCircleY = 0;         
+    double angleUnitCircleY = 0;
 
     // Инициализируем переменную которая будет отдавать время и перезагружать его
     Clock clock;
 
     Clock clockForBullets;
     Clock clockForBallSpeed;
+    _flagBallMove = false;
 
     while (window.isOpen())
-    {   
+    {
         // Блок обновления временной единицы 
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
@@ -85,53 +116,43 @@ int Levels::StartGame(RenderWindow& window)
         float timeForBallSpeed = clockForBallSpeed.getElapsedTime().asMilliseconds(); // Заводим таймер для ускорения шарика
 
         //---------------------------------------------Обработка событий нажатия кнопок
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event))
         {
             // Выключаем игру если нажата клавиша Esc или крестик в правом верхнем углу
-            if (event.type == sf::Event::Closed ||
+            if (event.type == Event::Closed ||
                 Keyboard::isKeyPressed(Keyboard::Escape))
+            {
                 window.close();
+            }
+                
 
             // Реализуем событие однократного нажатия клавиши пробел
-            if (event.type == sf::Event::KeyReleased)
+            if (Keyboard::isKeyPressed(Keyboard::Space))
             {
-                if (event.key.code == Keyboard::Space)
+                // Здесь отдадим команду начала игры через булеву переменную _flagBallMove;
+                if (!_flagBallMove)
                 {
-                    // Здесь отдадим команду начала игры через булеву переменную _flagBallMove;
-                    if (!_flagBallMove)
-                    {
-                        // Формируем начальное направление движения шарика при помощи единичной окружности
-                        angleUnitCircleX = (mersenne() % 150);
-                        angleUnitCircleX = (angleUnitCircleX - 75) / 100;
-                        angleUnitCircleY = sqrt(1.0 - pow(angleUnitCircleX, 2));
-                        angleUnitCircleY = -1 * abs(angleUnitCircleY);
+                    // Формируем начальное направление движения шарика при помощи единичной окружности
+                    angleUnitCircleX = (mersenne() % 150);
+                    angleUnitCircleX = (angleUnitCircleX - 75) / 100;
+                    angleUnitCircleY = sqrt(1.0 - pow(angleUnitCircleX, 2));
+                    angleUnitCircleY = -1 * abs(angleUnitCircleY);
 
-                        // Не заходим в этот блок до следующей инициализации
-                        _flagBallMove = true;
-
-                        
-                    }
-                    // Если мы поймали бонус прилипания к платформе, то отлипаем от нее здесь
-                    for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
-                    {   
-                        if ((*_bl)->getPosition().y == _platform->GetInstance()->GetRect().top - BLUE_BALL_HEIGHT + 1)
-                        {
-                            (*_bl)->SetFlagCatch(false);
-                            (*_bl)->SetFlagBallCatchPosition(false);
-                        }
-                    }                    
+                    // Не заходим в этот блок до следующей инициализации
+                    _flagBallMove = true;
                 }
-               
-
-                if (event.key.code == Keyboard::Z)
+                
+                // Если мы поймали бонус прилипания к платформе, то отлипаем от нее здесь
+                for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
                 {
-                     for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
+                    if ((*_bl)->getPosition().y == _platform->GetInstance()->GetRect().top - BLUE_BALL_HEIGHT + 1)
                     {
-                        (*_bl)->SetSpeedSlow();                        
+                        (*_bl)->SetFlagCatch(false);
+                        (*_bl)->SetFlagBallCatchPosition(false);
                     }
                 }
-              
+                
             }
         }
 
@@ -144,7 +165,7 @@ int Levels::StartGame(RenderWindow& window)
             if (timeForBullet > 1000)
             {
                 _platform->GetInstance()->Fire();
-                
+
                 MusicAndSounds::GetInstance().PlatformFirePlay();
 
                 clockForBullets.restart();
@@ -175,7 +196,7 @@ int Levels::StartGame(RenderWindow& window)
             // Это граница передвижения, если пересекли то устанавливаем позицию в последнее возможное положение
             _platform->GetInstance()->Move(-0.5, time);
             if (_platform->GetInstance()->GetRect().left < BORDER_LEFT)
-            {   
+            {
                 _platform->GetInstance()->setPosition(Vector2f(BORDER_LEFT, PLATFORM_START_POSITION.y));
             }
         }
@@ -190,16 +211,16 @@ int Levels::StartGame(RenderWindow& window)
             }
         }
 
-        
+
         // Если игра началась запускаем движение шарика
         if (_flagBallMove)
         {
             for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
-            (*_bl)->Move(angleUnitCircleX, angleUnitCircleY, time);
+                (*_bl)->Move(angleUnitCircleX, angleUnitCircleY, time);
         }
         // Если игра не началась шарик привязан к платформе
         else
-        {   
+        {
             // Первое условие: "х" шарика всегда по середине платформы
             for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
             {
@@ -208,7 +229,7 @@ int Levels::StartGame(RenderWindow& window)
                     // Второе условие: "y" шарика всегда выше платформы на высоту шарика
                     _platform->GetInstance()->GetRect().top - (*_bl)->GetRect().height);
             }
-            
+
         }
 
         // Двигаем бонусы
@@ -223,7 +244,7 @@ int Levels::StartGame(RenderWindow& window)
             (*_blts)->Move(time);
         }
 
-        
+
         // --------------------------------------------------------------------После всех перемещений проверяем столкновения
         CollisionDetecter();
 
@@ -231,63 +252,30 @@ int Levels::StartGame(RenderWindow& window)
         // --------------------------------------------------------------------Если подошло время усложняем игру ускоряя шарик
 
         if (timeForBallSpeed > 10000)
-        {            
+        {
             clockForBallSpeed.restart();
             for (_bl = _ball.begin(); _bl != _ball.end(); _bl++)
             {
-                (*_bl)->SetSpeedFast();                
+                (*_bl)->SetSpeedFast();
             }
         }
 
         // -------------------------------------------Если жизни закончились выводим экран окончания игры, все переменные приводим к начальному значению
         if (Menu::GetInstance().GetCountlives() <= 0)
         {
-            Menu::GetInstance().SetScoreRecord();
-            Menu::GetInstance().CreateStopGame(window, _block, _board, _platform);
-            Menu::GetInstance().PlayerInit();
-
-            window.clear();
-            GameInit();
-
-            _level = 0;
-            _changeLevel = true;
-
-            return 0;
+            return -1;
         }
 
         if (_block.empty())
         {
-            _changeLevel = true;
-            _level++;
-            window.clear();
-            GameInit();
-            Menu::GetInstance().CreateLevelSplashCreen(window, _board, _level);
+            return 0;            
         }
-
-
-        if (_changeLevel) //если булева пременная = true необходимо собрать новый уровень
-        {   
-            InitLevel(_level);            
-            _changeLevel = false;
-
-            if (_level > 4)
-            {
-                Menu::GetInstance().CreateEndGame(window, _block, _board, _platform);
-                return 0;
-            }
-
-        }
-
-        
-
-       
-
 
         window.clear();
 
         _board.CreateMap(window);
         _board.CreateMenu(window);
-        
+
         Menu::GetInstance().CreateMenu(window, _level);
 
         for (_blk = _block.begin(); _blk != _block.end(); _blk++)
@@ -303,17 +291,26 @@ int Levels::StartGame(RenderWindow& window)
         {
             window.draw(**_blts);
         }
-             
+
         window.draw(*_platform->GetInstance());
-       
+
         window.display();
 
 
     }
 
-    
+
     return 0;
 }
+
+
+
+
+
+
+
+
+
 //---------------------------------------------------------------Обработка коллизий
 void Levels::CollisionDetecter()
 {

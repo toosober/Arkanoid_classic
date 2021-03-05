@@ -65,7 +65,7 @@ public:
 	void CreateEndGame(RenderWindow& window, std::list<Block*>& blocks, Border& board, ConcretePlatform* platform);
 	void PlayerInit() { _score = 0; _lives = 3;}
 
-	void CreateLevelSplashCreen(RenderWindow& window, Border& board, unsigned level);
+	void CreateLevelSplashScreen(RenderWindow& window, Border& board, unsigned level);
 
 	
 };

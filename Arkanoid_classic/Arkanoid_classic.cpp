@@ -7,7 +7,7 @@
 
 
 
-int WinMain()
+int main()
 {
     RenderWindow window(VideoMode(1100, 600), "Arkanoid");
     window.setVerticalSyncEnabled(0);

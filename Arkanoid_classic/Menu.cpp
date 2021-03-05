@@ -369,7 +369,7 @@ void Menu::CreateEndGame(RenderWindow& window, std::list<Block*>& blocks, Border
     Clock clock;
 
     bool isMenu = true;
-    while (isMenu)
+    while (isMenu && window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
@@ -446,7 +446,7 @@ void Menu::CreateEndGame(RenderWindow& window, std::list<Block*>& blocks, Border
     }
 }
 
-void Menu::CreateLevelSplashCreen(RenderWindow& window, Border& board, unsigned level)
+void Menu::CreateLevelSplashScreen(RenderWindow& window, Border& board, unsigned level)
 {
     bool isOpen = true;
 
@@ -462,7 +462,7 @@ void Menu::CreateLevelSplashCreen(RenderWindow& window, Border& board, unsigned 
 
     Clock clockIsOpen;
 
-    while (isOpen)
+    while (isOpen && window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();

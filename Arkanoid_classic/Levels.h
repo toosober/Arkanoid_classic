@@ -26,8 +26,7 @@ private:
     ConcretePlatform* _platform;
     
 
-    unsigned _level;                // Текущий номер уровня
-    bool _changeLevel;              // Когда true собираем новый уровень
+    unsigned _level;                // Текущий номер уровня    
     
     std::list<Block*> _block;
     std::list<Block*>::iterator _blk;
@@ -68,6 +67,7 @@ private:
     int CreateLevel5();
     int CreateLevel6();
     int CreateLevel7();
+    int StartLevel(RenderWindow& window);
 
     
     
