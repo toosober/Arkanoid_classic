@@ -18,6 +18,7 @@
 class Levels
 {
 
+// TODO Move to end of the class
 private:
 
     Image& _image;
@@ -25,9 +26,9 @@ private:
     Border _board;
     ConcretePlatform* _platform;
     
-
-    unsigned _level;                // Текущий номер уровня    
-    
+// TODO uint32
+    unsigned _level;                // Г’ГҐГЄГіГ№ГЁГ© Г­Г®Г¬ГҐГ° ГіГ°Г®ГўГ­Гї    
+ // TODO std::vector<Block*>...;
     std::list<Block*> _block;
     std::list<Block*>::iterator _blk;
 
@@ -37,7 +38,7 @@ private:
 
     std::list<Ball*> _ball;
     std::list<Ball*>::iterator _bl;
-    bool _flagBallMove;				 // Флаг запуска шарика
+    bool _flagBallMove;				 // Г”Г«Г ГЈ Г§Г ГЇГіГ±ГЄГ  ГёГ Г°ГЁГЄГ 
 
     
     
@@ -47,17 +48,17 @@ private:
 
 
 
-
-    // Коллизии
+// TODO Methods first - members after
+    // ГЉГ®Г«Г«ГЁГ§ГЁГЁ
     void CollisionDetecter();
-    void BallCollision(); // Всевозможные столкновение шарика с элементами игры
-    void PlatformCollision(); // Всевозможные столкновение платформы с элементами игры (кроме столкновения с шариком) 
-    void BulletsCollision(); // Все возможные столкновения пули с элементами игры
-    void BallFall();          // Шарик упал в spawn зону
+    void BallCollision(); // Г‚Г±ГҐГўГ®Г§Г¬Г®Г¦Г­Г»ГҐ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ ГёГ Г°ГЁГЄГ  Г± ГЅГ«ГҐГ¬ГҐГ­ГІГ Г¬ГЁ ГЁГЈГ°Г»
+    void PlatformCollision(); // Г‚Г±ГҐГўГ®Г§Г¬Г®Г¦Г­Г»ГҐ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ ГЇГ«Г ГІГґГ®Г°Г¬Г» Г± ГЅГ«ГҐГ¬ГҐГ­ГІГ Г¬ГЁ ГЁГЈГ°Г» (ГЄГ°Г®Г¬ГҐ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГї Г± ГёГ Г°ГЁГЄГ®Г¬) 
+    void BulletsCollision(); // Г‚Г±ГҐ ГўГ®Г§Г¬Г®Г¦Г­Г»ГҐ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГї ГЇГіГ«ГЁ Г± ГЅГ«ГҐГ¬ГҐГ­ГІГ Г¬ГЁ ГЁГЈГ°Г»
+    void BallFall();          // ГГ Г°ГЁГЄ ГіГЇГ Г« Гў spawn Г§Г®Г­Гі
     
 
 
-    // Создание уровней
+    // Г‘Г®Г§Г¤Г Г­ГЁГҐ ГіГ°Г®ГўГ­ГҐГ©
     void GameInit();
     int InitLevel(int lvl);
     int CreateLevel1();
